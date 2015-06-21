@@ -38,8 +38,49 @@ let
     '';
   };
 
+  mkLauncherConfig = { server-name, server-password ? ""}:
+    writeTextFile {
+      name = "launcherConfig";
+      text = ''
+<ServerLauncherConfig ip="" upnpEnabled="true" updatePort="27275">
+<servers>
+  <AltitudeServerConfig port="27276" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${server-name}" maxPlayerCount="14" hardcore="true" autoBalanceTeams="true" preventTeamSwitching="false" disableBalanceTeamsPopup="false" lanServer="false" callEndOfRoundVote="true" disallowDemoUsers="false" rconEnabled="true" rconPassword="" maxPing="" minLevel="0" maxLevel="0" secretCode="${server-password}" cameraViewScalePercent="100">
+    <adminsByVaporID />
+    <mapList />
+    <mapRotationList>
+    <String value="|tbd|" />
+    </mapRotationList>
+    <BotConfig numberOfBots="0" botDifficulty="MEDIUM" botsBalanceTeams="true" botSpectateThreshold="6" />
+    <BaseDestroyGameMode RoundLimit="1" roundTimeSeconds="0" warmupTimeSeconds="10" />
+    <customCommands />
+    <consoleCommandPermissions />
+  </AltitudeServerConfig>
+</servers>
+</ServerLauncherConfig>
+      '';
+    };
+
+  mkMod = { launcherConfig }:
+    stdenv.mkDerivation {
+      name = "mod";
+      
+      phases = "installPhase";
+
+      installPhase = ''
+        mkdir -p $out/servers/
+        cp ${launcherConfig} $out/servers/launcher_config.xml 
+      '';
+    };
+
 in
 
 {
-  kcoop = run-src kcoop-src;
+  basic = 
+    mkMod {
+      launcherConfig =
+        mkLauncherConfig {
+          server-name = "MagneticDuck's Test Server";
+          server-password = "password";
+        };
+    };
 }
