@@ -80,7 +80,7 @@ in
       launcherConfig =
         mkLauncherConfig {
           server-name = "MagneticDuck's Test Server";
-          server-password = "password";
+          server-password = "password2";
         };
     };
 }
