@@ -50,7 +50,7 @@ let
     <mapRotationList>
     <String value="|tbd|" />
     </mapRotationList>
-    <BotConfig numberOfBots="${server-bots}" botDifficulty="MEDIUM" botsBalanceTeams="true" botSpectateThreshold="6" />
+    <BotConfig numberOfBots="${server-bots}" botDifficulty="BRUTAL" botsBalanceTeams="true" botSpectateThreshold="6" />
     <BaseDestroyGameMode RoundLimit="1" roundTimeSeconds="0" warmupTimeSeconds="10" />
     <customCommands />
     <consoleCommandPermissions />
