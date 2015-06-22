@@ -38,13 +38,13 @@ let
     '';
   };
 
-  mkLauncherConfig = { server-name, server-password ? "", server-players ? "14", server-bots ? "0"}:
+  mkLauncherConfig = { server-name, server-password ? "", server-players ? "14", server-bots ? "0", server-rcon ? ""}:
     writeTextFile {
       name = "launcherConfig";
       text = ''
 <ServerLauncherConfig ip="" upnpEnabled="true" updatePort="27275">
 <servers>
-  <AltitudeServerConfig port="27276" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${server-name}" maxPlayerCount="${server-players}" hardcore="true" autoBalanceTeams="true" preventTeamSwitching="false" disableBalanceTeamsPopup="false" lanServer="false" callEndOfRoundVote="true" disallowDemoUsers="false" rconEnabled="true" rconPassword="" maxPing="" minLevel="0" maxLevel="0" secretCode="${server-password}" cameraViewScalePercent="100">
+  <AltitudeServerConfig port="27276" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${server-name}" maxPlayerCount="${server-players}" hardcore="true" autoBalanceTeams="true" preventTeamSwitching="false" disableBalanceTeamsPopup="false" lanServer="false" callEndOfRoundVote="true" disallowDemoUsers="false" rconEnabled="true" rconPassword="${server-rcon}" maxPing="" minLevel="0" maxLevel="0" secretCode="${server-password}" cameraViewScalePercent="100">
     <adminsByVaporID />
     <mapList />
     <mapRotationList>
@@ -91,6 +91,7 @@ in
           server-name = "MagneticDuck's Hideout";
           server-password = "WHforPresident";
           server-players = "40";
+          server-rcon = "snowmanbomb";
         };
     };
 }
