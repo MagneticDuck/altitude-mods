@@ -44,7 +44,7 @@ let
       text = ''
 <ServerLauncherConfig ip="" upnpEnabled="true" updatePort="27275">
 <servers>
-  <AltitudeServerConfig port="27276" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${server-name}" maxPlayerCount="${server-players}" hardcore="true" autoBalanceTeams="true" preventTeamSwitching="false" disableBalanceTeamsPopup="false" lanServer="false" callEndOfRoundVote="true" disallowDemoUsers="false" rconEnabled="true" rconPassword="${server-rcon}" maxPing="" minLevel="0" maxLevel="0" secretCode="${server-password}" cameraViewScalePercent="100">
+  <AltitudeServerConfig port="27276" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${server-name}" maxPlayerCount="${server-players}" hardcore="true" autoBalanceTeams="true" preventTeamSwitching="false" disableBalanceTeamsPopup="false" lanServer="false" callEndOfRoundVote="true" disallowDemoUsers="false" rconEnabled="true" rconPassword="${server-rcon}" maxPing="1000" minLevel="0" maxLevel="0" secretCode="${server-password}" cameraViewScalePercent="100">
     <adminsByVaporID />
     <mapList />
     <mapRotationList>
@@ -60,7 +60,7 @@ let
       '';
     };
 
-  mkMod = { launcherConfig }:
+  mkMod = { launcherConfig, service ? null }:
     stdenv.mkDerivation {
       name = "mod";
       
@@ -69,6 +69,9 @@ let
       installPhase = ''
         mkdir -p $out/servers/
         cp ${launcherConfig} $out/servers/launcher_config.xml 
+
+        ${lib.optionalString (! isNull service) ''
+        ''}
       '';
     };
 
