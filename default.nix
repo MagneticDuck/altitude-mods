@@ -3,41 +3,6 @@
 with pkgs;
 
 let
-  kcoop-src = stdenv.mkDerivation {
-    name = "kcoop";
-    src = 
-      fetchurl {
-        url = "http://bukva-yo.ru/kcoop-0.5.1.zip";
-        sha256 = "0ylgs69igvbkl02b6v8zmlpw2ddi5pk4w46675ask4cr53fg61l5";
-      };
-
-    phases = "unpackPhase installPhase";
-
-    unpackPhase = ''
-      ${unzip}/bin/unzip $src
-    '';
-
-    installPhase = ''
-      mkdir -p $out
-      cp custom_json_commands.txt $out/
-      echo "cd kcoop-0.5.1; ./kcoop" > $out/run
-      chmod +x $out/run
-      cp -r kcoop-0.5.1/ $out/
-    '';
-  };
-
-  run-src = original : stdenv.mkDerivation {
-    name = "run" + original.name;
-    src = original;
-
-    phases = "installPhase";
-
-    installPhase = ''
-      echo "cp -r $src/* ./" > $out
-      chmod +rwx $out
-    '';
-  };
-
   mkLauncherConfig = { server-name, server-password ? "", server-players ? "14", server-bots ? "0", server-rcon ? ""}:
     writeTextFile {
       name = "launcherConfig";
@@ -48,7 +13,8 @@ let
     <adminsByVaporID />
     <mapList />
     <mapRotationList>
-    <String value="|tbd|" />
+      <String value="|tbd|" />
+      <String value="|ball|" />
     </mapRotationList>
     <BotConfig numberOfBots="${server-bots}" botDifficulty="BRUTAL" botsBalanceTeams="true" botSpectateThreshold="6" />
     <BaseDestroyGameMode RoundLimit="1" roundTimeSeconds="0" warmupTimeSeconds="10" />
@@ -60,15 +26,19 @@ let
       '';
     };
 
-  mkMod = { launcherConfig, service ? null }:
+  mkMod = { launcherConfig ? null, service ? null }:
     stdenv.mkDerivation {
       name = "mod";
       
       phases = "installPhase";
 
       installPhase = ''
-        mkdir -p $out/servers/
-        cp ${launcherConfig} $out/servers/launcher_config.xml 
+        mkdir -p $out
+
+        ${lib.optionalString (! isNull launcherConfig) ''
+          mkdir -p $out/servers/
+          cp ${launcherConfig} $out/servers/launcher_config.xml 
+        ''}
 
         ${lib.optionalString (! isNull service) ''
         ''}
@@ -78,16 +48,9 @@ let
 in
 
 {
-  simple-tbd = 
-    mkMod {
-      launcherConfig =
-        mkLauncherConfig {
-          server-name = "MagneticDuck's Testing Server";
-          server-bots = "0";
-        };
-    };
-
-  password-tbd =
+  null = mkMod { };
+ 
+  flight-club =
     mkMod {
       launcherConfig =
         mkLauncherConfig {
