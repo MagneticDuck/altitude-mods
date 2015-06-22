@@ -20,9 +20,20 @@ let
         ''}
 
         ${lib.optionalString (! isNull service) ''
+          echo "cat servers/log.txt | ${service} >> servers/command.txt" > $out/run
+          chmod +x $out/run
         ''}
       '';
     };
+
+  simpleMod = 
+    writeScript "simple-mod.sh" 
+      ''
+        while true; do
+          read a;
+          echo 27276,console,serverMessage $a
+        done
+      '';
 
 in
 
@@ -39,5 +50,6 @@ in
           server-rcon = "snowmanbomb";
           server-ball = true;
         };
+      service = simpleMod;
     };
 }
