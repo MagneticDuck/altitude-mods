@@ -3,7 +3,7 @@
 with pkgs;
 
 let
-  mkLauncherConfig = { server-name, server-password ? "", server-players ? "14", server-bots ? "0", server-rcon ? ""}:
+  mkLauncherConfig = { server-name, server-password ? "", server-players ? "14", server-bots ? "0", server-rcon ? "", server-ball ? false }:
     writeTextFile {
       name = "launcherConfig";
       text = ''
@@ -14,10 +14,11 @@ let
     <mapList />
     <mapRotationList>
       <String value="|tbd|" />
-      <String value="|ball|" />
+      ${lib.optionalString server-ball "<String value=\"|ball|\" />"}
     </mapRotationList>
     <BotConfig numberOfBots="${server-bots}" botDifficulty="BRUTAL" botsBalanceTeams="true" botSpectateThreshold="6" />
     <BaseDestroyGameMode RoundLimit="1" roundTimeSeconds="0" warmupTimeSeconds="10" />
+    <PlaneBallGameMode goalsPerRound="6" RoundLimit="1" roundTimeSeconds="0" warmupTimeSeconds="10" />
     <customCommands />
     <consoleCommandPermissions />
   </AltitudeServerConfig>
@@ -50,7 +51,7 @@ in
 {
   null = mkMod { };
  
-  flight-club =
+  default =
     mkMod {
       launcherConfig =
         mkLauncherConfig {
@@ -58,6 +59,7 @@ in
           server-password = "WHforPresident";
           server-players = "40";
           server-rcon = "snowmanbomb";
+          server-ball = true;
         };
     };
 }
