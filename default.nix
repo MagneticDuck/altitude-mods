@@ -60,7 +60,7 @@ let
       '';
     };
 
-  mkMod = { launcherConfig }:
+  mkMod = { launcherConfig, service }:
     stdenv.mkDerivation {
       name = "mod";
       
@@ -79,8 +79,8 @@ in
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          server-name = "MagneticDuck's Bombs";
-          server-bots = "2";
+          server-name = "MagneticDuck's Testing Server";
+          server-bots = "0";
         };
     };
 
