@@ -60,7 +60,7 @@ let
       '';
     };
 
-  mkMod = { launcherConfig, service }:
+  mkMod = { launcherConfig }:
     stdenv.mkDerivation {
       name = "mod";
       
