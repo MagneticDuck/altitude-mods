@@ -26,14 +26,7 @@ let
       '';
     };
 
-  simpleMod = 
-    writeScript "simple-mod.sh" 
-      ''
-        while true; do
-          read a;
-          echo 27276,console,serverMessage $a
-        done
-      '';
+  flightEngine = import ./flight-engine.nix { inherit pkgs; };
 
 in
 
@@ -50,6 +43,6 @@ in
           server-rcon = "snowmanbomb";
           server-ball = true;
         };
-      service = simpleMod;
+      service = flightEngine;
     };
 }
