@@ -1,5 +1,4 @@
 { pkgs ? import <nixpkgs> {} }:
-
 with pkgs;
 
 let
@@ -26,7 +25,12 @@ let
       '';
     };
 
-  flightEngine = import ./flight-engine.nix { inherit pkgs; };
+  haskellEngine = 
+    stdenv.mkDerivation {
+      name = "engine"; 
+      src = import ./flight-club/default.nix { inherit pkgs; };
+      phases = "installPhase"; installPhase = "cp $src/bin/flight-club $out";
+    };
 
 in
 
@@ -43,6 +47,8 @@ in
           server-rcon = "snowmanbomb";
           server-ball = true;
         };
-      service = flightEngine;
+      service = haskellEngine;
     };
+
+  inherit haskellEngine;
 }
