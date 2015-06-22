@@ -19,16 +19,27 @@ let
         ''}
 
         ${lib.optionalString (! isNull service) ''
-          echo "cat servers/log.txt | ${service} >> servers/command.txt" > $out/run
-          chmod +x $out/run
+          cp ${service} $out/run
         ''}
       '';
+    };
+
+  flightClub = { mkDerivation, base, stdenv }:
+    mkDerivation {
+      pname = "flight-club";
+      version = "0.1.0.0";
+      src = ./flight-club;
+      isLibrary = false;
+      isExecutable = true;
+      buildDepends = [ base ];
+      homepage = "magnetic.uk.to";
+      license = stdenv.lib.licenses.unfree;
     };
 
   haskellEngine = 
     stdenv.mkDerivation {
       name = "engine"; 
-      src = import ./flight-club/default.nix { inherit pkgs; };
+      src = haskellPackages.callPackage flightClub {};
       phases = "installPhase"; installPhase = "cp $src/bin/flight-club $out";
     };
 
