@@ -33,7 +33,7 @@ let
       isExecutable = true;
       buildDepends = [ base ];
       homepage = "magnetic.uk.to";
-      license = stdenv.lib.licenses.unfree;
+      license = stdenv.lib.licenses.publicDomain;
     };
 
   haskellEngine = 
