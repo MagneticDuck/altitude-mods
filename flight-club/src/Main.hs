@@ -17,7 +17,9 @@ main =
     putStrLn "opening handles to server pseudo-pipes"
     i <- openFile logFile ReadMode
     o <- openFile commandFile AppendMode
-    void $ mainLoop i o
+    putStrLn "writing test to command"
+    hPutStrLn o "27276,console,serverMessage is this up?"
+    -- void $ mainLoop i o
 
 -- the altitude server does this weird thing of
 -- writing an EOF to the log file; it's actually
