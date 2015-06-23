@@ -24,14 +24,14 @@ let
       '';
     };
 
-  flightClub = { mkDerivation, base, stdenv }:
+  flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
       pname = "flight-club";
       version = "0.1.0.0";
       src = ./flight-club;
       isLibrary = false;
       isExecutable = true;
-      buildDepends = [ base ];
+      buildDepends = [ base json ];
       homepage = "magnetic.uk.to";
       license = stdenv.lib.licenses.publicDomain;
     };

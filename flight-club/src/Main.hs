@@ -17,9 +17,13 @@ main = do
 mainLoop :: IO ()
 mainLoop = do
   line <- readLog 
-  putStrLn $ "recieved " ++ line
-  case makeResponse (parseLogElement line) of
-    Nothing -> mainLoop
-    Just str -> do
-      putStrLn $ "writing " ++ str
-      writeCommand str >> mainLoop
+  putStrLn $ "recieved: " ++ line
+  case parseLogElement line of
+    Just log -> 
+      case makeResponse log of
+        [] -> mainLoop
+        strs -> do
+          putStrLn "responding: " 
+          mapM_ putStrLn (map (">>"++) strs)
+          (mapM_ writeCommand strs) >> mainLoop
+    Nothing -> putStrLn "log appears to be malformed" >> mainLoop
