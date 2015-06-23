@@ -1,18 +1,30 @@
--- this module defines an abstract LogElement datatype
--- and parsing procedures from String
-module FlightClub.Parser(
-  -- LogElement
-  -- Constructors
-  ServerState(..)
-  , PlayerID, VaporID, Nick
-  , LogElement(..)
-  , parseLogElement
+-- * ACTIONS are things that behaviours can execute, creating
+-- side-effects on their environment.
+-- * EVENTS are stimula that can trigger behaviours.
+module FlightClub.ActionEvent (
+-- Exports {{{
+  -- Misc Nouns
+  PlayerID, VaporID, Nick, Player(..)
+  , Tourny, ServerState(..)
+
+  -- Action
+  -- * Constructors
+  , Action(..)
+  -- * Accessors
+  , commandFromAction
+
+  -- Event 
+  -- * Constructors
+  , Event(..)
+  , eventFromLog
+-- }}}
 ) where
 
 import Text.JSON
 import Data.List
 import Control.Applicative
 
+-- Misc Nouns {{{
 type PlayerID = Int
 type VaporID = String
 type Nick = String
@@ -28,21 +40,31 @@ data ServerState =
   ServerState 
     { getPlayers :: [Player]
     , getTourny :: Bool } deriving (Show, Eq)
+-- }}}
 
-data LogElement =
-  ChatLog PlayerID String 
-  | ClientAddLog PlayerID VaporID Nick 
-  | StatusLog ServerState
-  | MoveLog PlayerID Int
+-- Action {{{
+data Action = 
+  ConsoleAction String
+
+commandFromAction :: Action -> String
+commandFromAction (ConsoleAction str) = "27276,console," ++ str
+-- }}}
+
+-- Event {{{
+data Event =
+  ChatEvent PlayerID String 
+  | JoinEvent PlayerID VaporID Nick 
+  | StatusEvent ServerState
+  | MoveEvent PlayerID Int
   deriving (Show, Eq)
 
-parseLogElement :: String -> Maybe LogElement
-parseLogElement str = 
+eventFromLog  :: String -> Maybe Event
+eventFromLog str = 
   case decode str of
     Ok a -> parseJson a
     Error _ -> Nothing
 
-parseJson :: JSValue -> Maybe LogElement
+parseJson :: JSValue -> Maybe Event
 parseJson value = 
   case value of
     (JSObject o) -> 
@@ -84,18 +106,18 @@ getAttr name attrs =
 attrType :: LogAttrs -> Maybe String
 attrType attrs = stringFromValue =<< getAttr "type" attrs
 
-parseList :: LogAttrs -> Maybe LogElement
+parseList :: LogAttrs -> Maybe Event
 parseList attrs = 
   case attrType attrs of
     Just "chat" -> do 
       message <- stringFromValue =<< getAttr "message" attrs
       player <- intFromValue =<< getAttr "player" attrs
-      return $ ChatLog player message
+      return $ ChatEvent player message
     Just "clientAdd" -> do
       player <- intFromValue =<< getAttr "player" attrs
       vapor <- stringFromValue =<< getAttr "vaporId" attrs
       nick <- stringFromValue =<< getAttr "nickname" attrs
-      return $ ClientAddLog player vapor nick
+      return $ JoinEvent player vapor nick
     Just "logServerStatus" -> do
       players <- mapM intFromValue =<< listFromValue =<< getAttr "playerIds" attrs
       vapors <- mapM stringFromValue =<< listFromValue =<< getAttr "vaporIds" attrs
@@ -104,11 +126,11 @@ parseList attrs =
       players <- return $
         flip map (zip3 players vapors nicks) $ (\(player, vapor, nick) ->
           Player player vapor nick)
-      return . StatusLog $
+      return . StatusEvent $
         ServerState players tourny
     Just "teamChange" -> do
       player <- intFromValue =<< getAttr "player" attrs
       team <- intFromValue =<< getAttr "team" attrs
-      return $ MoveLog player team
+      return $ MoveEvent player team
     _ -> Nothing
-
+-- }}}
