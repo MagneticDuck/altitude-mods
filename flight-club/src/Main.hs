@@ -26,6 +26,7 @@ exec = const Nothing
 waitEvent :: Handle -> IO String
 waitEvent h =
   do
+    putStrLn "waiting for event..."
     blocked <- hIsEOF h
     if blocked then waitEvent h
       else hGetLine h
@@ -33,6 +34,7 @@ waitEvent h =
 mainLoop :: Handle -> Handle -> IO State
 mainLoop i o = 
   do
+    putStrLn "main loop started!"
     line <- waitEvent i
     putStrLn $ "recieved " ++ line
     case exec (parseLog line) of
