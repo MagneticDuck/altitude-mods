@@ -11,7 +11,13 @@ main :: IO ()
 main = 
   runBehaviour Nothing $ mconcat [sayB, countdownB, putUpB]
 
-sayB, countdownB, putUpB :: Behaviour (Maybe Int)
+getChat :: Event -> Maybe String
+getChat event =
+  case event of
+    ChatEvent _ str -> Just str
+    _ -> Nothing
+
+sayB, countdownB, putUpB :: Behaviour (Maybe Int) Event
 sayB = Behaviour (\(state, event) ->
   case event of
     ClockEvent _ -> 
@@ -19,11 +25,13 @@ sayB = Behaviour (\(state, event) ->
     _ -> (state, [])
   )
 countdownB = Behaviour (\(state, event) ->
-  case event of
-    ClockEvent _ -> (fmap (subtract 1) state, [])
-    _ -> (state, [])
+  let mutate x = if x > 0 then Just (x - 1) else Nothing 
+  in
+    case event of
+      ClockEvent _ -> (mutate =<< state, [])
+      _ -> (state, [])
   )
-putUpB = chatBehaviour (\(state, str) ->
+putUpB = feedBehaviour getChat $ Behaviour (\(state, str) ->
   case str of
     "!countdown" -> (Just 10, [])
     _ -> (state, [])

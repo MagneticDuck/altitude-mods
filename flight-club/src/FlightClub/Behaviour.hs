@@ -5,7 +5,7 @@ module FlightClub.Behaviour (
   -- Behaviour
   -- * Constructors
   Behaviour(..)
-  , chatBehaviour
+  , feedBehaviour
   -- * Accessors
   , runBehaviour
 -- }}}
@@ -18,28 +18,31 @@ import System.CPUTime
 import FlightClub.ActionEvent
 
 -- Behaviour {{{
-newtype Behaviour a = 
-  Behaviour { applyBehaviour :: (a, Event) -> (a, [Action]) }
+-- s: state
+-- i: input
+newtype Behaviour s i = 
+  Behaviour { runB :: (s, i) -> (s, [Action]) }
 
-joinBehaviour :: Behaviour a -> Behaviour a -> Behaviour a
+joinBehaviour :: Behaviour s i -> Behaviour s i -> Behaviour s i
 joinBehaviour b1 b2 = 
-  Behaviour (\input@(_, log) -> 
-  case applyBehaviour b1 input of
-    (state1, commands) -> 
-      case applyBehaviour b2 (state1, log) of
-        (state2, commands2) -> (state2, commands ++ commands2))
+  Behaviour (\(s, i) -> 
+  case runB b1 (s, i) of
+    (s1, a1) -> 
+      case runB b2 (s1, i) of
+        (s2, a2) -> (s2, a1 ++ a2))
 
-nullBehaviour :: Behaviour a
-nullBehaviour = Behaviour (\(state, log) -> (state, []))
+nullBehaviour :: Behaviour s i
+nullBehaviour = Behaviour (\(s, _) -> (s, []))
 
-chatBehaviour :: ((a, String) -> (a, [Action])) -> Behaviour a
-chatBehaviour f = Behaviour (\(state, log) ->
-  case log of
-    ChatEvent _ actions -> f (state, actions)
-    _ -> (state, [])
+-- Behaviour == feedBehaviour return
+feedBehaviour :: (a -> Maybe b) -> Behaviour s b -> Behaviour s a
+feedBehaviour feeder behaviour = Behaviour (\(s, a) ->
+  case feeder a of
+    Just b -> runB behaviour (s, b)
+    Nothing -> (s, [])
   )
 
-instance Monoid (Behaviour a) where
+instance Monoid (Behaviour s i) where
   mempty = nullBehaviour
   mappend = joinBehaviour
 -- }}}
@@ -77,7 +80,7 @@ getEvent last h = do
       if empty then getEvent last h
         else fmap (((,) last) . eventFromLog) $ hGetLine h
 
-runBehaviour :: a -> Behaviour a -> IO ()
+runBehaviour :: s -> Behaviour s Event -> IO ()
 runBehaviour i b = do
   clearDebug
   writeDebug $ replicate 50 '*'
@@ -86,18 +89,18 @@ runBehaviour i b = do
 -- parameters are: the time at the last clock event,
 -- the directing behaviour, the behaviour-realted state,
 -- and the log file handle
-mainLoop :: Float -> Behaviour a -> a -> Handle -> IO ()
+mainLoop :: Float -> Behaviour s Event -> s -> Handle -> IO ()
 mainLoop time b s h = do
   (time1, mevent) <- getEvent time h
   writeDebug $ "<<<" ++ (show mevent)
   case mevent of
     Just event -> 
-      case applyBehaviour b (s, event) of
+      case runB b (s, event) of
         (s1, []) -> mainLoop time1 b s1 h 
         (s1, actions) -> 
           let strs = map commandFromAction actions in
           do
             mapM_ writeDebug (map ((">>>"++) . show) actions)
             (mapM_ writeCommand strs) >> mainLoop time1 b s1 h
-    Nothing -> writeDebug "(no parse)" >> mainLoop time1 b s h
+    Nothing -> mainLoop time1 b s h
 -- }}}  
