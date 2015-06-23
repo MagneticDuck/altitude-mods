@@ -17,13 +17,12 @@ main = do
 mainLoop :: State -> Handle -> IO ()
 mainLoop s h = do
   line <- readLog h
-  writeDebug $ "recieved: " ++ line
+  writeDebug $ "<<<" ++ line
   case parseLogElement line of
     Just log -> 
-      case makeResponse (s, log) of
+      case getResponse (s, log) of
         (s1, []) -> mainLoop s1 h 
         (s1, strs) -> do
-          writeDebug "responding: " 
-          mapM_ writeDebug (map (">>"++) strs)
+          mapM_ writeDebug (map (">>>"++) strs)
           (mapM_ writeCommand strs) >> mainLoop s1 h
     Nothing -> mainLoop s h

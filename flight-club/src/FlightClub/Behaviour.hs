@@ -2,32 +2,51 @@
 -- along with its state datatype
 module FlightClub.Behaviour (
   State(..), initState,
-  makeResponse
+  getResponse 
 ) where
+
+import Data.Char
 
 import FlightClub.Parser
 import FlightClub.Actuator
 
+type Commands = [String]
+newtype Behaviour = 
+  Behaviour { applyBehaviour :: (State, LogElement) -> (State, Commands) }
+
+joinBehaviour :: Behaviour -> Behaviour -> Behaviour
+joinBehaviour b1 b2 = 
+  Behaviour (\input@(_, log) -> 
+  case applyBehaviour b1 input of
+    (state1, commands) -> 
+      case applyBehaviour b2 (state1, log) of
+        (state2, commands2) -> (state2, commands ++ commands2))
+
+nullBehaviour :: Behaviour
+nullBehaviour = Behaviour (\(state, log) -> (state, []))
+
+instance Monoid Behaviour where
+  mempty = nullBehaviour
+  mappend = joinBehaviour
+
 data State = 
   State
-    { getServerState :: ServerState }
+    { getServerState :: ServerState 
+    , getNumber :: Int }
 
 initState :: State
-initState = State $ ServerState [] False
+initState = State (ServerState [] False) 0
 
-makeResponse :: (State, LogElement) -> (State, [String])
-makeResponse (state, log) =
-  (,) state $ echoLog log
+getResponse :: (State, LogElement) -> (State, [String])
+getResponse = applyBehaviour $ mempty
 
-echoLog :: LogElement -> [String]
-echoLog log = 
-  serverMessages [show log]
-
---simpleGlobalResponse :: String -> [String]
---simpleGlobalResponse str =
-  --case map toLower . unwords . words $ str of
-    --"!welcome" -> 
-      --map serverMessage
-        --[ "welcome to flight club, the place for good altitude" 
-        --, "***********************************************************"]
-    --_ -> []
+--commandsBehaviour :: Behaviour
+--commandsBehaviour (state, log) =
+  --case log of
+    --ChatLog _ str ->
+      --case map toLower . unwords . words $ str of
+        --"!welcome" -> (,) state $
+          --serverMessages
+            --[ "welcome to flight club, the place for good altitude" ]
+        --_ -> []
+--

@@ -4,6 +4,7 @@ module FlightClub.Parser(
   -- LogElement
   -- Constructors
   ServerState(..)
+  , PlayerID, VaporID, Nick
   , LogElement(..)
   , parseLogElement
 ) where

@@ -7,10 +7,10 @@ import Data.Char
 import FlightClub.Parser
 
 consoleCmd :: String -> String
-consoleCmd = ("27276,console,"++)
+consoleCmd = ("27276,console,"++) 
 
 serverMessage :: String -> String
-serverMessage = consoleCmd . ("serverMessage " ++)
+serverMessage = consoleCmd . ("serverMessage " ++) . show
 
 serverMessages :: [String] -> [String]
 serverMessages = map serverMessage
