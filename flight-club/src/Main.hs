@@ -19,6 +19,7 @@ main =
     o <- openFile commandFile AppendMode
     putStrLn "writing test to command"
     hPutStrLn o "27276,console,serverMessage is this up?"
+    hClose o
     -- void $ mainLoop i o
 
 -- the altitude server does this weird thing of
