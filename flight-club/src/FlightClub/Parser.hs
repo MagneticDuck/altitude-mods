@@ -2,12 +2,12 @@ module FlightClub.Parser(
   -- LogElement
   -- Constructors
   LogElement(..)
-  , parseLog
+  , parseLogElement
 ) where
 
 data LogElement =
   ChatLog String String
   | MiscLog
 
-parseLog :: String -> LogElement
-parseLog str = MiscLog
+parseLogElement :: String -> LogElement
+parseLogElement str = MiscLog
