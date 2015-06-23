@@ -17,7 +17,7 @@ debugFile = "./debug"
 -- this function reads a single element from the log
 readLog :: IO String
 readLog = do
-  empty <- fmap null $ readFile logFile
+  empty <- withFile logFile ReadMode hIsEOF
   if empty then readLog 
     else do
       contents <- fmap lines $ readFile logFile
