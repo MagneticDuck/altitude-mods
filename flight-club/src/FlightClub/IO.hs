@@ -34,4 +34,4 @@ writeCommand str =
 
 writeDebug :: String -> IO ()
 writeDebug str = 
-  withFile commandFile AppendMode (flip hPutStrLn str)
+  withFile debugFile AppendMode (flip hPutStrLn str)
