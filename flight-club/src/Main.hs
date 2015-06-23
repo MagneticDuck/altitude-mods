@@ -10,20 +10,20 @@ import FlightClub.Actuator -- makeResponse
 main :: IO ()
 main = do
   writeDebug "beginning main loop" 
-  mainLoop 
+  mainLoop =<< openLog
 
 -- an iteration ot the main loop, waits for and 
 -- processes one server log entry
-mainLoop :: IO ()
-mainLoop = do
-  line <- readLog 
+mainLoop :: Handle -> IO ()
+mainLoop h = do
+  line <- readLog h
   writeDebug $ "recieved: " ++ line
   case parseLogElement line of
     Just log -> 
       case makeResponse log of
-        [] -> mainLoop 
+        [] -> mainLoop h
         strs -> do
           writeDebug "responding: " 
           mapM_ writeDebug (map (">>"++) strs)
-          (mapM_ writeCommand strs) >> mainLoop
-    Nothing -> writeDebug "log appears to be malformed" >> mainLoop
+          (mapM_ writeCommand strs) >> mainLoop h
+    Nothing -> writeDebug "log appears to be malformed" >> mainLoop h

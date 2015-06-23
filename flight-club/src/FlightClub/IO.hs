@@ -1,4 +1,5 @@
 module FlightClub.IO (
+  openLog,
   readLog, writeCommand, writeDebug
 )where
 
@@ -14,15 +15,15 @@ debugFile = "./debug"
 -- writing an EOF to the log file; it's actually
 -- a static file, not a pipe
 
+openLog :: IO Handle
+openLog = openFile logFile ReadMode
+
 -- this function reads a single element from the log
-readLog :: IO String
-readLog = do
-  empty <- withFile logFile ReadMode hIsEOF
-  if empty then readLog 
-    else do
-      contents <- fmap lines $ readFile logFile
-      writeFile logFile $ unlines . tail $ contents
-      return $ head contents
+readLog :: Handle -> IO String
+readLog h = do
+  empty <- hIsEOF h
+  if empty then readLog h
+    else hGetLine h
 
 -- commands are also not accepted as a pipe, but as
 -- a static file
