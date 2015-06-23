@@ -26,6 +26,7 @@ exec _ = Just "serverMessage I recieved a thing!"
 waitEvent :: Handle -> IO String
 waitEvent h =
   do
+    putStrLn "huh?"
     blocked <- hIsEOF h
     if blocked then waitEvent h
       else hGetLine h
