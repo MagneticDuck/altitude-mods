@@ -8,10 +8,12 @@ module FlightClub.Behaviour (
 import FlightClub.Parser
 import FlightClub.Actuator
 
-data State = State
+data State = 
+  State
+    { getServerState :: ServerState }
 
 initState :: State
-initState = State
+initState = State $ ServerState [] False
 
 makeResponse :: (State, LogElement) -> (State, [String])
 makeResponse (state, log) =

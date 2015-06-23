@@ -3,7 +3,8 @@
 module FlightClub.Parser(
   -- LogElement
   -- Constructors
-  LogElement(..)
+  ServerState(..)
+  , LogElement(..)
   , parseLogElement
 ) where
 
@@ -22,10 +23,16 @@ data Player = Player
 
 type Tourny = Bool
 
+data ServerState = 
+  ServerState 
+    { getPlayers :: [Player]
+    , getTourny :: Bool } deriving (Show, Eq)
+
 data LogElement =
   ChatLog PlayerID String 
   | ClientAddLog PlayerID VaporID Nick 
-  | StatusLog [Player]
+  | StatusLog ServerState
+  | MoveLog PlayerID Int
   deriving (Show, Eq)
 
 parseLogElement :: String -> Maybe LogElement
@@ -51,6 +58,12 @@ intFromValue :: JSValue -> Maybe Int
 intFromValue val =
   case val of
     JSRational _ num -> Just $ round num
+    _ -> Nothing
+
+boolFromValue :: JSValue -> Maybe Bool
+boolFromValue val =
+  case val of
+    (JSBool x) -> Just x
     _ -> Nothing
 
 listFromValue :: JSValue -> Maybe [JSValue]
@@ -86,7 +99,15 @@ parseList attrs =
       players <- mapM intFromValue =<< listFromValue =<< getAttr "playerIds" attrs
       vapors <- mapM stringFromValue =<< listFromValue =<< getAttr "vaporIds" attrs
       nicks <- mapM stringFromValue =<< listFromValue =<< getAttr "nicknames" attrs  
-      return . StatusLog $
+      tourny <- boolFromValue =<< getAttr "tournamentInProgress" attrs
+      players <- return $
         flip map (zip3 players vapors nicks) $ (\(player, vapor, nick) ->
           Player player vapor nick)
+      return . StatusLog $
+        ServerState players tourny
+    Just "teamChange" -> do
+      player <- intFromValue =<< getAttr "player" attrs
+      team <- intFromValue =<< getAttr "team" attrs
+      return $ MoveLog player team
     _ -> Nothing
+
