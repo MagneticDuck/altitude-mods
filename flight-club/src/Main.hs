@@ -5,7 +5,7 @@ import System.IO
 
 import FlightClub.IO -- readLog, writeCommand
 import FlightClub.Parser -- parseLogElement
-import FlightClub.Actuator -- makeResponse
+import FlightClub.Behaviour-- makeResponse
 
 main :: IO ()
 main = do
@@ -26,4 +26,4 @@ mainLoop s h = do
           writeDebug "responding: " 
           mapM_ writeDebug (map (">>"++) strs)
           (mapM_ writeCommand strs) >> mainLoop s1 h
-    Nothing -> writeDebug "log appears to be malformed" >> mainLoop s h
+    Nothing -> mainLoop s h

@@ -1,3 +1,5 @@
+-- this module defines the basic IO interface with the altitude
+-- server and its files
 module FlightClub.IO (
   openLog,
   readLog, writeCommand, writeDebug

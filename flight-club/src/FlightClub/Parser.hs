@@ -1,3 +1,5 @@
+-- this module defines an abstract LogElement datatype
+-- and parsing procedures from String
 module FlightClub.Parser(
   -- LogElement
   -- Constructors
@@ -13,9 +15,18 @@ type PlayerID = Int
 type VaporID = String
 type Nick = String
 
+data Player = Player 
+  { getPlayerID :: PlayerID
+  , getVaporID :: VaporID
+  , getNick :: Nick } deriving (Show, Eq)
+
+type Tourny = Bool
+
 data LogElement =
   ChatLog PlayerID String 
-  | ClientAdd PlayerID VaporID Nick deriving (Show, Eq)
+  | ClientAddLog PlayerID VaporID Nick 
+  | StatusLog Tourny [Player]
+  deriving (Show, Eq)
 
 parseLogElement :: String -> Maybe LogElement
 parseLogElement str = 
@@ -51,13 +62,7 @@ getAttr name attrs =
     Nothing -> Nothing
 
 attrType :: LogAttrs -> Maybe String
-attrType attrs = 
-  case getAttr "type" attrs of
-    Just val -> 
-      case val of
-        JSString str -> Just $ fromJSString str
-        _ -> Nothing
-    Nothing -> Nothing
+attrType attrs = stringFromValue =<< getAttr "type" attrs
 
 parseList :: LogAttrs -> Maybe LogElement
 parseList attrs = 
@@ -70,5 +75,6 @@ parseList attrs =
       player <- intFromValue =<< getAttr "player" attrs
       vapor <- stringFromValue =<< getAttr "vaporId" attrs
       nick <- stringFromValue =<< getAttr "nickname" attrs
-      return $ ClientAdd player vapor nick
+      return $ ClientAddLog player vapor nick
+    Just "logServerStatus" -> undefined
     _ -> Nothing
