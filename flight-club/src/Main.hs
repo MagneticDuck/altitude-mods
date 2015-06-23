@@ -9,7 +9,8 @@ import FlightClub.Behaviour-- makeResponse
 
 main :: IO ()
 main = do
-  writeDebug "beginning main loop" 
+  clearDebug
+  writeDebug $ replicate 25 '*' 
   mainLoop initState =<< openLog
 
 -- an iteration ot the main loop, waits for and 

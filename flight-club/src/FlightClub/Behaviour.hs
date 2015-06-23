@@ -38,15 +38,17 @@ initState :: State
 initState = State (ServerState [] False) 0
 
 getResponse :: (State, LogElement) -> (State, [String])
-getResponse = applyBehaviour $ mempty
+getResponse = applyBehaviour $
+  commandsBehaviour 
 
---commandsBehaviour :: Behaviour
---commandsBehaviour (state, log) =
-  --case log of
-    --ChatLog _ str ->
-      --case map toLower . unwords . words $ str of
-        --"!welcome" -> (,) state $
-          --serverMessages
-            --[ "welcome to flight club, the place for good altitude" ]
-        --_ -> []
---
+commandsBehaviour :: Behaviour
+commandsBehaviour = Behaviour (\(state, log) -> 
+  case log of
+    ChatLog _ str ->
+      case map toLower . unwords . words $ str of
+        "!welcome" -> (,) state $
+          serverMessages
+            [ "welcome to flight club, the place for good altitude" ]
+        _ -> (state, [])
+  )
+

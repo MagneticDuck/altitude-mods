@@ -1,7 +1,7 @@
 -- this module defines the basic IO interface with the altitude
 -- server and its files
 module FlightClub.IO (
-  openLog,
+  openLog, clearDebug,
   readLog, writeCommand, writeDebug
 )where
 
@@ -34,6 +34,9 @@ readLog h = do
 writeCommand :: String -> IO ()
 writeCommand str =
   withFile commandFile AppendMode (flip hPutStrLn str)
+
+clearDebug :: IO ()
+clearDebug = writeFile debugFile ""
 
 writeDebug :: String -> IO ()
 writeDebug str = 
