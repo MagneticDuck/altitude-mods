@@ -61,5 +61,15 @@ in
       service = haskellEngine;
     };
 
+  simple-tbd =
+    mkMod {
+      launcherConfig =
+        mkLauncherConfig {
+          server-name = "magnet_ticDuck's Test Server";
+          server-players = "16";
+          server-rcon = "snowmanbomb";
+        };
+    };
+
   inherit haskellEngine;
 }
