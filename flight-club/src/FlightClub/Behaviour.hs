@@ -66,7 +66,7 @@ writeDebug str =
   withFile debugFile AppendMode (flip hPutStrLn str)
 
 getTime :: IO Float
-getTime = fmap ((/ 10^10) . fromIntegral) getCPUTime
+getTime = fmap ((/ 10^9) . fromIntegral) getCPUTime
 
 getEvent :: Float -> Handle -> IO (Float, Maybe Event)
 getEvent last h = do
