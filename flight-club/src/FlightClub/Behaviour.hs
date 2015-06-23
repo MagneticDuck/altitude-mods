@@ -50,5 +50,6 @@ commandsBehaviour = Behaviour (\(state, log) ->
           serverMessages
             [ "welcome to flight club, the place for good altitude" ]
         _ -> (state, [])
+    _ -> (state, [])
   )
 
