@@ -3,7 +3,7 @@
 module FlightClub.Behaviour (
   State(..), initState,
   makeResponse
-)where
+) where
 
 import FlightClub.Parser
 import FlightClub.Actuator

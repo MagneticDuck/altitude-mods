@@ -25,7 +25,7 @@ type Tourny = Bool
 data LogElement =
   ChatLog PlayerID String 
   | ClientAddLog PlayerID VaporID Nick 
-  | StatusLog Tourny [Player]
+  | StatusLog [Player]
   deriving (Show, Eq)
 
 parseLogElement :: String -> Maybe LogElement
@@ -53,6 +53,12 @@ intFromValue val =
     JSRational _ num -> Just $ round num
     _ -> Nothing
 
+listFromValue :: JSValue -> Maybe [JSValue]
+listFromValue val =
+  case val of
+    (JSArray xs) -> Just xs
+    _ -> Nothing
+
 type LogAttrs = [(String, JSValue)]
 
 getAttr :: String -> LogAttrs -> Maybe JSValue
@@ -76,5 +82,11 @@ parseList attrs =
       vapor <- stringFromValue =<< getAttr "vaporId" attrs
       nick <- stringFromValue =<< getAttr "nickname" attrs
       return $ ClientAddLog player vapor nick
-    Just "logServerStatus" -> undefined
+    Just "logServerStatus" -> do
+      players <- mapM intFromValue =<< listFromValue =<< getAttr "playerIds" attrs
+      vapors <- mapM stringFromValue =<< listFromValue =<< getAttr "vaporIds" attrs
+      nicks <- mapM stringFromValue =<< listFromValue =<< getAttr "nicknames" attrs  
+      return . StatusLog $
+        flip map (zip3 players vapors nicks) $ (\(player, vapor, nick) ->
+          Player player vapor nick)
     _ -> Nothing
