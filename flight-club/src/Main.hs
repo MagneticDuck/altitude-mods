@@ -14,7 +14,6 @@ myBehaviour :: Behaviour Int
 myBehaviour = chatBehaviour (\(state, str) ->
   case str of
     "add" -> (state + 1, [])
-    "show" -> (state, [ConsoleAction $ "serverMessage " ++ show state])
+    "show" -> (state, [MessageAction $ show state])
     _ -> (state, [])
   )
-

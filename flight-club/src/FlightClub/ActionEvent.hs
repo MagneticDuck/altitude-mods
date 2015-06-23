@@ -44,10 +44,25 @@ data ServerState =
 
 -- Action {{{
 data Action = 
-  ConsoleAction String
+  MessageAction String
+  | WhisperAction Nick String
+  | AssignAction Nick Int
+  | TournyAction Bool deriving (Show, Eq)
 
 commandFromAction :: Action -> String
-commandFromAction (ConsoleAction str) = "27276,console," ++ str
+commandFromAction action =
+  ("27276,console," ++) $
+    case action of
+      MessageAction str -> unwords
+        ["serverMessage", show str]
+      WhisperAction nick str -> unwords 
+        ["serverWhisper", show nick, show str]
+      AssignAction nick team -> unwords
+        ["assignTeam", show nick, show team]
+      TournyAction bool ->
+        case bool of
+          True -> "startTournament"
+          False -> "stopTournament"
 -- }}}
 
 -- Event {{{
@@ -56,6 +71,7 @@ data Event =
   | JoinEvent PlayerID VaporID Nick 
   | StatusEvent ServerState
   | MoveEvent PlayerID Int
+  | ClockEvent Float
   deriving (Show, Eq)
 
 eventFromLog  :: String -> Maybe Event

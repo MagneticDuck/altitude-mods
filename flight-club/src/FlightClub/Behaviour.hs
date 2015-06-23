@@ -1,5 +1,5 @@
 -- * A BEHAVIOUR describes the way that a system reacts to EVENTS, mutating
--- their state and creating EVENTS
+-- their state and creating ACTIONS
 module FlightClub.Behaviour (
 -- Exports {{{  
   -- Behaviour
@@ -13,6 +13,7 @@ module FlightClub.Behaviour (
 
 import Data.Char
 import System.IO
+import System.CPUTime
 
 import FlightClub.ActionEvent
 
@@ -53,21 +54,6 @@ debugFile = "./debug"
 openLog :: IO Handle
 openLog = openFile logFile ReadMode
 
--- the altitude server does this weird thing of
--- writing an EOF to the log file; it's actually
-
--- a static file, not a pipe
--- this function reads a single element from the log
-readLog :: Handle -> IO String
-readLog h = do
-  empty <- hIsEOF h
-  if empty then readLog h
-    else hGetLine h
-
--- commands are also not accepted as a pipe, but as
--- a static file
-
--- this writes a single command to the command file
 writeCommand :: String -> IO ()
 writeCommand str =
   withFile commandFile AppendMode (flip hPutStrLn str)
@@ -79,24 +65,39 @@ writeDebug :: String -> IO ()
 writeDebug str = 
   withFile debugFile AppendMode (flip hPutStrLn str)
 
+getTime :: IO Float
+getTime = fmap ((/ 10^10) . fromIntegral) getCPUTime
+
+getEvent :: Float -> Handle -> IO (Float, Maybe Event)
+getEvent last h = do
+  now <- getTime
+  if (now - last) > 1 
+    then return (now, Just $ ClockEvent (now - last)) else do
+      empty <- hIsEOF h
+      if empty then getEvent last h
+        else fmap (((,) last) . eventFromLog) $ hGetLine h
+
 runBehaviour :: a -> Behaviour a -> IO ()
 runBehaviour i b = do
   clearDebug
   writeDebug $ replicate 50 '*'
-  mainLoop b i =<< openLog
+  mainLoop 0 b i =<< openLog
 
-mainLoop :: Behaviour a -> a -> Handle -> IO ()
-mainLoop b s h = do
-  line <- readLog h
-  writeDebug $ "<<<" ++ line
-  case eventFromLog line of
+-- parameters are: the time at the last clock event,
+-- the directing behaviour, the behaviour-realted state,
+-- and the log file handle
+mainLoop :: Float -> Behaviour a -> a -> Handle -> IO ()
+mainLoop time b s h = do
+  (time1, mevent) <- getEvent time h
+  writeDebug $ "<<<" ++ (show mevent)
+  case mevent of
     Just event -> 
       case applyBehaviour b (s, event) of
-        (s1, []) -> mainLoop b s1 h 
+        (s1, []) -> mainLoop time1 b s1 h 
         (s1, actions) -> 
           let strs = map commandFromAction actions in
           do
-            mapM_ writeDebug (map (">>>"++) strs)
-            (mapM_ writeCommand strs) >> mainLoop b s1 h
-    Nothing -> writeDebug "(no parse)" >> mainLoop b s h
+            mapM_ writeDebug (map ((">>>"++) . show) actions)
+            (mapM_ writeCommand strs) >> mainLoop time1 b s1 h
+    Nothing -> writeDebug "(no parse)" >> mainLoop time1 b s h
 -- }}}  
