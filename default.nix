@@ -56,7 +56,6 @@ in
           server-password = "WHforPresident";
           server-players = "40";
           server-rcon = "snowmanbomb";
-          server-ball = true;
         };
       service = haskellEngine;
     };
