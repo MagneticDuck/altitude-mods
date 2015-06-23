@@ -18,7 +18,7 @@ main =
 type State = ()
 
 exec :: LogElement -> Maybe String
-exec = const Nothing
+exec _ = Just "serverMessage I recieved a thing!"
 
 -- the altitude server does this weird thing of
 -- writing an EOF to the log file; it's actually
@@ -26,7 +26,6 @@ exec = const Nothing
 waitEvent :: Handle -> IO String
 waitEvent h =
   do
-    putStrLn "waiting for event..."
     blocked <- hIsEOF h
     if blocked then waitEvent h
       else hGetLine h
@@ -34,7 +33,7 @@ waitEvent h =
 mainLoop :: Handle -> Handle -> IO State
 mainLoop i o = 
   do
-    putStrLn "main loop started!"
+    putStrLn "main loop started"
     line <- waitEvent i
     putStrLn $ "recieved " ++ line
     case exec (parseLog line) of
