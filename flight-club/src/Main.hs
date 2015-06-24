@@ -2,18 +2,19 @@ module Main where
 
 import Data.Maybe
 import Data.Char
+import Data.List
 
 import FlightClub.Behaviour
 import FlightClub.ActionEvent
 
 data State = State 
   { getServer :: ServerState 
-  , getLocked :: Bool } deriving (Show, Eq)
+  , getLock :: Maybe ([VaporID], [VaporID])} deriving (Show, Eq)
 
 initState :: State
 initState = State 
   { getServer = ServerState { getPlayers = [], getTourny = False } 
-  , getLocked = False }
+  , getLock = Nothing }
 
 serverZoom :: Zoom State ServerState
 serverZoom = (getServer, (\x s -> s { getServer = x }))
@@ -32,8 +33,13 @@ main =
   runBehaviour initState . mconcat $
     [ feedB getCommand pureCommandsB 
     , feedB getCommand commandsB
+    , maintainLockB
     , zoomB serverZoom watchState ]
 
+clearTeams :: State -> [Action]
+clearTeams state =
+  map (flip AssignAction (-1) . getNick) $ 
+    getPlayers . getServer $ state
 
 pureCommandsB :: Behaviour State [String]
 pureCommandsB = pureB (\(state, cmds) ->
@@ -44,27 +50,51 @@ pureCommandsB = pureB (\(state, cmds) ->
     _ -> []
   )
 
-clearTeams :: State -> [Action]
-clearTeams state =
-  map (flip AssignAction (-1) . getNick) $ 
-    getPlayers . getServer $ state
-
 commandsB :: Behaviour State [String]
 commandsB = Behaviour (\(state, cmds) ->
   case head cmds of
     "lock" ->
       case tail cmds of
         ["on"] -> 
-          ( state { getLocked = False } 
+          ( state { getLock = Just ([], [])} 
           , clearTeams state ++ [MessageAction "lock mode is now on!"])
         ["off"] -> 
-          ( state { getLocked = False } 
+          ( state { getLock = Nothing } 
           , [MessageAction "lock mode is now off!"])
         [] -> (,) state . (:[]) . MessageAction $ 
-          if (getLocked state) then "lock mode is on" 
+          if (isJust  $ getLock state) then "lock mode is on" 
             else "lock mode is off"
         _ -> (state, [MessageAction "bad arguments to lock command"])
     _ -> (state, [])
+  )
+
+findPlayer :: State -> (Player -> Bool) -> Maybe Player
+findPlayer state = flip find players
+  where players = getPlayers . getServer $ state
+
+getTeam :: ([VaporID], [VaporID]) -> VaporID -> Int
+getTeam (team1, team2) vapor =
+  case find (== vapor) team1 of
+    Just _ -> 0
+    Nothing ->
+      case find (== vapor) team2 of
+        Just _ -> 1
+        Nothing -> (-1)
+
+maintainLockB :: Behaviour State Event
+maintainLockB = pureB (\(state, event) ->
+  case getLock state of
+    Just lock -> 
+      case event of 
+        MoveEvent id _ -> 
+          case findPlayer state ((== id) . getPlayerID) of
+            Just player -> (:[]) $
+              AssignAction 
+                (getNick player) 
+                (getTeam lock (getVaporID player))
+            _ -> []
+        _ -> []
+    _ -> []
   )
 
 watchState :: Behaviour ServerState Event
@@ -81,4 +111,3 @@ watchState = Behaviour (\(state, event) ->
               filter ((/= getVaporID player) . getVaporID) players }
     _ -> (state, [])
   )
-
