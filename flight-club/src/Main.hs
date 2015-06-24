@@ -7,11 +7,13 @@ import FlightClub.Behaviour
 import FlightClub.ActionEvent
 
 data State = State 
-  { getServer :: ServerState } deriving (Show, Eq)
+  { getServer :: ServerState 
+  , getLocked :: Bool } deriving (Show, Eq)
 
 initState :: State
 initState = State 
-  { getServer = ServerState { getPlayers = [], getTourny = False } }
+  { getServer = ServerState { getPlayers = [], getTourny = False } 
+  , getLocked = False }
 
 serverZoom :: Zoom State ServerState
 serverZoom = (getServer, (\x s -> s { getServer = x }))
@@ -28,15 +30,43 @@ getCommand event =
 main :: IO ()
 main = 
   runBehaviour initState . mconcat $
-    [ feedB getCommand commandsB 
+    [ feedB getCommand pureCommandsB 
+    , feedB getCommand commandsB
     , zoomB serverZoom watchState ]
 
-commandsB :: Behaviour State [String]
-commandsB = pureB (\(state, cmds) ->
+
+pureCommandsB :: Behaviour State [String]
+pureCommandsB = pureB (\(state, cmds) ->
   case head cmds of
     "show" -> [MessageAction (show state)]
     "ping" -> [MessageAction "pong"] 
+    "clear" -> 
+      case getLocked state of
+        True -> clearTeams state
     _ -> []
+  )
+
+clearTeams :: State -> [Action]
+clearTeams state =
+  map (flip AssignAction (-1) . getNick) $ 
+    getPlayers . getServer $ state
+
+commandsB :: Behaviour State [String]
+commandsB = Behaviour (\(state, cmds) ->
+  case head cmds of
+    "lock" ->
+      case tail cmds of
+        ["on"] -> 
+          ( state { getLocked = False } 
+          , clearTeams state ++ [MessageAction "lock mode is now on!"])
+        ["off"] -> 
+          ( state { getLocked = False } 
+          , [MessageAction "lock mode is now off!"])
+        [] -> (,) state . (:[]) . MessageAction $ 
+          if (getLocked state) then "lock mode is on" 
+            else "lock mode is off"
+        _ -> (state, [MessageAction "bad arguments to lock command"])
+    _ -> (state, [])
   )
 
 watchState :: Behaviour ServerState Event
