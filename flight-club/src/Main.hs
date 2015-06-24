@@ -46,12 +46,27 @@ getAdminCommand (state, event) =
         _ -> Nothing
     _ -> Nothing
 
+getLockEvent :: (State, Event) -> Maybe Event
+getLockEvent (state, event) =
+  if getLocked state then Just event else Nothing
+
 main :: IO ()
 main = 
   runBehaviour initState . mconcat $
-    [ feedB getCommand pureCommandsB 
-    , feedB getCommand commandsB
-    , maintainLockB
+    [ 
+      -- sends all commands to debug command behaviour
+      feedB getCommand debugCommandsB 
+
+      -- sends all admin-issued commands to admin command behaviour
+    , stateFeedB getAdminCommand adminCommandsB
+
+      -- sends all events that occur during team lock to the 
+      -- lock-maintanence behaviour
+    , stateFeedB getLockEvent maintainLockB
+
+      -- zooms state watching behaviour to server
+      -- element of the top-level state (keeps track of
+      -- player list)
     , zoomB serverZoom watchState ]
 
 clearTeams :: State -> [Action]
@@ -63,16 +78,16 @@ searchPlayer :: State -> String -> Maybe Player
 searchPlayer state str = 
   findPlayer state ((== str) . filter (/= ' ') . map toLower . getNick)
 
-pureCommandsB :: Behaviour State [String]
-pureCommandsB = pureB (\(state, cmds) ->
+debugCommandsB :: Behaviour State [String]
+debugCommandsB = pureB (\(state, cmds) ->
   case head cmds of
     "show" -> [MessageAction (show state)]
     "ping" -> [MessageAction "pong"] 
     _ -> []
   )
 
-commandsB :: Behaviour State [String]
-commandsB = Behaviour (\(state, cmds) ->
+adminCommandsB :: Behaviour State [String]
+adminCommandsB = Behaviour (\(state, cmds) ->
   case head cmds of
     "clear" -> (state { getLock = ([], []) }, clearTeams state)
     "lock" ->
@@ -90,7 +105,7 @@ commandsB = Behaviour (\(state, cmds) ->
     "move" ->
       case tail cmds of
         [searchStr, team] -> 
-          (state, [MessageAction "undefined"])
+          (state, [MessageAction $ "moving " ++ searchStr ++ " to " ++ team])
         _ -> (state, [])
     _ -> (state, [])
   )
@@ -110,17 +125,13 @@ getTeam (team1, team2) vapor =
 
 maintainLockB :: Behaviour State Event
 maintainLockB = pureB (\(state, event) ->
-  let lock = getLock state in
-  case getLocked state of
-    True -> 
-      case event of 
-        MoveEvent id _ -> 
-          case findPlayer state ((== id) . getPlayerID) of
-            Just player -> (:[]) $
-              AssignAction 
-                (getNick player) 
-                (getTeam lock (getVaporID player))
-            _ -> []
+  case event of 
+    MoveEvent id _ -> 
+      case findPlayer state ((== id) . getPlayerID) of
+        Just player -> (:[WhisperAction (getNick player) "you can't change your team during team lock!"]) $
+          AssignAction 
+            (getNick player) 
+            (getTeam (getLock state) (getVaporID player))
         _ -> []
     _ -> []
   )
