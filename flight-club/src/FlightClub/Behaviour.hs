@@ -5,8 +5,9 @@ module FlightClub.Behaviour (
   -- Behaviour
   -- * Constructors
   Behaviour(..)
+  , statelessBehaviour
   , feedBehaviour
-  , Zoom
+  , Zoom, nullZoom
   , zoomBehaviour
   -- * Accessors
   , runBehaviour
@@ -36,6 +37,9 @@ joinBehaviour b1 b2 =
 nullBehaviour :: Behaviour s i
 nullBehaviour = Behaviour (\(s, _) -> (s, []))
 
+statelessBehaviour :: (i -> [Action]) -> Behaviour () i
+statelessBehaviour f = Behaviour (\(s, i) -> (s, f i))
+
 -- Behaviour == feedBehaviour return
 feedBehaviour :: (a -> Maybe b) -> Behaviour s b -> Behaviour s a
 feedBehaviour feeder behaviour = Behaviour (\(s, a) ->
@@ -45,6 +49,9 @@ feedBehaviour feeder behaviour = Behaviour (\(s, a) ->
   )
 
 type Zoom a b = ((a -> b), (b -> a -> a))
+
+nullZoom :: Zoom a ()
+nullZoom = (const (), flip const)
 
 zoomBehaviour :: Zoom a b -> Behaviour b i -> Behaviour a i
 zoomBehaviour (getter, setter) behaviour = Behaviour (\(s, i) ->

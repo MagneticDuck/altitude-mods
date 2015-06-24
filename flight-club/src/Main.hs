@@ -7,7 +7,7 @@ import FlightClub.ActionEvent
 
 main :: IO ()
 main = 
-  runBehaviour () $ mconcat [assignSpecB]
+  runBehaviour () $ mconcat [assignSpecB, feedBehaviour getChat pingB]
 
 assignSpecB :: Behaviour () Event
 assignSpecB = Behaviour (\(state, event) ->
@@ -21,6 +21,13 @@ getChat event =
   case event of
     ChatEvent _ str -> Just str
     _ -> Nothing
+
+pingB :: Behaviour () String
+pingB = statelessBehaviour (\chat ->
+  case chat of
+    "!ping" -> [MessageAction "pong!"]
+    _ -> []
+  )
 
 sayB, countdownB, putUpB :: Behaviour (Maybe Int) Event
 sayB = Behaviour (\(state, event) ->
