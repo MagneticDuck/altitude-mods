@@ -1,6 +1,6 @@
 -- * A BEHAVIOUR describes the way that a system reacts to EVENTS, mutating
 -- their state and creating ACTIONS
-module FlightClub.Behaviour (
+module FlightClub.Core.Behaviour (
 -- Exports {{{  
   -- Behaviour
   -- * Constructors
@@ -8,7 +8,6 @@ module FlightClub.Behaviour (
   , simpleB
   , pureB
   , feedB
-  , stateFeedB
   , Zoom, nullZoom
   , zoomB
   -- * Accessors
@@ -20,7 +19,7 @@ import Data.Char
 import System.IO
 import System.CPUTime
 
-import FlightClub.ActionEvent
+import FlightClub.Core.ActionEvent
 
 -- Behaviour {{{
 -- s: state
@@ -45,16 +44,8 @@ simpleB f = Behaviour (\(s, i) -> (s, f i))
 pureB :: ((s, i) -> [Action]) -> Behaviour s i
 pureB f = Behaviour (\(s, i) -> (s, f (s, i)))
 
--- Behaviour == feedBehaviour return
-feedB :: (a -> Maybe b) -> Behaviour s b -> Behaviour s a
+feedB :: ((s, a) -> Maybe b) -> Behaviour s b -> Behaviour s a
 feedB feeder behaviour = Behaviour (\(s, a) ->
-  case feeder a of
-    Just b -> runB behaviour (s, b)
-    Nothing -> (s, [])
-  )
-
-stateFeedB :: ((s, a) -> Maybe b) -> Behaviour s b -> Behaviour s a
-stateFeedB feeder behaviour = Behaviour (\(s, a) ->
   case feeder (s, a) of
     Just b -> runB behaviour (s, b)
     Nothing -> (s, [])

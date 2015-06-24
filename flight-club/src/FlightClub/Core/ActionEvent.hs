@@ -1,7 +1,7 @@
 -- * ACTIONS are things that behaviours can execute, creating
 -- side-effects on their environment.
 -- * EVENTS are stimula that can trigger behaviours.
-module FlightClub.ActionEvent (
+module FlightClub.Core.ActionEvent (
 -- Exports {{{
   -- Misc Nouns
   PlayerID, VaporID, Nick, Player(..)
@@ -47,6 +47,7 @@ data Action =
   MessageAction String
   | WhisperAction Nick String
   | AssignAction Nick Int
+  | TournyAssignAction Nick Int
   | TournyAction Bool deriving (Show, Eq)
 
 commandFromAction :: Action -> String
@@ -59,6 +60,8 @@ commandFromAction action =
         ["serverWhisper", show nick, show str]
       AssignAction nick team -> unwords
         ["assignTeam", show nick, show team]
+      TournyAssignAction nick team -> unwords 
+        ["modifyTournament", show nick, show team]
       TournyAction bool ->
         case bool of
           True -> "startTournament"
