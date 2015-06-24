@@ -1,38 +1,44 @@
 module Main where
 
+-- imports {{{
 import Data.Maybe
 import Data.Char
 import Data.List
 
 import FlightClub.Core
 import FlightClub.State
+-- }}}
 
 main :: IO ()
 main = runBehaviour initState $ 
   mconcat
     [ 
-      -- ** always-on behaviours **
-      zoomB serverZoom watchState -- keeps track of player list
+      -- ** always-on behaviours (related to basic functioning) **
+      zoomB serverZoom watchStateB -- keeps track of player list
     , runDelayedB -- runs delayed actions
-    , greetB -- greets players who join
+
+      -- ** greeting behaviours **
+    , addJoiningB -- add joining players to list
+    , greetB -- greet joining players when they load into the game
+
+      -- ** lock behaviours **
+    , feedB (getEventWhen getLocked) . mconcat $
+        [ protectLockB ]
 
       -- ** all-user command behaviours **
     , feedB getCommand . mconcat $
-        [ -- debugCommandsB -- simple debug commands 
+        [  debugCommandsB -- simple debug commands 
         ]
 
      -- ** admin-only command behaviours **
     , feedB getAdminCommand . mconcat $
         [ -- adminCommandsB -- admin commands
         ]
-
-      -- ** lock behaviours **
-    , feedB getEventWhen getLocked . mconcat $
-        [ ]
     ]
 
-watchState :: Behaviour ServerState Event
-watchState = Behaviour (\(state, event) -> 
+-- watchStateB {{{
+watchStateB :: Behaviour ServerState Event
+watchStateB = Behaviour (\(state, event) -> 
   case event of
     StatusEvent new -> (new, [])
     JoinEvent player ->
@@ -45,7 +51,9 @@ watchState = Behaviour (\(state, event) ->
               filter ((/= getVaporID player) . getVaporID) players }
     _ -> (state, [])
   )
+-- }}}
 
+-- runDelayedB {{{
 runDelayedB :: Behaviour State Event
 runDelayedB = Behaviour (\(state, event) ->
   case event of
@@ -66,57 +74,80 @@ runDelayedB = Behaviour (\(state, event) ->
         (state { getDelayedActions = unfinishedActions }, finishedActions)
     _ -> (state, [])
   )
+-- }}}
 
+-- addJoiningB {{{
+addJoiningB :: Behaviour State Event
+addJoiningB = Behaviour (\(state, event) ->
+  case event of
+    JoinEvent player -> 
+      let 
+        old = getJoining state 
+        action = 
+          [MessageAction $ getNick player ++ " is joining..."]
+      in
+        (state { getJoining = player:old }, action)
+    _ -> (state, [])
+  )
+-- }}}
+
+-- greetB {{{
 makeGreet :: Nick -> [Action]
 makeGreet nick =
-    [ MessageAction . unwords $ 
-        ["please welcome", nick, "to flight club!"] 
-    , WhisperAction nick "**** this server is currently in beta, contact MagneticDuck if you have questions or concerns **** " ]
+  [ MessageAction . unwords $ 
+      ["please welcome", nick, "to flight club!"] 
+  , WhisperAction nick "**** this server is currently in beta, contact magneticDuck if you have questions or concerns **** " ]
 
 greetB :: Behaviour State Event
 greetB = Behaviour (\(state, event) ->
   case event of
-    JoinEvent (Player _ _ nick) ->
-      (addDelayed ("greet", 10, makeGreet nick) state, [])
+    MoveEvent playerid _ ->
+      case find ((== playerid) . getPlayerID) (getJoining state) of
+        Just player ->
+          let 
+            newjoining = 
+              filter ((/= playerid) . getPlayerID) 
+                (getJoining state) in
+          (state {getJoining = newjoining},  makeGreet (getNick player))
+        Nothing -> (state, [])
     _ -> (state, [])
   )
+-- }}}
 
-addDelayed :: (String, Float, [Action]) -> State -> State
-addDelayed d state =
-  let delayedActions = getDelayedActions state in
-    state { getDelayedActions = d:delayedActions }
+-- protectLockB {{{
+protectLockB :: Behaviour State Event
+protectLockB = pureB (\(state, event) ->
+  case event of
+    MoveEvent player _ ->
+      maybeToList $ flip AssignAction (-1) <$> nickFromID state player 
+    _ -> []
+  )
+-- }}}
 
-removeDelayed :: String -> State -> State
-removeDelayed name state =
-  let delayedActions = getDelayedActions state in
-    state { getDelayedActions = filter (\(x, _, _) -> x /= name) delayedActions }
+-- debugCommandsB {{{
+debugCommandsB :: Behaviour State [String]
+debugCommandsB = 
+  let
+    pure = pureB (\(state, cmds) ->
+      case take 1 cmds of
+        ["show"] -> [MessageAction (show state)]
+        ["ping"] -> [MessageAction "pong"] 
+        _ -> []
+      )
+  in
+    mappend pure $ Behaviour (\(state, cmds) ->
+      case take 1 cmds of
+        ["wait"] -> 
+          (addDelayed ("wait", 3, [MessageAction "I waited..."]) state, [])
+        _ -> (state, [])
+    )
+-- }}}
 
---clearTeams :: State -> [Action]
---clearTeams state =
-  --map (flip AssignAction (-1) . getNick) $ 
-    --getPlayers . getServer $ state
---
---searchPlayer :: State -> String -> Maybe Player
---searchPlayer state str = 
-  --findPlayer state ((== str) . filter (/= ' ') . map toLower . getNick)
---
---debugCommandsB :: Behaviour State [String]
---debugCommandsB = 
-  --let
-    --pure = pureB (\(state, cmds) ->
-      --case take 1 cmds of
-        --["show"] -> [MessageAction (show state)]
-        --["ping"] -> [MessageAction "pong"] 
-        --_ -> []
-      --)
-  --in
-    --mappend pure $ Behaviour (\(state, cmds) ->
-      --case take 1 cmds of
-        --["wait"] -> 
-          --(addDelayed ("wait", 3, [MessageAction "I waited..."]) state, [])
-        --_ -> (state, [])
-    --)
---
+clearTeams :: State -> [Action]
+clearTeams state =
+  map (flip AssignAction (-1) . getNick) $ 
+    getPlayers . getServer $ state
+
 --adminCommandsB :: Behaviour State [String]
 --adminCommandsB = Behaviour (\(state, cmds) ->
   --case take 1 cmds of
@@ -170,10 +201,6 @@ removeDelayed name state =
     --"left" -> state { getLock = ((getVaporID player):team1without, team2without) }
     --"right" -> state { getLock = (team1without, (getVaporID player):team2without) }
     --_ -> state
---
---findPlayer :: State -> (Player -> Bool) -> Maybe Player
---findPlayer state = flip find players
-  --where players = getPlayers . getServer $ state
 --
 --fuzzyFindPlayer :: State -> String -> Maybe Player
 --fuzzyFindPlayer state str =
