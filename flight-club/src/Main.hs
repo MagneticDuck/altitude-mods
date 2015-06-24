@@ -9,7 +9,13 @@ import FlightClub.ActionEvent
 
 main :: IO ()
 main = 
-  runBehaviour Nothing $ mconcat [sayB, countdownB, putUpB]
+  runBehaviour () $ mconcat [assignSpecB]
+
+assignSpecB :: Behaviour () Event
+assignSpecB = Behaviour (\(state, event) ->
+  case event of
+    ClockEvent _ -> [AssignAction "magne_ticDuck", -1]
+  )
 
 getChat :: Event -> Maybe String
 getChat event =

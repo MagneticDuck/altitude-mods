@@ -6,6 +6,8 @@ module FlightClub.Behaviour (
   -- * Constructors
   Behaviour(..)
   , feedBehaviour
+  , Zoom
+  , zoomBehaviour
   -- * Accessors
   , runBehaviour
 -- }}}
@@ -40,6 +42,14 @@ feedBehaviour feeder behaviour = Behaviour (\(s, a) ->
   case feeder a of
     Just b -> runB behaviour (s, b)
     Nothing -> (s, [])
+  )
+
+type Zoom a b = ((a -> b), (b -> a -> a))
+
+zoomBehaviour :: Zoom a b -> Behaviour b i -> Behaviour a i
+zoomBehaviour (getter, setter) behaviour = Behaviour (\(s, i) ->
+  case runB behaviour (getter s, i) of
+    (s1, actions) -> (setter s1 s, actions)
   )
 
 instance Monoid (Behaviour s i) where
