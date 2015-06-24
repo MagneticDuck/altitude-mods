@@ -118,6 +118,7 @@ mainLoop time b s h = do
   (time1, mevent) <- getEvent time h
   case mevent of
     Just (ClockEvent _) -> return ()
+    Just PingEvent -> return ()
     _ -> writeDebug $ "<<<" ++ (show mevent)
   case mevent of
     Just event -> 

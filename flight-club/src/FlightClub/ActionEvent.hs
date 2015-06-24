@@ -73,6 +73,7 @@ data Event =
   | StatusEvent ServerState
   | MoveEvent PlayerID Int
   | ClockEvent Float
+  | PingEvent
   deriving (Show, Eq)
 
 eventFromLog  :: String -> Maybe Event
@@ -110,6 +111,12 @@ listFromValue :: JSValue -> Maybe [JSValue]
 listFromValue val =
   case val of
     (JSArray xs) -> Just xs
+    _ -> Nothing
+
+objectFromValue :: JSValue -> Maybe (JSObject JSValue)
+objectFromValue val =
+  case val of
+    JSObject obj -> Just obj
     _ -> Nothing
 
 type LogAttrs = [(String, JSValue)]
@@ -154,5 +161,9 @@ parseList attrs =
       player <- intFromValue =<< getAttr "player" attrs
       team <- intFromValue =<< getAttr "team" attrs
       return $ MoveEvent player team
+    Just "pingSummary" -> do
+      pings <- fromJSObject <$> 
+        (objectFromValue =<< getAttr "pingByPlayer" attrs)
+      return PingEvent
     _ -> Nothing
 -- }}}
