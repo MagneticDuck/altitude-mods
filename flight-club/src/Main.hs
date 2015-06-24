@@ -13,24 +13,30 @@ initState :: State
 initState = State 
   { getServer = ServerState { getPlayers = [], getTourny = False } }
 
+serverZoom :: Zoom State ServerState
+serverZoom = (getServer, (\x s -> s { getServer = x }))
+
+getCommand :: Event -> Maybe [String]
+getCommand event =
+  case event of
+    ChatEvent _ str ->
+      case head str of
+        '.' -> Just . map (map toLower) . words $ tail str
+        _ -> Nothing
+    _ -> Nothing
+
 main :: IO ()
 main = 
   runBehaviour initState . mconcat $
-    [ feedB getCommand commandsB ]
-
-pingB :: Behaviour () [String]
-pingB = simpleB (\cmds ->
-  case head cmds of
-    "ping" -> [MessageAction "pong"] 
-    _ -> []
-  )
+    [ feedB getCommand commandsB 
+    , zoomB serverZoom manageServer ]
 
 commandsB :: Behaviour State [String]
-commandsB = mappend (zoomB nullZoom pingB) $
-  pureB (\(state, cmds) ->
-    case head cmds of
-      "show" -> [MessageAction (show state)]
-      _ -> []
+commandsB = pureB (\(state, cmds) ->
+  case head cmds of
+    "show" -> [MessageAction (show state)]
+    "ping" -> [MessageAction "pong"] 
+    _ -> []
   )
 
 manageServer :: Behaviour ServerState Event
@@ -43,14 +49,3 @@ manageServer = Behaviour (\(state, event) ->
     _ -> (state, [])
   )
 
-serverZoom :: Zoom State ServerState
-serverZoom = (getServer, (\x s -> s { getServer = x }))
-
-getCommand :: Event -> Maybe [String]
-getCommand event =
-  case event of
-    ChatEvent _ str ->
-      case head str of
-        '.' -> Just . map (map toLower) . words $ tail str
-        _ -> Nothing
-    _ -> Nothing
