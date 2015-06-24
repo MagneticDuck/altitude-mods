@@ -40,9 +40,7 @@ pureCommandsB = pureB (\(state, cmds) ->
   case head cmds of
     "show" -> [MessageAction (show state)]
     "ping" -> [MessageAction "pong"] 
-    "clear" -> 
-      case getLocked state of
-        True -> clearTeams state
+    "clear" -> clearTeams state
     _ -> []
   )
 
