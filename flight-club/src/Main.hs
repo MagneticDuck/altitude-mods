@@ -184,12 +184,38 @@ adminCommandsB = Behaviour (\(state, cmds) ->
       case tail cmds of
         [searchStr] -> (,) state . (:[]) . MessageAction $ 
           case fuzzyFindPlayer state searchStr of
-            Just player ->
-              getNick player
+            Just player -> getNick player
             Nothing -> "cannot find player"
         _ -> (state, [])
+    "move" ->
+      case tail cmds of
+        [searchStr, team] -> 
+          case fuzzyFindPlayer state searchStr of
+            Just player -> 
+             (setTeamLock state player team, setTeamAction player team)
+            Nothing -> (state, [MessageAction "cannot find player"])
     _ -> (state, [])
   )
+
+setTeamAction :: Player -> String -> [Action]
+setTeamAction player team =
+  case team of
+    "spec" -> [AssignAction (getNick player) (-1)]
+    "left" -> [AssignAction (getNick player) 0]
+    "right" -> [AssignAction (getNick player) 1]
+
+setTeamLock :: State -> Player -> String -> State
+setTeamLock state player team =
+  let
+    lock@(team1, team2) = getLock state
+    withoutPlayer@(team1without, team2without) = 
+      (\f -> (f team1, f team2)) $ filter (/= (getVaporID player))
+  in
+  case team of
+    "spec" -> state { getLock = withoutPlayer }
+    "left" -> state { getLock = ((getVaporID player):team1without, team2without) }
+    "right" -> state { getLock = (team1without, (getVaporID player):team2without) }
+    _ -> state
 
 findPlayer :: State -> (Player -> Bool) -> Maybe Player
 findPlayer state = flip find players
@@ -216,7 +242,7 @@ maintainLockB = pureB (\(state, event) ->
   case event of 
     MoveEvent id _ -> 
       case findPlayer state ((== id) . getPlayerID) of
-        Just player -> (:[WhisperAction (getNick player) "you can't change your team during team lock!"]) $
+        Just player -> (:[]) $ 
           AssignAction 
             (getNick player) 
             (getTeam (getLock state) (getVaporID player))
