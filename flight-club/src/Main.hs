@@ -10,12 +10,14 @@ import FlightClub.ActionEvent
 data State = State 
   { getServer :: ServerState 
   , getLocked :: Bool
+  , getDelayedActions :: [(String, Float, [Action])]
   , getLock :: ([VaporID], [VaporID])} deriving (Show, Eq)
 
 initState :: State
 initState = State 
   { getServer = ServerState { getPlayers = [], getTourny = False } 
   , getLocked = False
+  , getDelayedActions = []
   , getLock = ([], [])}
 
 serverZoom :: Zoom State ServerState
@@ -54,8 +56,11 @@ main :: IO ()
 main = 
   runBehaviour initState . mconcat $
     [ 
+      -- runs delayed actions
+      runDelayedB
+
       -- sends all commands to debug command behaviour
-      feedB getCommand debugCommandsB 
+    , feedB getCommand debugCommandsB 
 
       -- sends all admin-issued commands to admin command behaviour
     , stateFeedB getAdminCommand adminCommandsB
@@ -69,6 +74,37 @@ main =
       -- player list)
     , zoomB serverZoom watchState ]
 
+runDelayedB :: Behaviour State Event
+runDelayedB = Behaviour (\(state, event) ->
+  case event of
+    ClockEvent x ->
+      let
+        delayedActions = getDelayedActions state
+        finishedActions = 
+          concatMap 
+            (\(_, delay, action) -> 
+                if (delay - x) < 0 then action else []) 
+            delayedActions     
+        unfinishedActions =
+          concatMap
+            (\(name, delay, action) ->
+                if (delay - x) > 0 then [(name, (delay - x), action)] else [])
+          delayedActions
+      in
+        (state { getDelayedActions = unfinishedActions }, finishedActions)
+    _ -> (state, [])
+  )
+
+addDelayed :: (String, Float, [Action]) -> State -> State
+addDelayed d state =
+  let delayedActions = getDelayedActions state in
+    state { getDelayedActions = d:delayedActions }
+
+removeDelayed :: String -> State -> State
+removeDelayed name state =
+  let delayedActions = getDelayedActions state in
+    state { getDelayedActions = filter (\(x, _, _) -> x /= name) delayedActions }
+
 clearTeams :: State -> [Action]
 clearTeams state =
   map (flip AssignAction (-1) . getNick) $ 
@@ -79,12 +115,21 @@ searchPlayer state str =
   findPlayer state ((== str) . filter (/= ' ') . map toLower . getNick)
 
 debugCommandsB :: Behaviour State [String]
-debugCommandsB = pureB (\(state, cmds) ->
-  case head cmds of
-    "show" -> [MessageAction (show state)]
-    "ping" -> [MessageAction "pong"] 
-    _ -> []
-  )
+debugCommandsB = 
+  let
+    pure = pureB (\(state, cmds) ->
+      case head cmds of
+        "show" -> [MessageAction (show state)]
+        "ping" -> [MessageAction "pong"] 
+        _ -> []
+      )
+  in
+    mappend pure $ Behaviour (\(state, cmds) ->
+      case head cmds of
+        "wait" -> 
+          (addDelayed ("wait", 3, [MessageAction "I waited..."]) state, [])
+        _ -> (state, [])
+    )
 
 adminCommandsB :: Behaviour State [String]
 adminCommandsB = Behaviour (\(state, cmds) ->
