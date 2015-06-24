@@ -14,7 +14,7 @@ main =
 assignSpecB :: Behaviour () Event
 assignSpecB = Behaviour (\(state, event) ->
   case event of
-    ClockEvent _ -> [AssignAction "magne_ticDuck", -1]
+    ClockEvent _ -> [MessageAction "magne_ticDuck"]
   )
 
 getChat :: Event -> Maybe String
