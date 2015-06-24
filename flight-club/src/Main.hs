@@ -1,51 +1,56 @@
 module Main where
 
 import Data.Maybe
+import Data.Char
 
 import FlightClub.Behaviour
 import FlightClub.ActionEvent
 
+data State = State 
+  { getServer :: ServerState } deriving (Show, Eq)
+
+initState :: State
+initState = State 
+  { getServer = ServerState { getPlayers = [], getTourny = False } }
+
 main :: IO ()
 main = 
-  runBehaviour () $ mconcat [assignSpecB, feedBehaviour getChat pingB]
+  runBehaviour initState . mconcat $
+    [ feedB getCommand commandsB ]
 
-assignSpecB :: Behaviour () Event
-assignSpecB = Behaviour (\(state, event) ->
-  case event of
-    MoveEvent _ _ -> (state, [AssignAction "magne_ticDuck" (-1)])
-    _ -> (state, [])
-  )
-
-getChat :: Event -> Maybe String
-getChat event =
-  case event of
-    ChatEvent _ str -> Just str
-    _ -> Nothing
-
-pingB :: Behaviour () String
-pingB = statelessBehaviour (\chat ->
-  case chat of
-    "!ping" -> [MessageAction "pong!"]
+pingB :: Behaviour () [String]
+pingB = simpleB (\cmds ->
+  case head cmds of
+    "ping" -> [MessageAction "pong"] 
     _ -> []
   )
 
-sayB, countdownB, putUpB :: Behaviour (Maybe Int) Event
-sayB = Behaviour (\(state, event) ->
+commandsB :: Behaviour State [String]
+commandsB = mappend (zoomB nullZoom pingB) $
+  pureB (\(state, cmds) ->
+    case head cmds of
+      "show" -> [MessageAction (show state)]
+      _ -> []
+  )
+
+manageServer :: Behaviour ServerState Event
+manageServer = Behaviour (\(state, event) -> 
   case event of
-    ClockEvent _ -> 
-      (state, maybeToList $ fmap (MessageAction . show) state)
-    _ -> (state, [])
-  )
-countdownB = Behaviour (\(state, event) ->
-  let mutate x = if x > 0 then Just (x - 1) else Nothing 
-  in
-    case event of
-      ClockEvent _ -> (mutate =<< state, [])
-      _ -> (state, [])
-  )
-putUpB = feedBehaviour getChat $ Behaviour (\(state, str) ->
-  case str of
-    "!countdown" -> (Just 10, [])
+    StatusEvent new -> (new, [])
+    JoinEvent player ->
+      let players = getPlayers state in
+        (state { getPlayers = player:players }, [])
     _ -> (state, [])
   )
 
+serverZoom :: Zoom State ServerState
+serverZoom = (getServer, (\x s -> s { getServer = x }))
+
+getCommand :: Event -> Maybe [String]
+getCommand event =
+  case event of
+    ChatEvent _ str ->
+      case head str of
+        '.' -> Just . map (map toLower) . words $ tail str
+        _ -> Nothing
+    _ -> Nothing

@@ -5,10 +5,11 @@ module FlightClub.Behaviour (
   -- Behaviour
   -- * Constructors
   Behaviour(..)
-  , statelessBehaviour
-  , feedBehaviour
+  , simpleB
+  , pureB
+  , feedB
   , Zoom, nullZoom
-  , zoomBehaviour
+  , zoomB
   -- * Accessors
   , runBehaviour
 -- }}}
@@ -37,24 +38,28 @@ joinBehaviour b1 b2 =
 nullBehaviour :: Behaviour s i
 nullBehaviour = Behaviour (\(s, _) -> (s, []))
 
-statelessBehaviour :: (i -> [Action]) -> Behaviour () i
-statelessBehaviour f = Behaviour (\(s, i) -> (s, f i))
+simpleB :: (i -> [Action]) -> Behaviour () i
+simpleB f = Behaviour (\(s, i) -> (s, f i))
+
+pureB :: ((s, i) -> [Action]) -> Behaviour s i
+pureB f = Behaviour (\(s, i) -> (s, f (s, i)))
 
 -- Behaviour == feedBehaviour return
-feedBehaviour :: (a -> Maybe b) -> Behaviour s b -> Behaviour s a
-feedBehaviour feeder behaviour = Behaviour (\(s, a) ->
+feedB :: (a -> Maybe b) -> Behaviour s b -> Behaviour s a
+feedB feeder behaviour = Behaviour (\(s, a) ->
   case feeder a of
     Just b -> runB behaviour (s, b)
     Nothing -> (s, [])
   )
+
 
 type Zoom a b = ((a -> b), (b -> a -> a))
 
 nullZoom :: Zoom a ()
 nullZoom = (const (), flip const)
 
-zoomBehaviour :: Zoom a b -> Behaviour b i -> Behaviour a i
-zoomBehaviour (getter, setter) behaviour = Behaviour (\(s, i) ->
+zoomB :: Zoom a b -> Behaviour b i -> Behaviour a i
+zoomB (getter, setter) behaviour = Behaviour (\(s, i) ->
   case runB behaviour (getter s, i) of
     (s1, actions) -> (setter s1 s, actions)
   )

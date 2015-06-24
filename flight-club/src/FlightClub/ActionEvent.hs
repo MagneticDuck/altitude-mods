@@ -68,7 +68,7 @@ commandFromAction action =
 -- Event {{{
 data Event =
   ChatEvent PlayerID String 
-  | JoinEvent PlayerID VaporID Nick 
+  | JoinEvent Player
   | StatusEvent ServerState
   | MoveEvent PlayerID Int
   | ClockEvent Float
@@ -133,7 +133,7 @@ parseList attrs =
       player <- intFromValue =<< getAttr "player" attrs
       vapor <- stringFromValue =<< getAttr "vaporId" attrs
       nick <- stringFromValue =<< getAttr "nickname" attrs
-      return $ JoinEvent player vapor nick
+      return $ JoinEvent (Player player vapor nick)
     Just "logServerStatus" -> do
       players <- mapM intFromValue =<< listFromValue =<< getAttr "playerIds" attrs
       vapors <- mapM stringFromValue =<< listFromValue =<< getAttr "vaporIds" attrs

@@ -1,0 +1,107 @@
+these derivations will be built:
+  /nix/store/x6gm14gx546vindvf3mhc0zmdrdx16v0-flight-club-0.1.0.0.drv
+  /nix/store/9azjjxaa4vmrd8l0v84nqwa73pxq154x-engine.drv
+  /nix/store/mjfnfk68ql4rxflqlzl0nqi9hsqm9w24-mod.drv
+building path(s) ‘/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0’
+setupCompilerEnvironmentPhase
+Build with /nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1.
+unpacking sources
+unpacking source archive /nix/store/wnwacm2rqy6yzhdakx6jdqvw8ka6jnd3-flight-club
+source root is flight-club
+patching sources
+compileBuildDriverPhase
+setupCompileFlags: -package-db=/tmp/nix-build-flight-club-0.1.0.0.drv-0/package.conf.d -j1 -threaded
+[1 of 1] Compiling Main             ( Setup.hs, /tmp/nix-build-flight-club-0.1.0.0.drv-0/Main.o )
+Linking Setup ...
+configuring
+configureFlags: --verbose --prefix=/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0 --libdir=$prefix/lib/$compiler --libsubdir=$pkgid --with-gcc=gcc --package-db=/tmp/nix-build-flight-club-0.1.0.0.drv-0/package.conf.d --ghc-option=-optl=-Wl,-rpath=/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/lib/ghc-7.10.1/flight-club-0.1.0.0 --ghc-option=-j1 --enable-split-objs --disable-library-profiling --enable-shared --enable-library-vanilla --enable-executable-dynamic --enable-tests
+Configuring flight-club-0.1.0.0...
+Dependency base ==4.8.*: using base-4.8.0.0
+Dependency json -any: using json-0.9.1
+Using Cabal-1.22.2.0 compiled by ghc-7.10
+Using compiler: ghc-7.10.1
+Using install prefix:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0
+Binaries installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/bin
+Libraries installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/lib/ghc-7.10.1/flight-club-0.1.0.0
+Private binaries installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/libexec
+Data files installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/share/x86_64-linux-ghc-7.10.1/flight-club-0.1.0.0
+Documentation installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/share/doc/x86_64-linux-ghc-7.10.1/flight-club-0.1.0.0
+Configuration files installed in:
+/nix/store/58myxw7ycknydzibcq5716cl4w9jjks0-flight-club-0.1.0.0/etc
+No alex found
+Using ar found on system at:
+/nix/store/yxg5zsjxp1l16xk7r23rayyc18fkxynk-binutils-2.23.1/bin/ar
+No c2hs found
+No cpphs found
+Using gcc version 4.8.4 given by user at:
+/nix/store/ylj1q31a7x3pvcraxk60dyv9y4wmwcrc-gcc-wrapper-4.8.4/bin/gcc
+Using ghc version 7.10.1 found on system at:
+/nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1/bin/ghc
+Using ghc-pkg version 7.10.1 found on system at:
+/nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1/bin/ghc-pkg
+No ghcjs found
+No ghcjs-pkg found
+No greencard found
+Using haddock version 2.16.0 found on system at:
+/nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1/bin/haddock
+No happy found
+Using haskell-suite found on system at: haskell-suite-dummy-location
+Using haskell-suite-pkg found on system at: haskell-suite-pkg-dummy-location
+No hmake found
+Using hpc version 0.67 found on system at:
+/nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1/bin/hpc
+Using hsc2hs version 0.67 found on system at:
+/nix/store/bc84hdk730zcdm1c9s5yf2ahpvm51lzp-ghc-7.10.1/bin/hsc2hs
+No hscolour found
+No jhc found
+Using ld found on system at:
+/nix/store/ylj1q31a7x3pvcraxk60dyv9y4wmwcrc-gcc-wrapper-4.8.4/bin/ld
+No lhc found
+No lhc-pkg found
+No pkg-config found
+Using strip version 2.23 found on system at:
+/nix/store/yxg5zsjxp1l16xk7r23rayyc18fkxynk-binutils-2.23.1/bin/strip
+Using tar found on system at:
+/nix/store/blyc5sprbm85ph2fmksyhrqislp9j0im-gnutar-1.28/bin/tar
+No uhc found
+building
+Building flight-club-0.1.0.0...
+Preprocessing executable 'flight-club' for flight-club-0.1.0.0...
+[1 of 3] Compiling FlightClub.ActionEvent ( src/FlightClub/ActionEvent.hs, dist/build/flight-club/flight-club-tmp/FlightClub/ActionEvent.dyn_o )
+[2 of 3] Compiling FlightClub.Behaviour ( src/FlightClub/Behaviour.hs, dist/build/flight-club/flight-club-tmp/FlightClub/Behaviour.dyn_o )
+[3 of 3] Compiling Main             ( src/Main.hs, dist/build/flight-club/flight-club-tmp/Main.dyn_o )
+
+src/Main.hs:29:35:
+    Couldn't match expected type ‘State’ with actual type ‘ServerState’
+    In the expression: s
+    In the expression: s {getServer = x}
+
+src/Main.hs:29:51:
+    Couldn't match expected type ‘ServerState’ with actual type ‘State’
+    In the ‘getServer’ field of a record
+    In the expression: s {getServer = x}
+
+src/Main.hs:36:43:
+    Couldn't match type ‘Char’ with ‘[Char]’
+    Expected type: [String] -> [[Char]]
+      Actual type: [String] -> String
+    In the second argument of ‘(.)’, namely ‘unwords’
+    In the second argument of ‘(.)’, namely
+      ‘map (map toLower) . unwords’
+
+src/Main.hs:36:58:
+    Couldn't match type ‘Char’ with ‘[Char]’
+    Expected type: [String]
+      Actual type: String
+    In the first argument of ‘tail’, namely ‘str’
+    In the second argument of ‘($)’, namely ‘tail str’
+builder for ‘/nix/store/x6gm14gx546vindvf3mhc0zmdrdx16v0-flight-club-0.1.0.0.drv’ failed with exit code 1
+cannot build derivation ‘/nix/store/9azjjxaa4vmrd8l0v84nqwa73pxq154x-engine.drv’: 1 dependencies couldn't be built
+cannot build derivation ‘/nix/store/mjfnfk68ql4rxflqlzl0nqi9hsqm9w24-mod.drv’: 1 dependencies couldn't be built
+error: build of ‘/nix/store/mjfnfk68ql4rxflqlzl0nqi9hsqm9w24-mod.drv’ failed
