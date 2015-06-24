@@ -27,7 +27,7 @@ main = runBehaviour initState $
 
       -- ** all-user command behaviours **
     , feedB getCommand . mconcat $
-        [  debugCommandsB -- simple debug commands 
+        [ normalCommandsB -- simple useful commands 
         ]
 
      -- ** admin-only command behaviours **
@@ -124,9 +124,9 @@ protectLockB = pureB (\(state, event) ->
   )
 -- }}}
 
--- debugCommandsB {{{
-debugCommandsB :: Behaviour State [String]
-debugCommandsB = 
+-- normalCommandsB {{{
+normalCommandsB :: Behaviour State [String]
+normalCommandsB = 
   let
     pure = pureB (\(state, cmds) ->
       case take 1 cmds of
@@ -136,34 +136,43 @@ debugCommandsB =
       )
   in
     mappend pure $ Behaviour (\(state, cmds) ->
-      case take 1 cmds of
-        ["wait"] -> 
-          (addDelayed ("wait", 3, [MessageAction "I waited..."]) state, [])
+      case take 2 cmds of
+        ["wait10"] -> flip (,) [MessageAction "waiting 10 seconds..."] $
+          flip addDelayed state $
+            ("wait", 10, 
+              [MessageAction "10 seconds have passed"])
         _ -> (state, [])
     )
 -- }}}
 
+-- adminCommandsB {{{
 clearTeams :: State -> [Action]
 clearTeams state =
   map (flip AssignAction (-1) . getNick) $ 
     getPlayers . getServer $ state
 
---adminCommandsB :: Behaviour State [String]
---adminCommandsB = Behaviour (\(state, cmds) ->
-  --case take 1 cmds of
-    --["clear"] -> (state, clearTeams state)
-    --["lock"] ->
-      --case tail cmds of
-        --["on"] -> 
-          --( state { getLocked = True } 
-          --, clearTeams state ++ [MessageAction "lock mode is now on!"])
-        --["off"] -> 
-          --( state { getLocked = False } 
-          --, [MessageAction "lock mode is now off!"])
-        --[] -> (,) state . (:[]) . MessageAction $ 
-          --if (getLocked state) then "lock mode is on" 
-            --else "lock mode is off"
-        --_ -> (state, [MessageAction "bad arguments to lock command"])
+tournyAdminCommandsB :: Behaviour State [String]
+tournyAdminCommandsB = Behaviour (\(state, cmds) ->
+  case take 1 cmds of
+    _ -> (state, [])
+  )
+
+adminCommandsB :: Behaviour State [String]
+adminCommandsB = Behaviour (\(state, cmds) ->
+  case take 1 cmds of
+    ["clear"] -> (state, clearTeams state)
+    ["lock"] ->
+      case tail cmds of
+        ["on"] -> 
+          ( state { getLocked = True } 
+          , clearTeams state ++ [MessageAction "lock mode is now on!"])
+        ["off"] -> 
+          ( state { getLocked = False } 
+          , [MessageAction "lock mode is now off!"])
+        [] -> (,) state . (:[]) . MessageAction $ 
+          if (getLocked state) then "lock mode is on" 
+            else "lock mode is off"
+        _ -> (state, [MessageAction "bad arguments to lock command"])
     --["who"] ->
       --case tail cmds of
         --[searchStr] -> (,) state . (:[]) . MessageAction $ 
@@ -178,9 +187,10 @@ clearTeams state =
             --Just player -> 
              --(setTeamLock state player team, setTeamAction player team)
             --Nothing -> (state, [MessageAction "cannot find player"])
-    --_ -> (state, [])
-  --)
---
+    _ -> (state, [])
+  )
+-- }}}
+
 --setTeamAction :: Player -> String -> [Action]
 --setTeamAction player team =
   --case team of
