@@ -119,6 +119,7 @@ mainLoop time b s h = do
   case mevent of
     Just (ClockEvent _) -> return ()
     Just PingEvent -> return ()
+    Nothing -> return ()
     _ -> writeDebug $ "<<<" ++ (show mevent)
   case mevent of
     Just event -> 
