@@ -116,7 +116,9 @@ runBehaviour i b = do
 mainLoop :: Float -> Behaviour s Event -> s -> Handle -> IO ()
 mainLoop time b s h = do
   (time1, mevent) <- getEvent time h
-  writeDebug $ "<<<" ++ (show mevent)
+  case mevent of
+    Just (ClockEvent _) -> return ()
+    _ -> writeDebug $ "<<<" ++ (show mevent)
   case mevent of
     Just event -> 
       case runB b (s, event) of

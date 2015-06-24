@@ -29,7 +29,7 @@ main :: IO ()
 main = 
   runBehaviour initState . mconcat $
     [ feedB getCommand commandsB 
-    , zoomB serverZoom manageServer ]
+    , zoomB serverZoom watchState ]
 
 commandsB :: Behaviour State [String]
 commandsB = pureB (\(state, cmds) ->
@@ -39,13 +39,18 @@ commandsB = pureB (\(state, cmds) ->
     _ -> []
   )
 
-manageServer :: Behaviour ServerState Event
-manageServer = Behaviour (\(state, event) -> 
+watchState :: Behaviour ServerState Event
+watchState = Behaviour (\(state, event) -> 
   case event of
     StatusEvent new -> (new, [])
     JoinEvent player ->
       let players = getPlayers state in
         (state { getPlayers = player:players }, [])
+    LeaveEvent player ->
+      let players = getPlayers state in flip (,) [] $
+        state 
+          { getPlayers = 
+              filter ((/= getVaporID player) . getVaporID) players }
     _ -> (state, [])
   )
 
