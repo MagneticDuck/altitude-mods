@@ -56,8 +56,16 @@ main :: IO ()
 main = 
   runBehaviour initState . mconcat $
     [ 
+      -- zooms state watching behaviour to server
+      -- element of the top-level state (keeps track of
+      -- player list)
+      zoomB serverZoom watchState 
+
       -- runs delayed actions
-      runDelayedB
+    , runDelayedB
+
+      -- greets players who join
+    , greetB
 
       -- sends all commands to debug command behaviour
     , feedB getCommand debugCommandsB 
@@ -67,12 +75,23 @@ main =
 
       -- sends all events that occur during team lock to the 
       -- lock-maintanence behaviour
-    , stateFeedB getLockEvent maintainLockB
+    , stateFeedB getLockEvent maintainLockB ]
 
-      -- zooms state watching behaviour to server
-      -- element of the top-level state (keeps track of
-      -- player list)
-    , zoomB serverZoom watchState ]
+watchState :: Behaviour ServerState Event
+watchState = Behaviour (\(state, event) -> 
+  case event of
+    StatusEvent new -> (new, [])
+    JoinEvent player ->
+      let players = getPlayers state in
+        (state { getPlayers = player:players }, [])
+    LeaveEvent player ->
+      let players = getPlayers state in flip (,) [] $
+        state 
+          { getPlayers = 
+              filter ((/= getVaporID player) . getVaporID) players }
+    _ -> (state, [])
+  )
+
 
 runDelayedB :: Behaviour State Event
 runDelayedB = Behaviour (\(state, event) ->
@@ -92,6 +111,20 @@ runDelayedB = Behaviour (\(state, event) ->
           delayedActions
       in
         (state { getDelayedActions = unfinishedActions }, finishedActions)
+    _ -> (state, [])
+  )
+
+makeGreet :: Nick -> [Action]
+makeGreet nick =
+    [ MessageAction . unwords $ 
+        ["please welcome ", nick, " to flight club!"] 
+    , WhisperAction nick "**** flight club is a place for playing good altitude **** "]
+
+greetB :: Behaviour State Event
+greetB = Behaviour (\(state, event) ->
+  case event of
+    JoinEvent (Player _ _ nick) ->
+      (addDelayed ("greet", 2, makeGreet nick) state, [])
     _ -> (state, [])
   )
 
@@ -181,17 +214,3 @@ maintainLockB = pureB (\(state, event) ->
     _ -> []
   )
 
-watchState :: Behaviour ServerState Event
-watchState = Behaviour (\(state, event) -> 
-  case event of
-    StatusEvent new -> (new, [])
-    JoinEvent player ->
-      let players = getPlayers state in
-        (state { getPlayers = player:players }, [])
-    LeaveEvent player ->
-      let players = getPlayers state in flip (,) [] $
-        state 
-          { getPlayers = 
-              filter ((/= getVaporID player) . getVaporID) players }
-    _ -> (state, [])
-  )
