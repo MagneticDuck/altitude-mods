@@ -117,8 +117,8 @@ runDelayedB = Behaviour (\(state, event) ->
 makeGreet :: Nick -> [Action]
 makeGreet nick =
     [ MessageAction . unwords $ 
-        ["please welcome ", nick, " to flight club!"] 
-    , WhisperAction nick "**** flight club is a place for playing good altitude **** "]
+        ["please welcome", nick, "to flight club!"] 
+    , WhisperAction nick "**** this server is currently in beta, contact MagneticDuck if you have questions or concerns **** " ]
 
 greetB :: Behaviour State Event
 greetB = Behaviour (\(state, event) ->
@@ -180,10 +180,13 @@ adminCommandsB = Behaviour (\(state, cmds) ->
           if (getLocked state) then "lock mode is on" 
             else "lock mode is off"
         _ -> (state, [MessageAction "bad arguments to lock command"])
-    "move" ->
+    "who" ->
       case tail cmds of
-        [searchStr, team] -> 
-          (state, [MessageAction $ "moving " ++ searchStr ++ " to " ++ team])
+        [searchStr] -> (,) state . (:[]) . MessageAction $ 
+          case fuzzyFindPlayer state searchStr of
+            Just player ->
+              getNick player
+            Nothing -> "cannot find player"
         _ -> (state, [])
     _ -> (state, [])
   )
@@ -191,6 +194,13 @@ adminCommandsB = Behaviour (\(state, cmds) ->
 findPlayer :: State -> (Player -> Bool) -> Maybe Player
 findPlayer state = flip find players
   where players = getPlayers . getServer $ state
+
+fuzzyFindPlayer :: State -> String -> Maybe Player
+fuzzyFindPlayer state str =
+  findPlayer state (\player ->
+    isInfixOf (curate str) (curate . getNick $ player))
+  where
+    curate = map toLower . filter (`notElem` " _")
 
 getTeam :: ([VaporID], [VaporID]) -> VaporID -> Int
 getTeam (team1, team2) vapor =
