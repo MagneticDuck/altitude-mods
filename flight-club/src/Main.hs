@@ -30,6 +30,22 @@ getCommand event =
         _ -> Nothing
     _ -> Nothing
 
+adminVapors :: [VaporID]
+adminVapors = []
+
+getAdminCommand :: (State, Event) -> Maybe [String]
+getAdminCommand (state, event) =
+  let players = getPlayers . getServer $ state in
+  case event of
+    ChatEvent playerid str ->
+      case find ((== playerid) . getPlayerID) players of
+        Just player -> 
+          if getVaporID player `elem` adminVapors then
+            getCommand event
+          else Nothing
+        _ -> Nothing
+    _ -> Nothing
+
 main :: IO ()
 main = 
   runBehaviour initState . mconcat $
@@ -51,14 +67,6 @@ pureCommandsB :: Behaviour State [String]
 pureCommandsB = pureB (\(state, cmds) ->
   case head cmds of
     "show" -> [MessageAction (show state)]
-    "who" ->
-      case tail cmds of
-        [searchStr] -> 
-          case searchPlayer state searchStr of
-            Nothing -> 
-              [MessageAction $ "no player found matching " ++ searchStr]
-            Just player -> 
-              [MessageAction $ "player found: " ++ show player]
     "ping" -> [MessageAction "pong"] 
     _ -> []
   )
@@ -79,6 +87,11 @@ commandsB = Behaviour (\(state, cmds) ->
           if (getLocked state) then "lock mode is on" 
             else "lock mode is off"
         _ -> (state, [MessageAction "bad arguments to lock command"])
+    "move" ->
+      case tail cmds of
+        [searchStr, team] -> 
+          (state, [MessageAction "undefined"])
+        _ -> (state, [])
     _ -> (state, [])
   )
 

@@ -8,6 +8,7 @@ module FlightClub.Behaviour (
   , simpleB
   , pureB
   , feedB
+  , stateFeedB
   , Zoom, nullZoom
   , zoomB
   -- * Accessors
@@ -52,6 +53,12 @@ feedB feeder behaviour = Behaviour (\(s, a) ->
     Nothing -> (s, [])
   )
 
+stateFeedB :: ((s, a) -> Maybe b) -> Behaviour s b -> Behaviour s a
+stateFeedB feeder behaviour = Behaviour (\(s, a) ->
+  case feeder (s, a) of
+    Just b -> runB behaviour (s, b)
+    Nothing -> (s, [])
+  )
 
 type Zoom a b = ((a -> b), (b -> a -> a))
 
