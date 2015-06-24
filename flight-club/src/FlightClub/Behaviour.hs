@@ -83,12 +83,14 @@ getTime = fmap ((/ 10^12) . fromIntegral) getCPUTime
 
 getEvent :: Float -> Handle -> IO (Float, Maybe Event)
 getEvent last h = do
-  now <- getTime
-  if (now - last) > 1 
-    then return (now, Just $ ClockEvent (now - last)) else do
-      empty <- hIsEOF h
-      if empty then getEvent last h
-        else fmap (((,) last) . eventFromLog) $ hGetLine h
+  empty <- hIsEOF h
+  if not empty then 
+    fmap (((,) last) . eventFromLog) $ hGetLine h
+  else do 
+    now <- getTime
+    if (now - last) > 1 then 
+      return (now, Just $ ClockEvent (now - last)) 
+    else getEvent last h
 
 runBehaviour :: s -> Behaviour s Event -> IO ()
 runBehaviour i b = do

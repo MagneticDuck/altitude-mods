@@ -1,7 +1,5 @@
 module Main where
 
-import Control.Monad (forever, void)
-import System.IO
 import Data.Maybe
 
 import FlightClub.Behaviour
