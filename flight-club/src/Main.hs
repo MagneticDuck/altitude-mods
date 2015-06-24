@@ -31,7 +31,7 @@ getCommand event =
     _ -> Nothing
 
 adminVapors :: [VaporID]
-adminVapors = []
+adminVapors = ["5640761e-f165-4f40-b3d6-3e3167dd767d"]
 
 getAdminCommand :: (State, Event) -> Maybe [String]
 getAdminCommand (state, event) =
