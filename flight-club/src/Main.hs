@@ -45,7 +45,7 @@ clearTeams state =
 
 searchPlayer :: State -> String -> Maybe Player
 searchPlayer state str = 
-  findPlayer state ((== str) . getNick)
+  findPlayer state ((== str) . filter (/= ' ') . map toLower . getNick)
 
 pureCommandsB :: Behaviour State [String]
 pureCommandsB = pureB (\(state, cmds) ->
