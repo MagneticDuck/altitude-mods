@@ -9,12 +9,14 @@ import FlightClub.ActionEvent
 
 data State = State 
   { getServer :: ServerState 
-  , getLock :: Maybe ([VaporID], [VaporID])} deriving (Show, Eq)
+  , getLocked :: Bool
+  , getLock :: ([VaporID], [VaporID])} deriving (Show, Eq)
 
 initState :: State
 initState = State 
   { getServer = ServerState { getPlayers = [], getTourny = False } 
-  , getLock = Nothing }
+  , getLocked = False
+  , getLock = ([], [])}
 
 serverZoom :: Zoom State ServerState
 serverZoom = (getServer, (\x s -> s { getServer = x }))
@@ -41,28 +43,40 @@ clearTeams state =
   map (flip AssignAction (-1) . getNick) $ 
     getPlayers . getServer $ state
 
+searchPlayer :: State -> String -> Maybe Player
+searchPlayer state str = 
+  findPlayer state ((== str) . getNick)
+
 pureCommandsB :: Behaviour State [String]
 pureCommandsB = pureB (\(state, cmds) ->
   case head cmds of
     "show" -> [MessageAction (show state)]
+    "who" ->
+      case tail cmds of
+        [searchStr] -> 
+          case searchPlayer state searchStr of
+            Nothing -> 
+              [MessageAction $ "no player found matching " ++ searchStr]
+            Just player -> 
+              [MessageAction $ "player found: " ++ show player]
     "ping" -> [MessageAction "pong"] 
-    "clear" -> clearTeams state
     _ -> []
   )
 
 commandsB :: Behaviour State [String]
 commandsB = Behaviour (\(state, cmds) ->
   case head cmds of
+    "clear" -> (state { getLock = ([], []) }, clearTeams state)
     "lock" ->
       case tail cmds of
         ["on"] -> 
-          ( state { getLock = Just ([], [])} 
+          ( state { getLocked = True } 
           , clearTeams state ++ [MessageAction "lock mode is now on!"])
         ["off"] -> 
-          ( state { getLock = Nothing } 
+          ( state { getLocked = False } 
           , [MessageAction "lock mode is now off!"])
         [] -> (,) state . (:[]) . MessageAction $ 
-          if (isJust  $ getLock state) then "lock mode is on" 
+          if (getLocked state) then "lock mode is on" 
             else "lock mode is off"
         _ -> (state, [MessageAction "bad arguments to lock command"])
     _ -> (state, [])
@@ -83,8 +97,9 @@ getTeam (team1, team2) vapor =
 
 maintainLockB :: Behaviour State Event
 maintainLockB = pureB (\(state, event) ->
-  case getLock state of
-    Just lock -> 
+  let lock = getLock state in
+  case getLocked state of
+    True -> 
       case event of 
         MoveEvent id _ -> 
           case findPlayer state ((== id) . getPlayerID) of
