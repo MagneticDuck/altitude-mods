@@ -21,9 +21,9 @@ main = runBehaviour initState $
     , addJoiningB -- add joining players to list
     , greetB -- greet joining players when they load into the game
 
-      -- ** lock behaviours **
-    , feedB (getEventWhen getLocked) . mconcat $
-        [ protectLockB ]
+      -- ** stopped behaviours **
+    , feedB (getEventWhen ((== StopPlay) . getMode)) . mconcat $
+        [ protectStopB ]
 
       -- ** all-user command behaviours **
     , feedB getCommand . mconcat $
@@ -115,8 +115,8 @@ greetB = Behaviour (\(state, event) ->
 -- }}}
 
 -- protectLockB {{{
-protectLockB :: Behaviour State Event
-protectLockB = pureB (\(state, event) ->
+protectStopB :: Behaviour State Event
+protectStopB = pureB (\(state, event) ->
   case event of
     MoveEvent player _ ->
       maybeToList $ flip AssignAction (-1) <$> nickFromID state player 
@@ -151,34 +151,55 @@ clearTeams state =
   map (flip AssignAction (-1) . getNick) $ 
     getPlayers . getServer $ state
 
-tournyAdminCommandsB :: Behaviour State [String]
-tournyAdminCommandsB = Behaviour (\(state, cmds) ->
-  case take 1 cmds of
-    _ -> (state, [])
-  )
+describeMode :: PlayMode -> String
+describeMode mode =
+  case mode of
+    FreePlay -> "free play: players may join as they wish"
+    StopPlay -> "game is stopped: no players will join"
+    TournyPlay -> "tournament: players may join their teams"
+
+getTeam :: ([VaporID], [VaporID]) -> VaporID -> Int
+getTeam (team1, team2) vapor =
+  case find (== vapor) team1 of
+    Just _ -> 0
+    Nothing ->
+      case find (== vapor) team2 of
+        Just _ -> 1
+        Nothing -> (-1)
 
 adminCommandsB :: Behaviour State [String]
 adminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
-    ["lock"] ->
+    ["free"] -> 
+      ( state { getMode = FreePlay }
+      , (TournyAction False):[MessageAction $ describeMode FreePlay] )
+    ["stop"] ->
+      ( state { getMode = StopPlay } 
+      , clearTeams state ++ [MessageAction $ describeMode StopPlay] )
+    ["tourny"] ->
+      case getTeams state of
+        ((_:_), (_:_)) ->
+          let 
+            assignPlayers =
+              map 
+                (\player -> 
+                    TournyAssignAction 
+                      (getNick player) 
+                      (getTeam (getTeams state) (getVaporID player))) 
+                (getPlayers . getServer $ state)
+          in
+            ( state { getMode = TournyPlay }
+            , (++) 
+                ((TournyAction True):assignPlayers)
+                [MessageAction $ describeMode TournyPlay])
+        _ -> (state, [MessageAction "cannot start tournament with null teams"])
+    ["who"] ->
       case tail cmds of
-        ["on"] -> 
-          ( state { getLocked = True } 
-          , clearTeams state ++ [MessageAction "lock mode is now on!"])
-        ["off"] -> 
-          ( state { getLocked = False } 
-          , [MessageAction "lock mode is now off!"])
-        [] -> (,) state . (:[]) . MessageAction $ 
-          if (getLocked state) then "lock mode is on" 
-            else "lock mode is off"
-        _ -> (state, [MessageAction "bad arguments to lock command"])
-    --["who"] ->
-      --case tail cmds of
-        --[searchStr] -> (,) state . (:[]) . MessageAction $ 
-          --case fuzzyFindPlayer state searchStr of
-            --Just player -> getNick player
-            --Nothing -> "cannot find player"
-        --_ -> (state, [])
+        [searchStr] -> (,) state . (:[]) . MessageAction $ 
+          case searchPlayer state searchStr of
+            Just player -> getNick player
+            Nothing -> "cannot find player"
+        _ -> (state, [])
     --["move"] ->
       --case tail cmds of
         --[searchStr, team] -> 
@@ -211,18 +232,4 @@ adminCommandsB = Behaviour (\(state, cmds) ->
     --"right" -> state { getLock = (team1without, (getVaporID player):team2without) }
     --_ -> state
 --
---fuzzyFindPlayer :: State -> String -> Maybe Player
---fuzzyFindPlayer state str =
-  --findPlayer state (\player ->
-    --isInfixOf (curate str) (curate . getNick $ player))
-  --where
-    --curate = map toLower . filter (`notElem` " _")
 --
---getTeam :: ([VaporID], [VaporID]) -> VaporID -> Int
---getTeam (team1, team2) vapor =
-  --case find (== vapor) team1 of
-    --Just _ -> 0
-    --Nothing ->
-      --case find (== vapor) team2 of
-        --Just _ -> 1
-        --Nothing -> (-1)

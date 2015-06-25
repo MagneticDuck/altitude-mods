@@ -2,6 +2,7 @@ module FlightClub.State (
   -- * State
   -- ** Constructors
   State(..)
+  , PlayMode(..)
   , initState
   , addDelayed
   , removeDelayed
@@ -31,17 +32,19 @@ data State = State
   , getJoining :: [Player]
   , getDelayedActions :: [(String, Float, [Action])] 
       -- actions on a time-bomb 
-  , getLocked :: Bool 
+  , getMode :: PlayMode
       -- whether the game is locked (preventing people from playing)
   , getTeams  :: ([VaporID], [VaporID]) -- teams to be used in tournament
   } deriving (Show, Eq)
+
+data PlayMode = FreePlay | StopPlay | TournyPlay deriving (Eq, Show)
 
 initState :: State
 initState = State 
   { getServer = ServerState { getPlayers = [], getTourny = False } 
   , getJoining = []
   , getDelayedActions = [] 
-  , getLocked = False
+  , getMode = FreePlay
   , getTeams = ([],[]) }
 
 addDelayed :: (String, Float, [Action]) -> State -> State
@@ -58,13 +61,16 @@ nickFromID :: State -> Int -> Maybe String
 nickFromID state id = getNick <$> 
   findPlayer state ((== id) . getPlayerID) 
 
+searchPlayer :: State -> String -> Maybe Player
+searchPlayer state str =
+  findPlayer state (\player ->
+    isInfixOf (curate str) (curate . getNick $ player))
+  where
+    curate = map toLower . filter (`notElem` " _")
+
 findPlayer :: State -> (Player -> Bool) -> Maybe Player
 findPlayer state = flip find players
   where players = getPlayers . getServer $ state
-
-searchPlayer :: State -> String -> Maybe Player
-searchPlayer state str = 
-  findPlayer state ((== str) . filter (/= ' ') . map toLower . getNick)
 
 serverZoom :: Zoom State ServerState
 serverZoom = (getServer, (\x s -> s { getServer = x }))
