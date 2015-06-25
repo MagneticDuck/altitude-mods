@@ -223,7 +223,8 @@ adminCommandsB = Behaviour (\(state, cmds) ->
       , [TournyAction False, MessageAction $ describeMode FreePlay] )
     ["stop"] ->
       ( state { getMode = StopPlay } 
-      , clearTeams state ++ [MessageAction $ describeMode StopPlay] )
+      , ((TournyAction False):) $ 
+          clearTeams state ++ [MessageAction $ describeMode StopPlay] )
     ["tourny"] ->
       case getTeams state of
         ((_:_), (_:_)) ->
