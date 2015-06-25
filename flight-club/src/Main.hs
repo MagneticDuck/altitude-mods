@@ -204,6 +204,9 @@ tournyAdminCommandsB = Behaviour (\(state, cmds) ->
     ["free"] ->
       (state, [TournyAction False])
     ["move"] -> (state, assignTeams state)
+    ["clear"] -> (state, assignTeams state)
+    ["swapteams"] -> (state, assignTeams state)
+    ["swap"] -> (state, assignTeams state)
     _ -> (state, [])
   )
 
@@ -246,6 +249,25 @@ adminCommandsB = Behaviour (\(state, cmds) ->
           case (searchPlayer state searchStr, readTeam teamStr) of
             (Just player, Just team) -> (writeTeam state (getVaporID player) team, [])
             _ -> (state, [MessageAction "bad arguments"])
+    ["clear"] -> ( state { getTeams = ([],[]) }, [] )
+    ["swapteams"] -> 
+      let (teamLeft, teamRight) = getTeams state in
+        ( state { getTeams = (teamRight, teamLeft) }, [] )
+    ["swap"] -> 
+      case tail cmds of
+        [player1, player2] ->
+          case map (searchPlayer state) [player1, player2] of 
+            [Just player1, Just player2] ->
+              let 
+                teams = getTeams state
+                team1 = getTeam teams (getVaporID player1)
+                team2 = getTeam teams (getVaporID player2)
+              in
+                flip (,) [] $
+                  (\x -> writeTeam x (getVaporID player1) team2) $
+                    writeTeam state (getVaporID player2) team1 
+            _ -> (state, [MessageAction "cannot find player"])
+        _ -> (state, [])
     _ -> (state, [])
   )
 -- }}}
