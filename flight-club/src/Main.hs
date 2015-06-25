@@ -189,6 +189,15 @@ writeTeam state vid int =
             _ -> (teamLeft2, teamRight2) 
       }
 
+assignTeamsSoft :: State -> [Action]
+assignTeamsSoft state =
+  map 
+    (\player -> 
+        AssignAction 
+          (getNick player) 
+          (getTeam (getTeams state) (getVaporID player))) 
+    (getPlayers . getServer $ state)
+
 assignTeams :: State -> [Action]
 assignTeams state =
   map 
@@ -201,8 +210,6 @@ assignTeams state =
 tournyAdminCommandsB :: Behaviour State [String]
 tournyAdminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
-    ["free"] ->
-      (state, [TournyAction False])
     ["clear"] -> (state, assignTeams state)
     ["swapteams"] -> (state, assignTeams state)
     _ -> (state, [])
@@ -213,7 +220,7 @@ adminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
     ["free"] -> 
       ( state { getMode = FreePlay }
-      , [MessageAction $ describeMode FreePlay] )
+      , [TournyAction False, MessageAction $ describeMode FreePlay] )
     ["stop"] ->
       ( state { getMode = StopPlay } 
       , clearTeams state ++ [MessageAction $ describeMode StopPlay] )
@@ -222,7 +229,7 @@ adminCommandsB = Behaviour (\(state, cmds) ->
         ((_:_), (_:_)) ->
           ( state { getMode = TournyPlay }
           , (++) 
-              ((TournyAction True):(assignTeams state))
+              (assignTeamsSoft state ++ (TournyAction True):(assignTeams state))
               [MessageAction $ describeMode TournyPlay])
         _ -> (state, [MessageAction "cannot start tournament with null teams"])
     ["who"] ->
