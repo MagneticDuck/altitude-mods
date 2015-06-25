@@ -36,7 +36,7 @@ main = runBehaviour initState $
       , feedB (getEventWhen ((== TournyPlay) . getMode)) $
           feedB getAdminCommand tournyAdminCommandsB 
           -- some admin commands have extra teeth in a tournament
-          -- (assign players to teams)
+          -- (assign all players to teams)
       ]
     ]
 
@@ -203,10 +203,8 @@ tournyAdminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
     ["free"] ->
       (state, [TournyAction False])
-    ["move"] -> (state, assignTeams state)
     ["clear"] -> (state, assignTeams state)
     ["swapteams"] -> (state, assignTeams state)
-    ["swap"] -> (state, assignTeams state)
     _ -> (state, [])
   )
 
@@ -247,7 +245,13 @@ adminCommandsB = Behaviour (\(state, cmds) ->
       case tail cmds of
         [searchStr, teamStr] ->
           case (searchPlayer state searchStr, readTeam teamStr) of
-            (Just player, Just team) -> (writeTeam state (getVaporID player) team, [])
+            (Just player, Just team) -> 
+              (writeTeam state (getVaporID player) team 
+              , 
+                if ((== TournyPlay) . getMode) state then
+                  [TournyAssignAction (getNick player) team]
+                else [] 
+              )
             _ -> (state, [MessageAction "bad arguments"])
     ["clear"] -> ( state { getTeams = ([],[]) }, [] )
     ["swapteams"] -> 
@@ -262,8 +266,13 @@ adminCommandsB = Behaviour (\(state, cmds) ->
                 teams = getTeams state
                 team1 = getTeam teams (getVaporID player1)
                 team2 = getTeam teams (getVaporID player2)
+                actions =
+                  if ((== TournyPlay) . getMode) state then
+                    [ TournyAssignAction (getNick player1) team2
+                    , TournyAssignAction (getNick player2) team1 ]
+                  else []
               in
-                flip (,) [] $
+                flip (,) actions $
                   (\x -> writeTeam x (getVaporID player1) team2) $
                     writeTeam state (getVaporID player2) team1 
             _ -> (state, [MessageAction "cannot find player"])

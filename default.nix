@@ -52,8 +52,8 @@ in
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          server-name = "magne_ticDuck's Flight Club (in development)";
-          server-password = "WHforPresident";
+          server-name = "magneticDuck's FLIGHT CLUB";
+          server-password = "ruleone";
           server-players = "40";
           server-rcon = "snowmanbomb";
           server-ball = true;
