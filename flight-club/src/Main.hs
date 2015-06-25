@@ -31,9 +31,13 @@ main = runBehaviour initState $
         ]
 
      -- ** admin-only command behaviours **
-    , feedB getAdminCommand . mconcat $
-        [ adminCommandsB -- admin commands
-        ]
+    , mconcat
+      [ feedB getAdminCommand adminCommandsB -- admin commands
+      , feedB (getEventWhen ((== TournyPlay) . getMode)) $
+          feedB getAdminCommand tournyAdminCommandsB 
+          -- some admin commands have extra teeth in a tournament
+          -- (assign players to teams)
+      ]
     ]
 
 -- watchStateB {{{
@@ -167,31 +171,39 @@ getTeam (team1, team2) vapor =
         Just _ -> 1
         Nothing -> (-1)
 
+assignTeams :: State -> [Action]
+assignTeams state =
+  map 
+    (\player -> 
+        TournyAssignAction 
+          (getNick player) 
+          (getTeam (getTeams state) (getVaporID player))) 
+    (getPlayers . getServer $ state)
+
+tournyAdminCommandsB :: Behaviour State [String]
+tournyAdminCommandsB = Behaviour (\(state, cmds) ->
+  case take 1 cmds of
+    ["free"] ->
+      (state, [TournyAction False])
+    _ -> (state, [])
+  )
+
 adminCommandsB :: Behaviour State [String]
 adminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
     ["free"] -> 
       ( state { getMode = FreePlay }
-      , (TournyAction False):[MessageAction $ describeMode FreePlay] )
+      , [MessageAction $ describeMode FreePlay] )
     ["stop"] ->
       ( state { getMode = StopPlay } 
       , clearTeams state ++ [MessageAction $ describeMode StopPlay] )
     ["tourny"] ->
       case getTeams state of
         ((_:_), (_:_)) ->
-          let 
-            assignPlayers =
-              map 
-                (\player -> 
-                    TournyAssignAction 
-                      (getNick player) 
-                      (getTeam (getTeams state) (getVaporID player))) 
-                (getPlayers . getServer $ state)
-          in
-            ( state { getMode = TournyPlay }
-            , (++) 
-                ((TournyAction True):assignPlayers)
-                [MessageAction $ describeMode TournyPlay])
+          ( state { getMode = TournyPlay }
+          , (++) 
+              ((TournyAction True):(assignTeams state))
+              [MessageAction $ describeMode TournyPlay])
         _ -> (state, [MessageAction "cannot start tournament with null teams"])
     ["who"] ->
       case tail cmds of
