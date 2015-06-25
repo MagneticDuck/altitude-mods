@@ -66,7 +66,7 @@ searchPlayer state str =
   findPlayer state (\player ->
     isInfixOf (curate str) (curate . getNick $ player))
   where
-    curate = map toLower . filter (`notElem` " _")
+    curate = map toLower . filter (`notElem` " ")
 
 findPlayer :: State -> (Player -> Bool) -> Maybe Player
 findPlayer state = flip find players

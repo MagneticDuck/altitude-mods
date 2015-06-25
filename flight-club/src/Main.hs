@@ -200,6 +200,15 @@ adminCommandsB = Behaviour (\(state, cmds) ->
             Just player -> getNick player
             Nothing -> "cannot find player"
         _ -> (state, [])
+    ["teams"] ->
+      let 
+        showTeam team = 
+          unwords $ concatMap (\x -> maybeToList . fmap getNick . findPlayer state $ (== x) . getVaporID) team
+      in (,) state $ 
+        [ MessageAction . ("left team: " ++) $ 
+            showTeam (fst . getTeams $ state)
+        , MessageAction . ("right team: " ++) $ 
+            showTeam (snd . getTeams $ state) ]
     --["move"] ->
       --case tail cmds of
         --[searchStr, team] -> 
