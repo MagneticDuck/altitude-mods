@@ -261,6 +261,7 @@ adminCommandsB = Behaviour (\(state, cmds) ->
                 else [] 
               )
             _ -> (state, [MessageAction "bad arguments"])
+        _ -> (state, [])
     ["clear"] -> ( state { getTeams = ([],[]) }, [] )
     ["swapteams"] -> 
       let (teamLeft, teamRight) = getTeams state in

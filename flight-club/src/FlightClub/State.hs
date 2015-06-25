@@ -88,6 +88,7 @@ adminVapors :: [VaporID]
 adminVapors = 
   [ "5640761e-f165-4f40-b3d6-3e3167dd767d" -- magneticDuck
   , "faa8061c-5cd6-43bb-b389-561be0792b33" -- Kafka
+  , "55dd4345-53e2-4a5d-b6e1-7ca357c7337d" -- Label
   ]
 
 getAdminCommand :: (State, Event) -> Maybe [String]
