@@ -32,7 +32,7 @@ main = runBehaviour initState $
 
      -- ** admin-only command behaviours **
     , feedB getAdminCommand . mconcat $
-        [ -- adminCommandsB -- admin commands
+        [ adminCommandsB -- admin commands
         ]
     ]
 
@@ -160,7 +160,6 @@ tournyAdminCommandsB = Behaviour (\(state, cmds) ->
 adminCommandsB :: Behaviour State [String]
 adminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
-    ["clear"] -> (state, clearTeams state)
     ["lock"] ->
       case tail cmds of
         ["on"] -> 
