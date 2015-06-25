@@ -171,6 +171,24 @@ getTeam (team1, team2) vapor =
         Just _ -> 1
         Nothing -> (-1)
 
+writeTeam :: 
+  State -> VaporID -> Int -> State
+writeTeam state vid int =
+  let
+    (teamLeft1, teamRight1) = getTeams state
+    removePlayer = filter (/= vid)
+    (teamLeft2, teamRight2) = 
+      (removePlayer teamLeft1, removePlayer teamRight1)
+  in
+    state 
+      { 
+        getTeams =
+          case int of
+            0 -> (vid:teamLeft2, teamRight2)
+            1 -> (teamLeft2, vid:teamRight2)
+            _ -> (teamLeft2, teamRight2) 
+      }
+
 assignTeams :: State -> [Action]
 assignTeams state =
   map 
@@ -185,6 +203,7 @@ tournyAdminCommandsB = Behaviour (\(state, cmds) ->
   case take 1 cmds of
     ["free"] ->
       (state, [TournyAction False])
+    ["move"] -> (state, assignTeams state)
     _ -> (state, [])
   )
 
@@ -221,16 +240,23 @@ adminCommandsB = Behaviour (\(state, cmds) ->
             showTeam (fst . getTeams $ state)
         , MessageAction . ("right team: " ++) $ 
             showTeam (snd . getTeams $ state) ]
-    --["move"] ->
-      --case tail cmds of
-        --[searchStr, team] -> 
-          --case fuzzyFindPlayer state searchStr of
-            --Just player -> 
-             --(setTeamLock state player team, setTeamAction player team)
-            --Nothing -> (state, [MessageAction "cannot find player"])
+    ["move"] ->
+      case tail cmds of
+        [searchStr, teamStr] ->
+          case (searchPlayer state searchStr, readTeam teamStr) of
+            (Just player, Just team) -> (writeTeam state (getVaporID player) team, [])
+            _ -> (state, [MessageAction "bad arguments"])
     _ -> (state, [])
   )
 -- }}}
+
+readTeam :: String -> Maybe Int
+readTeam team =
+  case team of
+    "spec" -> Just (-1)
+    "left" -> Just 0
+    "right" -> Just 1
+    _ -> Nothing
 
 --setTeamAction :: Player -> String -> [Action]
 --setTeamAction player team =
