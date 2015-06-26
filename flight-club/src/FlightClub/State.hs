@@ -90,6 +90,7 @@ adminVapors =
   , "faa8061c-5cd6-43bb-b389-561be0792b33" -- Kafka
   , "55dd4345-53e2-4a5d-b6e1-7ca357c7337d" -- Label
   , "7c29079d-5ead-4136-8b1d-467513350b79" -- Demv
+  , "b61aa791-7cc3-44bf-bba0-1c7faa9009a9" -- Toma
   ]
 
 getAdminCommand :: (State, Event) -> Maybe [String]
