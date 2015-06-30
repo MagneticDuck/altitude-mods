@@ -4,7 +4,7 @@ with pkgs;
 let
   mkLauncherConfig = import ./launcher-config.nix { inherit pkgs; };
 
-  mkMod = { launcherConfig ? null, service ? null }:
+  mkMod = { launcherConfig ? null, extraMaps ? null, service ? null }:
     stdenv.mkDerivation {
       name = "mod";
       
@@ -18,27 +18,34 @@ let
           cp ${launcherConfig} $out/servers/launcher_config.xml 
         ''}
 
+        mkdir -p $out/maps/
+        ${lib.concatMapStrings (map:"cp ${map.src} $out/maps/${map.name}\n") extraMaps}
+
         ${lib.optionalString (! isNull service) ''
           cp ${service} $out/run
         ''}
       '';
     };
 
+  mangoLobby = 
+    fetchurl {
+      name = "tbd_lobby.altx";
+      url = "http://altitudegame.com/map/mapDownload?m=4d63a8cb-26b5-45a8-b478-6a47aaa7270c";
+      sha256 = "1h03ra2wi26v8k2j8sjbhhc6grgb9l4ykfxcqr9frby3pgl52ngs";
+    };
+
   flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
-      pname = "flight-club";
-      version = "0.1.0.0";
+      pname = "flight-club"; version = "0.1.0.0";
       src = ./flight-club;
-      isLibrary = false;
-      isExecutable = true;
+      isLibrary = false; isExecutable = true;
       buildDepends = [ base json ];
-      homepage = "magnetic.uk.to";
       license = stdenv.lib.licenses.publicDomain;
     };
 
-  haskellEngine = 
+  haskellService = 
     stdenv.mkDerivation {
-      name = "engine"; 
+      name = "flight-club-service"; 
       src = haskellPackages.callPackage flightClub {};
       phases = "installPhase"; installPhase = "cp $src/bin/flight-club $out";
     };
@@ -52,13 +59,15 @@ in
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          server-name = "magneticDuck's FLIGHT CLUB";
-          server-password = "ruleone";
-          server-players = "40";
-          server-rcon = "snowmanbomb";
-          server-ball = true;
+          name = "magneticDuck's FLIGHT CLUB";
+          password = "ruleone";
+          players = "40";
+          rcon = "snowmanbomb";
+          lobby = "lobby_club";
+          maps = ["|premium|tbd|"];
         };
-      service = haskellEngine;
+      service = haskellService ;
+      extraMaps = [{src = mangoLobby; name = "lobby_club.altx";}];
     };
 
   simple-tbd =
