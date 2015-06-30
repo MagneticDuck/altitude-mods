@@ -31,6 +31,9 @@ main = do
     , feedB (getEventWhen ((== StopPlay) . getMode)) . mconcat $
         [ protectStopB ]
 
+      -- ** help command **
+    , helpB
+
       -- ** all-user command behaviours **
     , feedB getCommand . mconcat $
         [ normalCommandsB -- simple useful commands 
@@ -130,6 +133,51 @@ protectStopB = pureB (\(state, event) ->
   case event of
     MoveEvent player _ ->
       maybeToList $ flip AssignAction (-1) <$> nickFromID state player 
+    _ -> []
+  )
+-- }}}
+
+-- helpB {{{
+helpstr :: [String]
+helpstr =
+  [ "This is the helpfile for the flight club server system."
+  , "TEAM ASSIGNMENTS:"
+  , ">>The server manages a 'team assignment' state seperately from the actually effective teams currently in vigor on the server."
+  , ">>>>.move <player> <team>: moves the player with <player> as a (not case sensitive) infix of their name to <team>, where <team> is left, right, or spec."
+  , ">>>>.swap <player> <player>: swaps two players"
+  , ">>>>.swapteams: swaps the two teams"
+  , ">>>>.teams: displays the current teams for all to see."
+  , "SERVER MODES:"
+  , ">>The server can be in one of three modes, which are 'free', 'stop', or 'tourny'."
+  , ">>>>Free mode: the server acts like a pub server."
+  , ">>>>Stop move: no players may spawn."
+  , ">>>>Tourny mode: the teams are dictated by the server's team assignments." 
+  , "MISC COMMANDS:"
+  , ">>.ping: requests that the server make a 'pong' response."
+  , ">>.show: debug feature, displays the server state."
+  , ">>.wait10: starts a timer that makes the server respond in 10 seconds."]
+
+smallHelpstr :: [String]
+smallHelpstr =
+  [ "This is the reduced helpfile for the flight club server system."
+  , "TEAM ASSIGNMENTS: .move <player> <team>, .swap <player> <player>, .swapteams, .teams"
+  , "SERVER MODES: .free, .stop, .tourny" 
+  , "MISC COMMANDS: .ping, .show, .wait10" ]
+
+helpB :: Behaviour State Event
+helpB = pureB (\(state, event) ->
+  case event of
+    ChatEvent id str ->
+      case words . map toLower $ str of
+        [".help"] ->
+          case nickFromID state id of
+            Just player -> map (WhisperAction player) helpstr
+            _ -> []
+        [".h"] ->
+          case nickFromID state id of
+            Just player -> map (WhisperAction player) smallHelpstr
+            _ -> []
+        _ -> []
     _ -> []
   )
 -- }}}
