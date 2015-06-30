@@ -43,13 +43,23 @@ let
       license = stdenv.lib.licenses.publicDomain;
     };
 
-  haskellService = 
-    stdenv.mkDerivation {
-      name = "flight-club-service"; 
-      src = haskellPackages.callPackage flightClub {};
-      phases = "installPhase"; installPhase = "cp $src/bin/flight-club $out";
-    };
+  haskellService = admins:
+    writeScript "flight-club-service" ''
+      ${haskellPackages.callPackage flightClub {}}/bin/flight-club ${admins}
+    '';  
 
+  admins = 
+    [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
+      "faa8061c-5cd6-43bb-b389-561be0792b33" # kafka
+      "55dd4345-53e2-4a5d-b6e1-7ca357c7337d" # label
+      "7c29079d-5ead-4136-8b1d-467513350b79" # demv
+      "b61aa791-7cc3-44bf-bba0-1c7faa9009a9" # toma 
+    ];
+
+  adminFile = 
+    writeTextFile {
+      name = "adminfile"; text = lib.concatStringsSep "\n" admins;
+    };
 in
 
 {
@@ -66,8 +76,9 @@ in
           rcon = "snowmanbomb";
           lobby = "lobby_club";
           maps = ["|premium|tbd|" "|premium|1dm|" "|premium|ball|"];
+          admins = admins;
         };
-      service = haskellService ;
+      service = (haskellService adminFile);
       extraMaps = [{src = mangoLobby; name = "lobby_club.altx";}];
     };
 

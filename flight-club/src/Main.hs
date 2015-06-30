@@ -4,14 +4,20 @@ module Main where
 import Data.Maybe
 import Data.Char
 import Data.List
+import System.Environment
 
 import FlightClub.Core
 import FlightClub.State
 -- }}}
 
 main :: IO ()
-main = runBehaviour initState $ 
-  mconcat
+main = do
+  args <- getArgs
+  admins <- 
+    case args of 
+      [adminFile] -> fmap (map (take 36) . lines) $ readFile adminFile
+      _ -> return []
+  runBehaviour initState $ mconcat
     [ 
       -- ** always-on behaviours (related to basic functioning) **
       zoomB serverZoom watchStateB -- keeps track of player list
@@ -32,9 +38,9 @@ main = runBehaviour initState $
 
      -- ** admin-only command behaviours **
     , mconcat
-      [ feedB getAdminCommand adminCommandsB -- admin commands
+      [ feedB (getAdminCommand admins) adminCommandsB -- admin commands
       , feedB (getEventWhen ((== TournyPlay) . getMode)) $
-          feedB getAdminCommand tournyAdminCommandsB 
+          feedB (getAdminCommand admins) tournyAdminCommandsB 
           -- some admin commands have extra teeth in a tournament
           -- (assign all players to teams)
       ]

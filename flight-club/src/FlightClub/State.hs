@@ -93,8 +93,8 @@ adminVapors =
   , "b61aa791-7cc3-44bf-bba0-1c7faa9009a9" -- Toma
   ]
 
-getAdminCommand :: (State, Event) -> Maybe [String]
-getAdminCommand (state, event) =
+getAdminCommand :: [String] -> (State, Event) -> Maybe [String]
+getAdminCommand adminVapors (state, event) =
   let players = getPlayers . getServer $ state in
   case event of
     ChatEvent playerid str ->
