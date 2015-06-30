@@ -21,7 +21,7 @@ writeTextFile {
       <mapList>
         ${lib.concatStringsSep "\n" (map (map: ''
           <String value="${map}" />
-        '') maps)}
+        '') ([lobby] ++ maps))}
       </mapList>
       <mapRotationList>
         ${lib.optionalString (! isNull lobby) ''

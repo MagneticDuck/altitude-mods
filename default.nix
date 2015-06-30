@@ -65,7 +65,7 @@ in
           players = "40";
           rcon = "snowmanbomb";
           lobby = "lobby_club";
-          maps = ["|premium|tbd|", "lobby_club"];
+          maps = ["|premium|tbd|" "|premium|1dm|" "|premium|ball|"];
         };
       service = haskellService ;
       extraMaps = [{src = mangoLobby; name = "lobby_club.altx";}];
