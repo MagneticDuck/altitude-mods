@@ -162,7 +162,8 @@ smallHelpstr =
   [ "This is the reduced helpfile for the flight club server system."
   , "TEAM ASSIGNMENTS: .move <player> <team>, .swap <player> <player>, .swapteams, .teams"
   , "SERVER MODES: .free, .stop, .tourny" 
-  , "MISC COMMANDS: .ping, .show, .wait10" ]
+  , "MISC COMMANDS: .ping, .show, .wait10" 
+  , "BASIC USAGE for captains game: .free, .clear, .move (captains), .show (ask captains if they're ready), .tourny, .move (players), /vote changeMap"]
 
 helpB :: Behaviour State Event
 helpB = pureB (\(state, event) ->
