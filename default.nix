@@ -76,7 +76,7 @@ in
           players = "40";
           rcon = "snowmanbomb";
           lobby = "lobby_club";
-          maps = ["|premium|tbd|" "|premium|1dm|" "|premium|ball|" "|premium|1de|"];
+          maps = ["|premium|tbd|" "|premium|1dm|" "|premium|ball|" "|premium|1de|" "|premium|tdm|"];
           admins = admins;
         };
       service = (haskellService adminFile);
