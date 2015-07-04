@@ -34,6 +34,9 @@ main = do
       -- ** help command **
     , helpB
 
+      -- ** online admins command **
+    , showAdminB admins
+
       -- ** all-user command behaviours **
     , feedB getCommand . mconcat $
         [ normalCommandsB -- simple useful commands 
@@ -182,6 +185,24 @@ helpB = pureB (\(state, event) ->
     _ -> []
   )
 -- }}}
+
+-- showAdminB {{{
+showAdminB :: [String] -> Behaviour State Event
+showAdminB admins = pureB (\(state, event) ->
+  case event of
+    ChatEvent _ str ->
+      case words . map toLower $ str of
+        [".admin"] ->
+          case filter (flip elem admins . getVaporID) (getPlayers . getServer $ state) of
+            [] -> [MessageAction "no admins currently online! sorry!"]
+            players ->
+              [MessageAction $ 
+                "admins currently online: " ++ (unwords . map getNick $ players)]
+        _ -> []
+    _ -> []     
+  )
+-- }}}
+
 
 -- normalCommandsB {{{
 normalCommandsB :: Behaviour State [String]

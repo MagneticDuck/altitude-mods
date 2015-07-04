@@ -56,6 +56,7 @@ let
       "b61aa791-7cc3-44bf-bba0-1c7faa9009a9" # toma 
       "31456ecc-b5f2-4615-88b4-c4aeadcbf0a7" # golden
       "bf60335d-784f-4f31-98f8-3e0bb591b8c2" # moxy
+      "8612de03-f66c-4281-9d7b-8b751837a3c6" # jonus
     ];
 
   adminFile = 
