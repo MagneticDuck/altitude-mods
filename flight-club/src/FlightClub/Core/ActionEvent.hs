@@ -44,11 +44,12 @@ data ServerState =
 
 -- Action {{{
 data Action = 
-  MessageAction String
-  | WhisperAction Nick String
-  | AssignAction Nick Int
-  | TournyAssignAction Nick Int
-  | TournyAction Bool deriving (Show, Eq)
+  MessageAction String -- sends a message for all players to see
+  | WhisperAction Nick String -- sends a message for only one player to see
+  | AssignAction Nick Int -- assigns a player to a team
+  | TournyAssignAction Nick Int -- assigns a player to a team in a tournament
+  | TournyAction Bool -- enables or disables the tournament
+      deriving (Show, Eq)
 
 commandFromAction :: Action -> String
 commandFromAction action =
@@ -68,15 +69,14 @@ commandFromAction action =
           False -> "stopTournament"
 -- }}}
 
--- Event {{{
 data Event =
-  ChatEvent PlayerID String 
-  | JoinEvent Player
-  | LeaveEvent Player
-  | StatusEvent ServerState
-  | MoveEvent PlayerID Int
-  | ClockEvent Float
-  | PingEvent
+  ChatEvent PlayerID String  -- a player says something
+  | JoinEvent Player -- a player starts entering the server
+  | LeaveEvent Player -- a player leaves the server
+  | StatusEvent ServerState -- the server dumps its current status
+  | MoveEvent PlayerID Int -- a player moves to a team
+  | ClockEvent Float -- an interval of time passes
+  | PingEvent -- server sends log of recent latency time results 
   deriving (Show, Eq)
 
 eventFromLog  :: String -> Maybe Event
