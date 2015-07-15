@@ -58,6 +58,7 @@ let
       "bf60335d-784f-4f31-98f8-3e0bb591b8c2" # moxy
       "8612de03-f66c-4281-9d7b-8b751837a3c6" # jonus
       "2f2101b2-bfda-4f95-8f6d-a590992d8108" # max
+      "92f40cad-d09f-48b4-b165-5d3c3d97f26c" # brutal
     ];
 
   adminFile = 
@@ -92,7 +93,6 @@ in
         mkLauncherConfig {
           server-name = "magnet_ticDuck's Test Server";
           server-players = "16";
-          server-rcon = "snowmanbomb";
         };
     };
 
