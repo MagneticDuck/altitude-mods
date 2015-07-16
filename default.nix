@@ -59,6 +59,7 @@ let
       "8612de03-f66c-4281-9d7b-8b751837a3c6" # jonus
       "2f2101b2-bfda-4f95-8f6d-a590992d8108" # max
       "92f40cad-d09f-48b4-b165-5d3c3d97f26c" # brutal
+      "0204199e-fee0-47fc-9c22-efcbbdedc9af" # fluffy
     ];
 
   adminFile = 
