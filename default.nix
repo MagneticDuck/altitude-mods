@@ -60,6 +60,7 @@ let
       "2f2101b2-bfda-4f95-8f6d-a590992d8108" # max
       "92f40cad-d09f-48b4-b165-5d3c3d97f26c" # brutal
       "0204199e-fee0-47fc-9c22-efcbbdedc9af" # fluffy
+      "02a33655-b2eb-42c2-bc88-fff24240f0d8" # phyx
     ];
 
   adminFile = 
