@@ -76,7 +76,7 @@ in
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          name = "magneticDuck's FLIGHT CLUB";
+          name = "FLIGHT CLUB";
           port = "27276";
           password = "ruleone";
           players = "40";
