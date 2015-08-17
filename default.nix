@@ -34,6 +34,20 @@ let
       sha256 = "1h03ra2wi26v8k2j8sjbhhc6grgb9l4ykfxcqr9frby3pgl52ngs";
     };
 
+  jonusArrowTbd = 
+    fetchurl {
+      name = "tbd_arrow.altx";
+      url = "http://magnetic.uk.to/misc/maps/tbd_arrow.altx";
+      sha256 = "1iwzh6gnxmkcbiiff99ha1cb92yvnznz2cw9wbm1rhpw8yi5ggi9";
+    };
+
+  jonusArrowBall =
+    fetchurl {
+      name = "ball_arrow.altx";
+      url = "http://magnetic.uk.to/misc/maps/ball_arrow.altx";
+      sha256 = "01nbjmhnni2yiwpjhsjjw067563mwrlqxhz3xgvs72jmr32fykxr";
+    };
+
   flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
       pname = "flight-club"; version = "0.1.0.0";
@@ -82,11 +96,14 @@ in
           players = "40";
           rcon = "snowmanbomb";
           lobby = "lobby_club";
-          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|"];
+          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow"];
           admins = admins;
         };
       service = (haskellService adminFile);
-      extraMaps = [{src = mangoLobby; name = "lobby_club.altx";}];
+      extraMaps = [
+        {src = mangoLobby; name = "lobby_club.altx";}
+        {src = jonusArrowBall; name = "ball_arrow.altx";}
+        {src = jonusArrowTbd; name = "tbd_arrow.altx";}];
     };
 
   simple-tbd =
