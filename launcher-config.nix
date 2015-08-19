@@ -12,7 +12,7 @@ writeTextFile {
 <?xml version="1.0" encoding="UTF-8"?>
 <ServerLauncherConfig ip="" upnpEnabled="true" updatePort="27275">
   <servers>
-    <AltitudeServerConfig port="${port}" downloadMaxKilobytesPerSecond="40" downloadHttpSource="" serverName="${name}" maxPlayerCount="${players}" hardcore="true" autoBalanceTeams="false" preventTeamSwitching="false" disableBalanceTeamsPopup="true" lanServer="false" callEndOfRoundVote="false" disallowDemoUsers="false" rconEnabled="true" rconPassword="${rcon}" maxPing="1000" minLevel="0" maxLevel="0" secretCode="${password}" cameraViewScalePercent="100">
+    <AltitudeServerConfig port="${port}" downloadMaxKilobytesPerSecond="500" downloadHttpSource="" serverName="${name}" maxPlayerCount="${players}" hardcore="true" autoBalanceTeams="false" preventTeamSwitching="false" disableBalanceTeamsPopup="true" lanServer="false" callEndOfRoundVote="false" disallowDemoUsers="false" rconEnabled="true" rconPassword="${rcon}" maxPing="1000" minLevel="0" maxLevel="0" secretCode="${password}" cameraViewScalePercent="100">
       <adminsByVaporID>
         ${lib.concatStringsSep "\n" (map (uuid: ''
           <UUID UUID="${uuid}" />
