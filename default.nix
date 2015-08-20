@@ -38,14 +38,14 @@ let
     fetchurl {
       name = "tbd_arrow_new.altx";
       url = "http://magnetic.uk.to/misc/maps/tbd_arrow.altx";
-      sha256 = "11pw2zzwrsv12hvvdhni34bpv1y6j7gbl2364rrhx8n38rvib8m8";
+      sha256 = "0kqk8d8yb9d9n1wvcy9ij53mlvmcmxpxgskwrh6smgrs3bs2v73l";
     };
 
   jonusArrowTbd2 =
     fetchurl {
       name = "tbd_arrow2.altx";
       url = "http://magnetic.uk.to/misc/maps/tbd_arrow2.altx";
-      sha256 = "121ax4kwb8a3qj2h5x5gylb40zgwhv2f26l36w4aj244vm7v54rk";
+      sha256 = "1ldsfqmkf4k4bsfbnckl6lwac8vqip6bxpplr5g26s4vlkij9vfa";
     };
 
   jonusArrowBall =
