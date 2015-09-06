@@ -82,6 +82,8 @@ let
       "92f40cad-d09f-48b4-b165-5d3c3d97f26c" # brutal
       "0204199e-fee0-47fc-9c22-efcbbdedc9af" # fluffy
       "02a33655-b2eb-42c2-bc88-fff24240f0d8" # phyx
+      "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
+      "d2ade87e-09a6-4ff9-af7b-9ae9f58fd570" # elusive
     ];
 
   adminFile = 
