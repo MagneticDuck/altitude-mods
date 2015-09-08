@@ -84,6 +84,7 @@ let
       "02a33655-b2eb-42c2-bc88-fff24240f0d8" # phyx
       "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
       "d2ade87e-09a6-4ff9-af7b-9ae9f58fd570" # elusive
+      "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
     ];
 
   adminFile = 
