@@ -141,7 +141,7 @@ in
           players = "40";
           lobby = "ball_tbg";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
-          admins = admins;
+          admins = tbgAdmins;
         };
       service = (haskellService (adminFile tbgAdmins));
       extraMaps = [
