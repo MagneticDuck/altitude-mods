@@ -139,7 +139,7 @@ in
           port = "27277";
           password = "{TBG}";
           players = "40";
-          lobby = "ball_tbd";
+          lobby = "ball_tbg";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
           admins = admins;
         };
