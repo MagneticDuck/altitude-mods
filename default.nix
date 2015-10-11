@@ -115,13 +115,14 @@ in
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
     };
-
+  
   simple-tbd =
     mkMod {
       launcherConfig =
         mkLauncherConfig {
           server-name = "magnet_ticDuck's Test Server";
           server-players = "16";
+          port = "27277";
         };
     };
 
