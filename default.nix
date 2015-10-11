@@ -116,14 +116,24 @@ in
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
     };
   
-  simple-tbd =
+  tbg =
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          server-name = "magnet_ticDuck's Test Server";
-          server-players = "16";
+          name = "{TBG} Official Training Server";
           port = "27277";
+          password = "ruleone";
+          players = "40";
+          lobby = "lobby_club";
+          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
+          admins = admins;
         };
+      service = (haskellService adminFile);
+      extraMaps = [
+        {src = mangoLobby; name = "lobby_club.altx";}
+        {src = jonusArrowBall; name = "ball_arrow.altx";}
+        {src = jonusArrowTbd; name = "tbd_arrow.altx";}
+        {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
     };
 
   inherit haskellEngine;
