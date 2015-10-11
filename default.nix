@@ -55,6 +55,14 @@ let
       sha256 = "1ad0pg0mqq4ql39i7wl243wq9l3d44mkdzq4w7mdz9vdgxrdavjp";
     };
 
+  tbgLobby =
+    fetchurl {
+      name = "ball_tbd.altx";
+      url = "http://www.dropbox.com/s/7yj6ubq7vlwxxo8/ball_tbg.altx?dl=0";
+      sha256 = "0dwyvvjdnyhh66jfzsz208mm3iyndzxbs47l2zvc0ghmvj8fhim2";
+
+    };
+
   flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
       pname = "flight-club"; version = "0.1.0.0";
@@ -87,10 +95,17 @@ let
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
     ];
 
-  adminFile = 
+  tbgAdmins = 
+    [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
+      "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
+      "25c28e39-8c93-4adb-91c0-783cb9d75959" # smile
+    ];
+
+  adminFile = customAdmins:
     writeTextFile {
-      name = "adminfile"; text = lib.concatStringsSep "\n" admins;
+      name = "adminfile"; text = lib.concatStringsSep "\n" customAdmins;
     };
+  
 in
 
 {
@@ -108,7 +123,7 @@ in
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
           admins = admins;
         };
-      service = (haskellService adminFile);
+      service = (haskellService (adminFile admins));
       extraMaps = [
         {src = mangoLobby; name = "lobby_club.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
@@ -122,15 +137,15 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "ruleone";
+          password = "{TBG}";
           players = "40";
-          lobby = "lobby_club";
+          lobby = "ball_tbd";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
           admins = admins;
         };
-      service = (haskellService adminFile);
+      service = (haskellService (adminFile tbgAdmins));
       extraMaps = [
-        {src = mangoLobby; name = "lobby_club.altx";}
+        {src = tbgLobby; name = "ball_tbg.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
