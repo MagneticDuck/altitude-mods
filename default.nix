@@ -93,6 +93,7 @@ let
       "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
       "d2ade87e-09a6-4ff9-af7b-9ae9f58fd570" # elusive
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
+      "5ec76fe2-7074-4926-8873-a0e2bf2d9ba5" # dmcm
     ];
 
   tbgAdmins = 
