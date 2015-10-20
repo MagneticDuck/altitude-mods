@@ -57,10 +57,9 @@ let
 
   tbgLobby =
     fetchurl {
-      name = "ball_tbd.altx";
-      url = "http://www.dropbox.com/s/7yj6ubq7vlwxxo8/ball_tbg.altx?dl=0";
-      sha256 = "0dwyvvjdnyhh66jfzsz208mm3iyndzxbs47l2zvc0ghmvj8fhim2";
-
+      name = "lobby_tbg.altx";
+      url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
+      sha256 = "1rq0nbsrsgm9jp0f17087ayy0ykxw7rwjwxrk2fbyi75v8dg2a29";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -140,13 +139,13 @@ in
           port = "27277";
           password = "{TBG}";
           players = "40";
-          lobby = "ball_tbg";
+          lobby = "tbg_lobby";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
           admins = tbgAdmins;
         };
       service = (haskellService (adminFile tbgAdmins));
       extraMaps = [
-        {src = tbgLobby; name = "ball_tbg.altx";}
+        {src = tbgLobby; name = "lobby_tbg.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
