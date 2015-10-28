@@ -59,7 +59,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "1rq0nbsrsgm9jp0f17087ayy0ykxw7rwjwxrk2fbyi75v8dg2a29";
+      sha256 = "0x6f1zqlqnrbl5vjgjy0mxg1ap6pqzmd8a02gjimrbyvn3rra14p";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -99,6 +99,7 @@ let
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # smile
+      "2cc35ae9-dd99-413b-bbd3-2e1a4ac5b024" # ring
     ];
 
   adminFile = customAdmins:
