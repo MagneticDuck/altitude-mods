@@ -138,7 +138,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "{TBG}";
+          password = "mats";
           players = "40";
           lobby = "lobby_tbg";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
