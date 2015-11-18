@@ -106,6 +106,18 @@ let
     writeTextFile {
       name = "adminfile"; text = lib.concatStringsSep "\n" customAdmins;
     };
+
+  biellMaps = fetchFromGitHub {
+    owner = "biell";
+    repo = "alti-maps";
+    rev = "c45cd6d30925e1c09dc3826d1b1e0aa3df4c3bca";
+    sha256 = "1y1yabmkrkkaf4jzsfhzdvxicg1hi3zq1y04jjlmwxhlhl1wgww4";
+  };
+
+  getBiellMap = mapName:
+    runCommand "biell_map" {maps = biellMaps;} ''
+      cp $maps/maps/${mapName} $out
+    '';
   
 in
 
@@ -141,15 +153,17 @@ in
           password = "mats";
           players = "40";
           lobby = "lobby_tbg";
-          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2"];
+          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek"];
           admins = tbgAdmins;
         };
-      service = (haskellService (adminFile tbgAdmins));
       extraMaps = [
         {src = tbgLobby; name = "lobby_tbg.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
-        {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}];
+        {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}
+        {src = getBiellMap "ball_race_asteroids.altx"; name = "ball_race_asteroids.altx";}
+        {src = getBiellMap "ball_race_eastern_creek.altx"; name = "ball_race_eastern_creek.altx";}
+      ];
     };
 
   inherit haskellEngine;
