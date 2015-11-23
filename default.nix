@@ -151,6 +151,7 @@ in
           name = "{TBG} Official Training Server";
           port = "27277";
           password = "mats";
+          rcon = "tornadoguard";
           players = "40";
           lobby = "lobby_tbg";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek"];
