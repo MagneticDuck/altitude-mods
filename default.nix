@@ -59,7 +59,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "0x6f1zqlqnrbl5vjgjy0mxg1ap6pqzmd8a02gjimrbyvn3rra14p";
+      sha256 = "1lanj65mf2fqgn5irp2phv8l8rhp9m62i7hxv9g4xc4k613ivd18";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
