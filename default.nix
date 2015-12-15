@@ -92,6 +92,7 @@ let
       "d2ade87e-09a6-4ff9-af7b-9ae9f58fd570" # elusive
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
       "5ec76fe2-7074-4926-8873-a0e2bf2d9ba5" # dmcm
+      "ba9e19db-2cec-4c01-b984-14ca9313f9ff" # rawr
     ];
 
   tbgAdmins = 
