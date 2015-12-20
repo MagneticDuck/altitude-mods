@@ -59,7 +59,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "1lanj65mf2fqgn5irp2phv8l8rhp9m62i7hxv9g4xc4k613ivd18";
+      sha256 = "05njiqlx94bblx4k1ffv0ifrm1da00g35d0l4bn2pxgz84zpwc2g";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -150,7 +150,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "mats";
+          password = "bancat";
           rcon = "tornadoguard";
           players = "40";
           lobby = "lobby_tbg";
