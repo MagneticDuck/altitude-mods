@@ -100,6 +100,7 @@ let
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # smile
       "2cc35ae9-dd99-413b-bbd3-2e1a4ac5b024" # ring
+      "438285fd-4a8c-44fe-9de1-3a52f53268bb" # rock
     ];
 
   adminFile = customAdmins:
