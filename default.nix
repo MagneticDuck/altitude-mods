@@ -27,6 +27,13 @@ let
       '';
     };
 
+  tbdRabbit = 
+    fetchurl {
+      name = "tbd_rabbit.altx";
+      url = "https://www.dropbox.com/s/yuh78tf45sjq4tl/tbd_rabbit.altx?dl=0";
+      sha256 = "0ms5ydaj73nvavvfsm2p0cdxvj64qjlfqi21c45axrcsmixhyppq";
+    };
+
   mangoLobby = 
     fetchurl {
       name = "tbd_lobby.altx";
@@ -59,7 +66,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "05ssswhngx1iv4d345nrz66iqxv5c9zj8jriv1wk9kspaada84w6";
+      sha256 = "1rlfwdkhr7cn0f19klqsi919znqhvga9k6kfk82m3gg3ij5sl9ab";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -155,10 +162,11 @@ in
           rcon = "tornadoguard";
           players = "40";
           lobby = "lobby_tbg";
-          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek"];
+          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek" "tbd_rabbit"];
           admins = tbgAdmins;
         };
       extraMaps = [
+        {src = tbdRabbit; name = "tbd_rabbit.altx";}
         {src = tbgLobby; name = "lobby_tbg.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
