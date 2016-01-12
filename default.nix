@@ -158,7 +158,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "bancat";
+          password = "discord";
           rcon = "tornadoguard";
           players = "40";
           lobby = "lobby_tbg";
