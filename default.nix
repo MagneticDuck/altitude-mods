@@ -105,9 +105,9 @@ let
   tbgAdmins = 
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
-      "25c28e39-8c93-4adb-91c0-783cb9d75959" # smile
       "2cc35ae9-dd99-413b-bbd3-2e1a4ac5b024" # ring
       "438285fd-4a8c-44fe-9de1-3a52f53268bb" # rock
+      "2ac67d3a-3103-4443-9fb4-1d72219ddb88"
     ];
 
   adminFile = customAdmins:
@@ -158,7 +158,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "discord";
+          password = "ChickenSun123";
           rcon = "tornadoguard";
           players = "40";
           lobby = "lobby_tbg";
