@@ -66,7 +66,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "1rlfwdkhr7cn0f19klqsi919znqhvga9k6kfk82m3gg3ij5sl9ab";
+      sha256 = "1cxbl7cwdn29k91hihhc96v4xzsp292vajca42w1p1irjv3xjqmq";
     };
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -106,7 +106,8 @@ let
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
       "2cc35ae9-dd99-413b-bbd3-2e1a4ac5b024" # ring
-      "438285fd-4a8c-44fe-9de1-3a52f53268bb" # rock
+      "c9e24c41-292d-4d40-b76c-230d8f30ef32"
+      "e9ff8bb7-ca22-4cc6-b45b-187db4697e9c"
       "2ac67d3a-3103-4443-9fb4-1d72219ddb88"
     ];
 
