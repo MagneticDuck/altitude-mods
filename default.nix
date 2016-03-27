@@ -9,7 +9,7 @@ let
       inherit name;
       phases = "installPhase";
       installPhase = ''
-        curl $url > "$out";
+        ${curl}/bin/curl $url > "$out";
       '';
     };
 
