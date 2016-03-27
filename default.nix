@@ -3,15 +3,6 @@ with pkgs;
 
 let
   mkLauncherConfig = import ./launcher-config.nix { inherit pkgs; };
-  
-  fetchStaticUrl = { name, url }:
-    stdenv.mkDerivation {
-      inherit name;
-      phases = "installPhase";
-      installPhase = ''
-        ${curl}/bin/curl $url > "$out";
-      '';
-    };
 
   mkMod = { launcherConfig ? null, extraMaps ? null, service ? null }:
     stdenv.mkDerivation {
@@ -79,34 +70,39 @@ let
     };
     
   ballAntre =
-    fetchStaticUrl {
+    fetchurl {
       name = "ball_antre_pb.altx";
-      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_antre_pb.altx?dl=0";
+      url = "http://magnetic.uk.to/misc/maps/ball_antre_pb.altx";
+      sha256 = "1vpa0lymcrk7zr8kyri5n5bmrf3akd9lmng5sj7dlbbp5aa01fk7";
     };
     
   ballCave =
-    fetchStaticUrl {
+    fetchurl {
       name = "ball_cave_pb.altx";
-      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_cave_pb.altx?dl=0";
+      url = "http://magnetic.uk.to/misc/maps/ball_cave_pb.altx";
+      sha256 = "03zsnw9diqqagq1pmcsc1m86zk99yilhlmqh03hhk1kwv79if8ls";
     };
     
   ballIce =
-    fetchStaticUrl {
+    fetchurl {
       name = "ball_ice_pb.altx";
-      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_ice_pb.altx?dl=0";
+      url = "http://magnetic.uk.to/misc/maps/ball_ice_pb.altx";
+      sha256 = "1ny224z5alp1p8h1yqs2yn78k3k66wp5ffs0kp84zwfsdk63wml7";
     };
     
-   ballLostcity2 =
-    fetchStaticUrl {
+  ballLostcity2 =
+    fetchurl {
       name = "ball_lostcity2_pb.altx";
-      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_lostcity2_pb.altx?dl=0";
-    };   
+      url = "http://magnetic.uk.to/misc/maps/ball_lostcity2_pb.altx";
+      sha256 = "0fmila3kdkmkr1j4sf7qzl4d41kad148x7qxqw3lrb756bnf3h7g";
+    };
     
   ballSnow =
-    fetchStaticUrl {
+    fetchurl {
       name = "ball_snow_pb.altx";
-      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_snow_pb.altx?dl=0";
-    };       
+      url = "http://magnetic.uk.to/misc/maps/ball_snow_pb.altx";
+      sha256 = "0cg6v1gkmm891jgss1sdp3a59j4nk804ji29ndcap03qvzbnb6sa";
+    };    
 
   flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
