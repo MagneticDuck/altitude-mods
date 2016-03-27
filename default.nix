@@ -68,6 +68,41 @@ let
       url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
       sha256 = "1cxbl7cwdn29k91hihhc96v4xzsp292vajca42w1p1irjv3xjqmq";
     };
+    
+  ballAntre =
+    fetchurl {
+      name = "ball_antre_pb.altx";
+      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_antre_pb.altx?dl=0";
+      sha256 = "1vpa0lymcrk7zr8kyri5n5bmrf3akd9lmng5sj7dlbbp5aa01fk7";
+    };
+    
+  ballCave =
+    fetchurl {
+      name = "ball_cave_pb.altx";
+      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_cave_pb.altx?dl=0";
+      sha256 = "02c4r408bm2c16sgsparpy36mh2d58viyjcvg9x7cfz6ilmnzwc1";
+    };
+    
+  ballIce =
+    fetchurl {
+      name = "ball_ice_pb.altx";
+      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_ice_pb.altx?dl=0";
+      sha256 = "0sjjyg30c8v97853hhqac14dxsrpc692nwsbha7rvj8i27bbz41l";
+    };
+    
+   ballLostcity2 =
+    fetchurl {
+      name = "ball_lostcity2_pb.altx";
+      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_lostcity2_pb.altx?dl=0";
+      sha256 = "1pki222sxy173m4skq7s8ykxjgbg50vmkqw8xw2ikagpln8nfigr";
+    };   
+    
+  ballSnow =
+    fetchurl {
+      name = "ball_show_pb.altx";
+      url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_snow_pb.altx?dl=0";
+      sha256 = "0j3dgbs1igya7d4g2pk0mz37vs5dammx9z6blw6kmy1nqn8s0mq1";
+    };       
 
   flightClub = { mkDerivation, base, stdenv, json }:
     mkDerivation {
@@ -174,6 +209,12 @@ in
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}
         {src = getBiellMap "ball_race_asteroids.altx"; name = "ball_race_asteroids.altx";}
         {src = getBiellMap "ball_race_eastern_creek.altx"; name = "ball_race_eastern_creek.altx";}
+        
+        {src = ballAntre; name = "ball_antre_pb.altx";}
+        {src = ballCave; name = "ball_cave_pb.altx";}
+        {src = ballIce; name = "ball_ice_pb.altx";}
+        {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
+        {src = ballShow; name = "ball_snow_pb.altx";}    
       ];
     };
 
