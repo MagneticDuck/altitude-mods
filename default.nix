@@ -80,7 +80,7 @@ let
     fetchurl {
       name = "ball_cave_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_cave_pb.altx?dl=0";
-      sha256 = "15yyhq4nsbfxl0cb1zgi71j791xjpyjalb4glbjn3y3n5b8a476g";
+      sha256 = "1wq45wpcnz8874976br8mgbjayxh6v58ijh2d73nh6qfwxida2vw";
     };
     
   ballIce =
