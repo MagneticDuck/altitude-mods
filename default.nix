@@ -99,7 +99,7 @@ let
     
   ballSnow =
     fetchurl {
-      name = "ball_show_pb.altx";
+      name = "ball_snow_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_snow_pb.altx?dl=0";
       sha256 = "0j3dgbs1igya7d4g2pk0mz37vs5dammx9z6blw6kmy1nqn8s0mq1";
     };       
@@ -214,7 +214,7 @@ in
         {src = ballCave; name = "ball_cave_pb.altx";}
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
-        {src = ballShow; name = "ball_snow_pb.altx";}    
+        {src = ballSnow; name = "ball_snow_pb.altx";}    
       ];
     };
 
