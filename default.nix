@@ -3,6 +3,15 @@ with pkgs;
 
 let
   mkLauncherConfig = import ./launcher-config.nix { inherit pkgs; };
+  
+  fetchStaticUrl = { name, url }:
+    stdenv.mkDerivation {
+      inherit name;
+      phases = "installPhase";
+      installPhase = ''
+        curl $url > "$out";
+      '';
+    };
 
   mkMod = { launcherConfig ? null, extraMaps ? null, service ? null }:
     stdenv.mkDerivation {
@@ -70,38 +79,33 @@ let
     };
     
   ballAntre =
-    fetchurl {
+    fetchStaticUrl {
       name = "ball_antre_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_antre_pb.altx?dl=0";
-      sha256 = "1vpa0lymcrk7zr8kyri5n5bmrf3akd9lmng5sj7dlbbp5aa01fk7";
     };
     
   ballCave =
-    fetchurl {
+    fetchStaticUrl {
       name = "ball_cave_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_cave_pb.altx?dl=0";
-      sha256 = "1wq45wpcnz8874976br8mgbjayxh6v58ijh2d73nh6qfwxida2vw";
     };
     
   ballIce =
-    fetchurl {
+    fetchStaticUrl {
       name = "ball_ice_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_ice_pb.altx?dl=0";
-      sha256 = "0sjjyg30c8v97853hhqac14dxsrpc692nwsbha7rvj8i27bbz41l";
     };
     
    ballLostcity2 =
-    fetchurl {
+    fetchStaticUrl {
       name = "ball_lostcity2_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_lostcity2_pb.altx?dl=0";
-      sha256 = "1pki222sxy173m4skq7s8ykxjgbg50vmkqw8xw2ikagpln8nfigr";
     };   
     
   ballSnow =
-    fetchurl {
+    fetchStaticUrl {
       name = "ball_snow_pb.altx";
       url = "https://www.dropbox.com/sh/b10kan7xis6bcpr/AADAxxMbiUzNdOxwEs37SvpIa/1/ball_snow_pb.altx?dl=0";
-      sha256 = "0j3dgbs1igya7d4g2pk0mz37vs5dammx9z6blw6kmy1nqn8s0mq1";
     };       
 
   flightClub = { mkDerivation, base, stdenv, json }:
