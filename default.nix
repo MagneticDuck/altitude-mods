@@ -209,7 +209,6 @@ in
         {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}
         {src = getBiellMap "ball_race_asteroids.altx"; name = "ball_race_asteroids.altx";}
         {src = getBiellMap "ball_race_eastern_creek.altx"; name = "ball_race_eastern_creek.altx";}
-        
         {src = ballAntre; name = "ball_antre_pb.altx";}
         {src = ballCave; name = "ball_cave_pb.altx";}
         {src = ballIce; name = "ball_ice_pb.altx";}
