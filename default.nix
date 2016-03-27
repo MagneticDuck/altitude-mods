@@ -198,7 +198,8 @@ in
           rcon = "ChickenSun123";
           players = "40";
           lobby = "lobby_tbg";
-          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek" "tbd_rabbit"];
+          maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "ball_race_asteroids" "ball_race_eastern_creek" "tbd_rabbit"
+                  "ball_antre_pb" "ball_cave_pb" "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb"];
           admins = tbgAdmins;
         };
       extraMaps = [
