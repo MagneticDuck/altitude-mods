@@ -193,7 +193,7 @@ let
     name = "1lh_metropolis.altx";
     url = "http://altitudegame.com/map/mapDownload?m=ee74f4aa-a13d-4b75-8b6f-653a6e04b78a";
     sha256 = "189qpraqsmjb6wbrkkf61sfy8dvgxijpd8gphasxsqjqhysy0n32";
-  }
+  };
 
   onelhmiddleground =
     fetchurl {
@@ -349,7 +349,7 @@ in
         {src = onelhplanepark; name = "1lh_planepark.altx";}
         {src = onelhslick; name = "1lh_slick.altx";}
         {src = onelhtwisted; name = "1lh_twisted.altx";}
-        {src = 1lh_underpark; name = "1lh_underpark.altx";}
+        {src = onelhunderpark; name = "1lh_underpark.altx";}
         {src = onelhwoods; name = "1lh_woods.altx";} 
       ];
     };
