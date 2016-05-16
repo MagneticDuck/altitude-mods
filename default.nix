@@ -305,6 +305,30 @@ let
     runCommand "biell_map" {maps = biellMaps;} ''
       cp $maps/maps/${mapName} $out
     '';
+
+  onelhMaps = [
+        {src = onelhroids; name = "1lh_asteroids.altx";}
+        {src = onelhroids2; name = "1lh_asteroids2.altx";}
+        {src = onelhcave; name = "1lh_cave.altx";}
+        {src = onelhcave2; name = "1lh_cave2.altx";}
+        {src = onelhclocktower; name = "1lh_clocktower.altx";}
+        {src = onelhcore; name = "1lh_core.altx";}
+        {src = onelhfallout; name = "1lh_fallout.altx";}
+        {src = onelhgrotto; name = "1lh_grotto.altx";}
+        {src = onelhlocomotion; name = "1lh_locomotion.altx";}
+        {src = onelhmayhem; name = "1lh_mayhem.altx";}
+        {src = onelhmayhem2; name = "1lh_mayhem2.altx";}
+        {src = onelhmaze; name = "1lh_maze";}
+        {src = onelhmetropolis; name = "1lh_metropolis.altx";}
+        {src = onelhmiddleground; name = "1lh_middleground";}
+        {src = onelhplanepark; name = "1lh_planepark.altx";}
+        {src = onelhslick; name = "1lh_slick.altx";}
+        {src = onelhtwisted; name = "1lh_twisted.altx";}
+        {src = onelhunderpark; name = "1lh_underpark.altx";}
+        {src = onelhwoods; name = "1lh_woods.altx";}
+        {src = balltron; name = "ball_tron.altx";}
+      ];
+
   
 in
 
@@ -330,28 +354,7 @@ in
         {src = mangoLobby; name = "lobby_club.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = jonusArrowTbd; name = "tbd_arrow.altx";}
-        {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}
-
-        {src = onelhroids; name = "1lh_asteroids.altx";}
-        {src = onelhroids2; name = "1lh_asteroids2.altx";}
-        {src = onelhcave; name = "1lh_cave.altx";}
-        {src = onelhcave2; name = "1lh_cave2.altx";}
-        {src = onelhclocktower; name = "1lh_clocktower.altx";}
-        {src = onelhcore; name = "1lh_core.altx";}
-        {src = onelhfallout; name = "1lh_fallout.altx";}
-        {src = onelhgrotto; name = "1lh_grotto.altx";}
-        {src = onelhlocomotion; name = "1lh_locomotion.altx";}
-        {src = onelhmayhem; name = "1lh_mayhem.altx";}
-        {src = onelhmayhem2; name = "1lh_mayhem2.altx";}
-        {src = onelhmaze; name = "1lh_maze";}
-        {src = onelhmetropolis; name = "1lh_metropolis.altx";}
-        {src = onelhmiddleground; name = "1lh_middleground";}
-        {src = onelhplanepark; name = "1lh_planepark.altx";}
-        {src = onelhslick; name = "1lh_slick.altx";}
-        {src = onelhtwisted; name = "1lh_twisted.altx";}
-        {src = onelhunderpark; name = "1lh_underpark.altx";}
-        {src = onelhwoods; name = "1lh_woods.altx";} 
-      ];
+        {src = jonusArrowTbd2; name = "tbd_arrow2.altx";}] ++ onelhMaps;
     };
   
   tbg =
@@ -379,29 +382,7 @@ in
         {src = ballCave; name = "ball_cave_pb.altx";}
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
-        {src = ballSnow; name = "ball_snow_pb.altx";}
-
-        {src = onelhroids; name = "1lh_asteroids.altx";}
-        {src = onelhroids2; name = "1lh_asteroids2.altx";}
-        {src = onelhcave; name = "1lh_cave.altx";}
-        {src = onelhcave2; name = "1lh_cave2.altx";}
-        {src = onelhclocktower; name = "1lh_clocktower.altx";}
-        {src = onelhcore; name = "1lh_core.altx";}
-        {src = onelhfallout; name = "1lh_fallout.altx";}
-        {src = onelhgrotto; name = "1lh_grotto.altx";}
-        {src = onelhlocomotion; name = "1lh_locomotion.altx";}
-        {src = onelhmayhem; name = "1lh_mayhem.altx";}
-        {src = onelhmayhem2; name = "1lh_mayhem2.altx";}
-        {src = onelhmaze; name = "1lh_maze";}
-        {src = onelhmetropolis; name = "1lh_metropolis.altx";}
-        {src = onelhmiddleground; name = "1lh_middleground";}
-        {src = onelhplanepark; name = "1lh_planepark.altx";}
-        {src = onelhslick; name = "1lh_slick.altx";}
-        {src = onelhtwisted; name = "1lh_twisted.altx";}
-        {src = 1lh_underpark; name = "1lh_underpark.altx";}
-        {src = onelhwoods; name = "1lh_woods.altx";}
-        {src = balltron; name = "ball_tron.altx";}
-      ];
+        {src = ballSnow; name = "ball_snow_pb.altx";} ] ++ onelhMaps;
     };
 
   inherit haskellEngine;
