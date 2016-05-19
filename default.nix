@@ -261,6 +261,8 @@ let
 
   admins = 
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
+      "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
+      "c9e24c41-292d-4d40-b76c-230d8f30ef32" # stam2
       "faa8061c-5cd6-43bb-b389-561be0792b33" # kafka
       "55dd4345-53e2-4a5d-b6e1-7ca357c7337d" # label
       "7c29079d-5ead-4136-8b1d-467513350b79" # demv
@@ -273,10 +275,10 @@ let
       "02a33655-b2eb-42c2-bc88-fff24240f0d8" # phyx
       "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
       "d2ade87e-09a6-4ff9-af7b-9ae9f58fd570" # elusive
-      "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
-      "c9e24c41-292d-4d40-b76c-230d8f30ef32" # stam2
       "5ec76fe2-7074-4926-8873-a0e2bf2d9ba5" # dmcm
       "ba9e19db-2cec-4c01-b984-14ca9313f9ff" # rawr
+      "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
+      "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
     ];
 
   tbgAdmins = 
@@ -287,6 +289,9 @@ let
       "e9ff8bb7-ca22-4cc6-b45b-187db4697e9c" # mani to ba
       "2ac67d3a-3103-4443-9fb4-1d72219ddb88" # nuffhuff
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
+      "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
+      "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
+      "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
     ];
 
   adminFile = customAdmins:
@@ -326,7 +331,6 @@ let
         {src = onelhtwisted; name = "1lh_twisted.altx";}
         {src = onelhunderpark; name = "1lh_underpark.altx";}
         {src = onelhwoods; name = "1lh_woods.altx";}
-        {src = balltron; name = "ball_tron.altx";}
       ];
 
   
@@ -382,7 +386,8 @@ in
         {src = ballCave; name = "ball_cave_pb.altx";}
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
-        {src = ballSnow; name = "ball_snow_pb.altx";} ] ++ onelhMaps;
+        {src = ballSnow; name = "ball_snow_pb.altx";}
+        {src = balltron; name = "ball_tron.altx";} ] ++ onelhMaps;
     };
 
   inherit haskellEngine;
