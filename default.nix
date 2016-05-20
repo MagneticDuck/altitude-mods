@@ -65,15 +65,29 @@ let
   tbgLobby =
     fetchurl {
       name = "lobby_tbg.altx";
-      url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "1cxbl7cwdn29k91hihhc96v4xzsp292vajca42w1p1irjv3xjqmq";
+      url = "http://altitudegame.com/map/mapDownload?m=682c46f3-581f-4b9c-bbc2-08e20c7dbe45";
+      sha256 = "0v2zmr9kyjh79jqmd0f42nr5rcprnp3hz4nn3a8qkc8f090xgw09";
     };
     
   tbgsummerlobby =
     fetchurl {
     	name = "lobby_tbgsummer.altx";
-    	url = "https://altitudegame.com/map/mapDownload?m=10bad8d9-a2c1-48f6-b101-fa7ca5880732";
+    	url = "http://altitudegame.com/map/mapDownload?m=10bad8d9-a2c1-48f6-b101-fa7ca5880732";
     	sha256 = "0ksvrfj4kqlnz83wcsrxl589dkm6flmnvk2agw6ay00pl8y05nvk";
+    };
+    
+  tbgsummerlobbydev2 =
+    fetchurl {
+    	name = "lobby_summerdevidedby2.altx";
+    	url = "http://altitudegame.com/map/mapDownload?m=7a8aa958-f666-4fcc-9665-675248936458";
+    	sha256 = "04y2izbgzpgrwf3qlqsvqilqvmz80affsf86hrrha8qcn1p0j6qg";
+    };
+    
+  tbgsummerlobbydev4 =
+    fetchurl {
+    	name = "lobby_summerdevidedby4.altx";
+    	url = "http://altitudegame.com/map/mapDownload?m=f627112b-acbe-4750-971e-77f3d59cca77";
+    	sha256 = "1nq5w40k1zbkh2fxyfr6w4l9bi9jnbanrqvf37ww9mk68zk1xajn";
     };
     
   ballAntre =
@@ -382,7 +396,8 @@ in
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"
+				  "lobby_summerdevidedby2" "lobby_summerdevidedby4"];
           admins = tbgAdmins;
         };
       extraMaps = [
@@ -396,7 +411,9 @@ in
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
         {src = ballSnow; name = "ball_snow_pb.altx";}
-        {src = balltron; name = "ball_tron.altx";} ] ++ onelhMaps;
+        {src = balltron; name = "ball_tron.altx";}
+        {src = tbgsummerlobbydev2; name = "lobby_summerdevidedby2.altx";}
+        {src = tbgsummerlobbydev4; name = "lobby_summerdevidedby4.altx";}] ++ onelhMaps;
     };
 
   inherit haskellEngine;
