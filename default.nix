@@ -381,7 +381,7 @@ in
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "ball_tron" "lobby_tbg"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"];
           admins = tbgAdmins;
         };
       extraMaps = [
