@@ -73,7 +73,7 @@ let
     fetchurl {
     	name = "lobby_tbgsummer.altx";
     	url = "https://altitudegame.com/map/mapDownload?m=10bad8d9-a2c1-48f6-b101-fa7ca5880732";
-    	sha256 = "";
+    	sha256 = "0ksvrfj4kqlnz83wcsrxl589dkm6flmnvk2agw6ay00pl8y05nvk";
     };
     
   ballAntre =
