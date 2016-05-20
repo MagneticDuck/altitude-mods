@@ -69,6 +69,13 @@ let
       sha256 = "1cxbl7cwdn29k91hihhc96v4xzsp292vajca42w1p1irjv3xjqmq";
     };
     
+  tbgsummerlobby =
+    fetchurl {
+    	name = "lobby_tbgsummer.altx";
+    	url = "https://altitudegame.com/map/mapDownload?m=10bad8d9-a2c1-48f6-b101-fa7ca5880732";
+    	sha256 = "";
+    };
+    
   ballAntre =
     fetchurl {
       name = "ball_antre_pb.altx";
@@ -370,14 +377,15 @@ in
           password = "discord";
           rcon = "chickensun123";
           players = "40";
-          lobby = "lobby_tbg";
+          lobby = "lobby_tbgsummer";
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"];
           admins = tbgAdmins;
         };
       extraMaps = [
+      	{src = tbgsummerlobby; name = "lobby_tbgsummer.altx";}
         {src = tbgLobby; name = "lobby_tbg.altx";}
         {src = jonusArrowBall; name = "ball_arrow.altx";}
         {src = getBiellMap "ball_race_asteroids.altx"; name = "ball_race_asteroids.altx";}
