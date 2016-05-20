@@ -299,6 +299,7 @@ let
       "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
       "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
       "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
+      "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
     ];
 
   adminFile = customAdmins:
