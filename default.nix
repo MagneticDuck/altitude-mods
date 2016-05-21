@@ -373,7 +373,7 @@ in
           lobby = "lobby_club";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" 
 				  "1lh_clocktower" "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "1lh_crystalized"];
           admins = admins;
         };
       service = (haskellService (adminFile admins));
