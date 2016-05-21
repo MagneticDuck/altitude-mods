@@ -250,6 +250,13 @@ let
 	  url = "http://altitudegame.com/map/mapDownload?m=bc3e62f1-075e-48b7-83a3-fa997da88708";
 	  sha256 = "1p28gdnn6w4cm0k3j8lbqgfiq2c36v23c40nig239fd2cayy3s1a";
 	};
+	
+  lobbyrock =
+    fetchurl {
+    	name = "ball_lobbyohairina.altx";
+    	url = "https://cdn.discordapp.com/attachments/129240341537751040/183571070589206529/ball_lobbyohairina.altx";
+    	sha256 = "1d9795gyjnwd0kabdj5v0i2hh5fl29h3vih8byia4x4ai1yrp6a7";
+    };
   
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -382,7 +389,8 @@ in
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"
+				  "ball_lobbyohairina"];
           admins = tbgAdmins;
         };
       extraMaps = [
@@ -396,7 +404,8 @@ in
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
         {src = ballSnow; name = "ball_snow_pb.altx";}
-        {src = balltron; name = "ball_tron.altx";}] ++ onelhMaps;
+        {src = balltron; name = "ball_tron.altx";}
+        {src = lobbyrock; name = "ball_lobbyohairina.altx";}] ++ onelhMaps;
     };
 
   inherit haskellEngine;
