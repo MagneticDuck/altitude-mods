@@ -244,12 +244,12 @@ let
     sha256 = "040m1q8fiqvm1v1vd6m966vkfwwyxal0j591ydl6kj3736dhi86z";
   };
 
-  onelhcrystalized =
+  one1hcrystalized =
     fetchurl {
-      name = "1lh_crystalized.altx";
-      url = "http://altitudegame.com/map/mapDownload?m=9572344d-4726-48e3-9de0-6fed31ba70fb";
-      sha256 = "0x7fm4c4vajbprjxa7r0h6vsx7a2nx5rk0mi6mw55i4xmrrxk8vr";
-  };
+    	name = "1lh_crystalized.altx";
+    	url = "http://altitudegame.com/map/mapDownload?m=9572344d-4726-48e3-9de0-6fed31ba70fb";
+    	sha256 = "0x7fm4c4vajbprjxa7r0h6vsx7a2nx5rk0mi6mw55i4xmrrxk8vr";
+    };
 	
   balltron =
     fetchurl {
