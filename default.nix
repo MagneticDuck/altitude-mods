@@ -375,7 +375,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "discord";
+          password = "bunnycarrot";
           rcon = "chickensun123";
           players = "40";
           lobby = "lobby_tbgsummer";
