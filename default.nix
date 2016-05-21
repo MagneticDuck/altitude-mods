@@ -243,6 +243,13 @@ let
     url = "http://altitudegame.com/map/mapDownload?m=11245122-14b1-4a21-8c20-722f1328fe03";
     sha256 = "040m1q8fiqvm1v1vd6m966vkfwwyxal0j591ydl6kj3736dhi86z";
   };
+
+  onelhcrystalized =
+    fetchurl {
+      name = "1lh_crystalized.altx";
+      url = "http://altitudegame.com/map/mapDownload?m=9572344d-4726-48e3-9de0-6fed31ba70fb";
+      sha256 = "0x7fm4c4vajbprjxa7r0h6vsx7a2nx5rk0mi6mw55i4xmrrxk8vr";
+  };
 	
   balltron =
     fetchurl {
@@ -346,6 +353,7 @@ let
         {src = onelhtwisted; name = "1lh_twisted.altx";}
         {src = onelhunderpark; name = "1lh_underpark.altx";}
         {src = onelhwoods; name = "1lh_woods.altx";}
+        {src = one1hcrystalized; name = "1lh_crystalized.altx";}
       ];
 
   
@@ -389,8 +397,8 @@ in
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"
-				  "ball_lobbyohairina"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "1lh_crystalized" "ball_tron"
+				  "lobby_tbg" "ball_lobbyohairina"];
           admins = tbgAdmins;
         };
       extraMaps = [
