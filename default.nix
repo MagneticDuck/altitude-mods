@@ -388,7 +388,7 @@ in
     mkMod {
       launcherConfig =
         mkLauncherConfig {
-          name = "{TBG} Official Training Server";
+          name = "Nick :D lags really bad";
           port = "27277";
           password = "tbgrocks";
           rcon = "chickensun123";
