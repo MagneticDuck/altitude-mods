@@ -65,15 +65,15 @@ let
   tbgLobby =
     fetchurl {
       name = "lobby_tbg.altx";
-      url = "http://altitudegame.com/map/mapDownload?m=682c46f3-581f-4b9c-bbc2-08e20c7dbe45";
-      sha256 = "0v2zmr9kyjh79jqmd0f42nr5rcprnp3hz4nn3a8qkc8f090xgw09";
+      url = "http://altitudegame.com/map/mapDownload?m=27e7166e-2e07-440b-bdea-797df19970d2";
+      sha256 = "14q94b8x15xpph1xvj8hdsqnrcmhyqjmd55zd4mkc0rs7g5784s1";
     };
     
   tbgsummerlobby =
     fetchurl {
     	name = "lobby_tbgsummer.altx";
-    	url = "http://altitudegame.com/map/mapDownload?m=20d1c2c6-9f57-43f6-962c-b294b969ad99";
-    	sha256 = "1nq5w40k1zbkh2fxyfr6w4l9bi9jnbanrqvf37ww9mk68zk1xajn";
+    	url = "http://altitudegame.com/map/mapDownload?m=2ac8f289-8d76-470e-955b-4ca0013e1621";
+    	sha256 = "1wxp44k1b2plszdyic5q98in39kjnh23hm9mix0kpl0qawnd3vcv";
     };
     
   ballAntre =
