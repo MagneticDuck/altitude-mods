@@ -300,6 +300,7 @@ let
       "ba9e19db-2cec-4c01-b984-14ca9313f9ff" # rawr
       "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
+      "a9d97c25-09a5-432f-b221-7e3162296424" # lewish
     ];
 
   tbgAdmins = 
