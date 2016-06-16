@@ -346,9 +346,9 @@ let
         {src = onelhlocomotion; name = "1lh_locomotion.altx";}
         {src = onelhmayhem; name = "1lh_mayhem.altx";}
         {src = onelhmayhem2; name = "1lh_mayhem2.altx";}
-        {src = onelhmaze; name = "1lh_maze";}
+        {src = onelhmaze; name = "1lh_maze.altx";}
         {src = onelhmetropolis; name = "1lh_metropolis.altx";}
-        {src = onelhmiddleground; name = "1lh_middleground";}
+        {src = onelhmiddleground; name = "1lh_middleground.altx";}
         {src = onelhplanepark; name = "1lh_planepark.altx";}
         {src = onelhslick; name = "1lh_slick.altx";}
         {src = onelhtwisted; name = "1lh_twisted.altx";}
