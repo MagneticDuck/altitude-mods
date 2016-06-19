@@ -38,7 +38,7 @@ let
     fetchurl {
       name = "tbd_lobby.altx";
       url = "http://altitudegame.com/map/mapDownload?m=4d63a8cb-26b5-45a8-b478-6a47aaa7270c";
-      sha256 = "1h03ra2wi26v8k2j8sjbhhc6grgb9l4ykfxcqr9frby3pgl52ngs";
+      sha256 = "2h03ra2wi26v8k2j8sjbhhc6grgb9l4ykfxcqr9frby3pgl52ngs";
     };
 
   jonusArrowTbd =
@@ -241,7 +241,7 @@ let
     fetchurl {
     name = "1lh_woods.altx";
     url = "http://altitudegame.com/map/mapDownload?m=11245122-14b1-4a21-8c20-722f1328fe03";
-    sha256 = "040m1q8fiqvm1v1vd6m966vkfwwyxal0j591ydl6kj3736dhi86z";
+    sha256 = "240m1q8fiqvm1v1vd6m966vkfwwyxal0j591ydl6kj3736dhi86z";
   };
 	
   balltron =
@@ -265,6 +265,17 @@ let
     writeScript "flight-club-service" ''
       ${haskellPackages.callPackage flightClub {}}/bin/flight-club ${admins}
     '';  
+
+  tbgRepo = fetchFromGitHub {
+    owner = "StamKaly";
+    repo = "altitude-mod-for-TBG";
+    rev = ""; # undefined
+  };
+
+  tbgService = 
+    writeScript "tbg-service" ''
+      ${python3}/bin/python3 ${tbgRepo}/main.py
+    '';
 
   admins = 
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
@@ -396,7 +407,27 @@ in
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
         {src = ballSnow; name = "ball_snow_pb.altx";}
         {src = balltron; name = "ball_tron.altx";} ] ++ onelhMaps;
+
+      # service = tbgService;
     };
 
-  inherit haskellEngine;
+  testing =
+    mkMod {
+      launcherConfig =
+        mkLauncherConfig {
+          name = "magneticduck's testing server";
+          port = "27278";
+          password = "testing123";
+          rcon = "rconpassword";
+          players = "12";
+          lobby = "lobby_tbgsummer";
+          maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" ];
+          inherit admins;
+        };
+      extraMaps = [ ];
+      # service = tbgService;
+      };
+
+  inherit haskellEngine mangoLobby;
+  inherit tbgService;
 }
