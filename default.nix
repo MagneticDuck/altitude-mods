@@ -65,15 +65,15 @@ let
   tbgLobby =
     fetchurl {
       name = "lobby_tbg.altx";
-      url = "https://www.dropbox.com/s/ns9e4f9hzgq3sun/lobby_tbg.altx?dl=0";
-      sha256 = "1cxbl7cwdn29k91hihhc96v4xzsp292vajca42w1p1irjv3xjqmq";
+      url = "http://altitudegame.com/map/mapDownload?m=27e7166e-2e07-440b-bdea-797df19970d2";
+      sha256 = "14q94b8x15xpph1xvj8hdsqnrcmhyqjmd55zd4mkc0rs7g5784s1";
     };
     
   tbgsummerlobby =
     fetchurl {
     	name = "lobby_tbgsummer.altx";
-    	url = "https://altitudegame.com/map/mapDownload?m=10bad8d9-a2c1-48f6-b101-fa7ca5880732";
-    	sha256 = "0ksvrfj4kqlnz83wcsrxl589dkm6flmnvk2agw6ay00pl8y05nvk";
+    	url = "http://altitudegame.com/map/mapDownload?m=93b5dc42-e8a9-40e0-849d-1984b094e7cc";
+    	sha256 = "0zily87x48gq13ysqwn5f0zdhmcd34sjracz4zzjjzyzp5r3sbbd";
     };
     
   ballAntre =
@@ -243,6 +243,13 @@ let
     url = "http://altitudegame.com/map/mapDownload?m=11245122-14b1-4a21-8c20-722f1328fe03";
     sha256 = "240m1q8fiqvm1v1vd6m966vkfwwyxal0j591ydl6kj3736dhi86z";
   };
+
+  one1hcrystalized =
+    fetchurl {
+    	name = "1lh_crystalized.altx";
+    	url = "http://altitudegame.com/map/mapDownload?m=9572344d-4726-48e3-9de0-6fed31ba70fb";
+    	sha256 = "0x7fm4c4vajbprjxa7r0h6vsx7a2nx5rk0mi6mw55i4xmrrxk8vr";
+    };
 	
   balltron =
     fetchurl {
@@ -250,6 +257,13 @@ let
 	  url = "http://altitudegame.com/map/mapDownload?m=bc3e62f1-075e-48b7-83a3-fa997da88708";
 	  sha256 = "1p28gdnn6w4cm0k3j8lbqgfiq2c36v23c40nig239fd2cayy3s1a";
 	};
+	
+  lobbyrock =
+    fetchurl {
+    	name = "ball_lobbyohairina.altx";
+    	url = "https://cdn.discordapp.com/attachments/129240341537751040/183571070589206529/ball_lobbyohairina.altx";
+    	sha256 = "1d9795gyjnwd0kabdj5v0i2hh5fl29h3vih8byia4x4ai1yrp6a7";
+    };
   
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -297,6 +311,7 @@ let
       "ba9e19db-2cec-4c01-b984-14ca9313f9ff" # rawr
       "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
+      "a9d97c25-09a5-432f-b221-7e3162296424" # lewish
     ];
 
   tbgAdmins = 
@@ -310,6 +325,7 @@ let
       "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
       "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
       "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
+      "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
     ];
 
   adminFile = customAdmins:
@@ -341,14 +357,15 @@ let
         {src = onelhlocomotion; name = "1lh_locomotion.altx";}
         {src = onelhmayhem; name = "1lh_mayhem.altx";}
         {src = onelhmayhem2; name = "1lh_mayhem2.altx";}
-        {src = onelhmaze; name = "1lh_maze";}
+        {src = onelhmaze; name = "1lh_maze.altx";}
         {src = onelhmetropolis; name = "1lh_metropolis.altx";}
-        {src = onelhmiddleground; name = "1lh_middleground";}
+        {src = onelhmiddleground; name = "1lh_middleground.altx";}
         {src = onelhplanepark; name = "1lh_planepark.altx";}
         {src = onelhslick; name = "1lh_slick.altx";}
         {src = onelhtwisted; name = "1lh_twisted.altx";}
         {src = onelhunderpark; name = "1lh_underpark.altx";}
         {src = onelhwoods; name = "1lh_woods.altx";}
+        {src = one1hcrystalized; name = "1lh_crystalized.altx";}
       ];
 
   
@@ -368,7 +385,7 @@ in
           lobby = "lobby_club";
           maps = ["|tbd|" "|1dm|" "|ball|" "|1de|" "|tdm|" "tbd_arrow" "ball_arrow" "tbd_arrow2" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" 
 				  "1lh_clocktower" "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "1lh_crystalized"];
           admins = admins;
         };
       service = (haskellService (adminFile admins));
@@ -385,14 +402,15 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "discord";
+          password = "passwords";
           rcon = "chickensun123";
           players = "40";
           lobby = "lobby_tbgsummer";
           maps = ["|1dm|" "|ball|" "|1de|" "|tdm|" "ball_arrow" "ball_race_asteroids" "ball_race_eastern_creek" "ball_antre_pb" "ball_cave_pb"
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
-				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "ball_tron" "lobby_tbg"];
+				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "1lh_crystalized" "ball_tron"
+				  "lobby_tbg" "ball_lobbyohairina"];
           admins = tbgAdmins;
         };
       extraMaps = [
@@ -406,7 +424,8 @@ in
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
         {src = ballSnow; name = "ball_snow_pb.altx";}
-        {src = balltron; name = "ball_tron.altx";} ] ++ onelhMaps;
+        {src = balltron; name = "ball_tron.altx";}
+        {src = lobbyrock; name = "ball_lobbyohairina.altx";}] ++ onelhMaps;
 
       # service = tbgService;
     };
