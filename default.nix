@@ -66,7 +66,7 @@ let
     fetchurl {
       name = "lobby_tbg.altx";
       url = "http://altitudegame.com/map/mapDownload?m=c7bf724f-c592-489d-af10-bb0349e8b3d6";
-      sha256 = "071gk35dcq045bap3mkr9zbg11q76585h48pdcz8229krzqc144y";
+      sha256 = "0q4yqs41djpgv171ig2qvqj1jcj3rsv3r1r11g10f6dalmskg03w";
     };
     
   tbgsummerlobby =
