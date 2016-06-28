@@ -65,15 +65,15 @@ let
   tbgLobby =
     fetchurl {
       name = "lobby_tbg.altx";
-      url = "http://altitudegame.com/map/mapDownload?m=27e7166e-2e07-440b-bdea-797df19970d2";
-      sha256 = "14q94b8x15xpph1xvj8hdsqnrcmhyqjmd55zd4mkc0rs7g5784s1";
+      url = "http://altitudegame.com/map/mapDownload?m=c7bf724f-c592-489d-af10-bb0349e8b3d6";
+      sha256 = "071gk35dcq045bap3mkr9zbg11q76585h48pdcz8229krzqc144y";
     };
     
   tbgsummerlobby =
     fetchurl {
     	name = "lobby_tbgsummer.altx";
-    	url = "http://altitudegame.com/map/mapDownload?m=93b5dc42-e8a9-40e0-849d-1984b094e7cc";
-    	sha256 = "0zily87x48gq13ysqwn5f0zdhmcd34sjracz4zzjjzyzp5r3sbbd";
+    	url = "http://altitudegame.com/map/mapDownload?m=f1aefd8b-3314-4a2f-a640-a1f85d7e4470";
+    	sha256 = "1ifdm4r851hybnx4g9i5fhc8jp3hcnphxgg92fx7vhm3lh6f0icq";
     };
     
   ballAntre =
@@ -257,13 +257,7 @@ let
 	  url = "http://altitudegame.com/map/mapDownload?m=bc3e62f1-075e-48b7-83a3-fa997da88708";
 	  sha256 = "1p28gdnn6w4cm0k3j8lbqgfiq2c36v23c40nig239fd2cayy3s1a";
 	};
-	
-  lobbyrock =
-    fetchurl {
-    	name = "ball_lobbyohairina.altx";
-    	url = "https://cdn.discordapp.com/attachments/129240341537751040/183571070589206529/ball_lobbyohairina.altx";
-    	sha256 = "1d9795gyjnwd0kabdj5v0i2hh5fl29h3vih8byia4x4ai1yrp6a7";
-    };
+
   
 
   flightClub = { mkDerivation, base, stdenv, json }:
@@ -402,7 +396,7 @@ in
         mkLauncherConfig {
           name = "{TBG} Official Training Server";
           port = "27277";
-          password = "passwords";
+          password = "";
           rcon = "chickensun123";
           players = "40";
           lobby = "lobby_tbgsummer";
@@ -410,7 +404,7 @@ in
                   "ball_ice_pb" "ball_lostcity2_pb" "ball_snow_pb" "1lh_asteroids" "1lh_asteroids2" "1lh_cave" "1lh_cave2" "1lh_clocktower" 
 				  "1lh_core" "1lh_fallout" "1lh_grotto" "1lh_locomotion" "1lh_mayhem" "1lh_mayhem2" "1lh_maze" "1lh_metropolis" 
 				  "1lh_middleground" "1lh_planepark" "1lh_slick" "1lh_twisted" "1lh_underpark" "1lh_woods" "1lh_crystalized" "ball_tron"
-				  "lobby_tbg" "ball_lobbyohairina"];
+				  "lobby_tbg"];
           admins = tbgAdmins;
         };
       extraMaps = [
@@ -424,8 +418,7 @@ in
         {src = ballIce; name = "ball_ice_pb.altx";}
         {src = ballLostcity2; name = "ball_lostcity2_pb.altx";}
         {src = ballSnow; name = "ball_snow_pb.altx";}
-        {src = balltron; name = "ball_tron.altx";}
-        {src = lobbyrock; name = "ball_lobbyohairina.altx";}] ++ onelhMaps;
+        {src = balltron; name = "ball_tron.altx";}] ++ onelhMaps;
 
       # service = tbgService;
     };
