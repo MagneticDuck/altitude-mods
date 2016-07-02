@@ -43,7 +43,6 @@ writeTextFile {
         </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="changeMap">
           <AllowedGroups>
-            <AltitudeConsoleGroup Group="Vote" />
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
@@ -77,11 +76,6 @@ writeTextFile {
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="addChatBlock">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="assignTeam">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
@@ -97,17 +91,7 @@ writeTextFile {
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="chatBlock">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="listBans">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="listChatBlocks">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
@@ -132,22 +116,7 @@ writeTextFile {
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="modifyTournament">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="nextMap">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="overrideBallScore">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="overrideSpawnPoint">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
@@ -159,11 +128,6 @@ writeTextFile {
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="removeBan">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="removeChatBlock">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
@@ -188,11 +152,6 @@ writeTextFile {
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="testDisableWeaponMode">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="testDS">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
@@ -203,12 +162,7 @@ writeTextFile {
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="testGravityMode">
-          <AllowedGroups>
-            <AltitudeConsoleGroup Group="Administrator" />
-          </AllowedGroups>
-        </AltitudeServerConsoleCommandPermissions>
-        <AltitudeServerConsoleCommandPermissions ConsoleCommand="testHealthModifier">
+        <AltitudeServerConsoleCommandPermissions ConsoleCommand="testHM">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
           </AllowedGroups>
@@ -221,7 +175,6 @@ writeTextFile {
         <AltitudeServerConsoleCommandPermissions ConsoleCommand="vote">
           <AllowedGroups>
             <AltitudeConsoleGroup Group="Administrator" />
-            <AltitudeConsoleGroup Group="Anonymous" />
           </AllowedGroups>
         </AltitudeServerConsoleCommandPermissions>
       </consoleCommandPermissions>
