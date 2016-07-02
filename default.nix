@@ -312,6 +312,14 @@ let
     [ "5640761e-f165-4f40-b3d6-3e3167dd767d" # duck
       "f4d0b170-2877-4a92-90eb-eb950a57c636" # stam
       "c9e24c41-292d-4d40-b76c-230d8f30ef32" # stam2
+      "2cc35ae9-dd99-413b-bbd3-2e1a4ac5b024" # ring
+      "e9ff8bb7-ca22-4cc6-b45b-187db4697e9c" # mani to ba
+      "2ac67d3a-3103-4443-9fb4-1d72219ddb88" # nuffhuff
+      "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
+      "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
+      "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
+      "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
+      "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
     ];
 
   adminFile = customAdmins:
