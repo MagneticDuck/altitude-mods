@@ -320,6 +320,7 @@ let
       "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
       "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
       "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
+      "f955cbd2-7db5-48ef-b9fb-135f449196c3" # woofy
     ];
 
   adminFile = customAdmins:
