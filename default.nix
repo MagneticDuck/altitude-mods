@@ -80,7 +80,7 @@ let
      fetchurl {
      	name = "lobby_sta.altx";
      	url = "http://altitudegame.com/map/mapDownload?m=c98be471-d018-4cb4-bbec-7ac4cd95a8ae";
-     	sha256 = "7ccecac6fc2563e875faf1caecd0ab8c5e9e8e1694e9d97060fce102e2865d5a";
+     	sha256 = "0njxhvi05qgwc1qdkscl2s79wplcmg8frjpiz9syhqr5zk3cmkkw";
      };
     
   ballAntre =
