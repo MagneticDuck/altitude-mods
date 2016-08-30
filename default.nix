@@ -450,7 +450,7 @@ in
 
   inherit haskellEngine mangoLobby;
   inherit tbgService;
-}
+};
 
 
 
