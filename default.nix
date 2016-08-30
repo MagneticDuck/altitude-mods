@@ -448,10 +448,7 @@ in
       # service = tbgService;
       };
 
-  inherit haskellEngine mangoLobby;
-  inherit tbgService;
-};
-
+  
 
 
    stacademy =
@@ -469,4 +466,9 @@ in
       	   	"c9e24c41-292d-4d40-b76c-230d8f30ef32"];
       	   };
       	extraMaps = [ {src = stalobby; name = "lobby_sta.altx";} ];
+      };
+      
+  inherit haskellEngine mangoLobby;
+  inherit tbgService;
 }
+
