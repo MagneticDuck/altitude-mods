@@ -76,6 +76,13 @@ let
     	sha256 = "1ifdm4r851hybnx4g9i5fhc8jp3hcnphxgg92fx7vhm3lh6f0icq";
     };
     
+  stalobby =
+     fetchurl {
+     	name = "lobby_sta.altx";
+     	url = "http://altitudegame.com/map/mapDownload?m=c98be471-d018-4cb4-bbec-7ac4cd95a8ae";
+     	sha256 = "7ccecac6fc2563e875faf1caecd0ab8c5e9e8e1694e9d97060fce102e2865d5a";
+     };
+    
   ballAntre =
     fetchurl {
       name = "ball_antre_pb.altx";
@@ -444,3 +451,22 @@ in
   inherit haskellEngine mangoLobby;
   inherit tbgService;
 }
+
+
+
+   STA =
+      mkMod {
+      	launcherConfig =
+      	   mkLauncherConfig {
+      	   	name = "Stam and Tolis' Academy testing server";
+      	   	port = "27279";
+      	   	password = "run.run";
+      	   	rcon = "rconpassword";
+      	   	players = "30";
+      	   	lobby = "lobby_sta";
+      	   	maps = ["|ball|", "|tbd|"];
+      	   	admins = ["f4d0b170-2877-4a92-90eb-eb950a57c636",
+      	   	"c9e24c41-292d-4d40-b76c-230d8f30ef32"];
+      	   };
+      	extraMaps = [ {src = stalobby; name = "lobby_sta.altx";} ];
+      }
