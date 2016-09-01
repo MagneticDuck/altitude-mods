@@ -461,7 +461,7 @@ in
       	   	rcon = "rconpassword";
       	   	players = "30";
       	   	lobby = "lobby_sta";
-      	   	maps = ["|ball|" "|tbd|"];
+      	   	maps = ["|ball|" "|tbd|" "1dm"];
       	   	admins = ["f4d0b170-2877-4a92-90eb-eb950a57c636"
       	   	"c9e24c41-292d-4d40-b76c-230d8f30ef32"];
       	   };
