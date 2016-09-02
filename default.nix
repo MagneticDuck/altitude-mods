@@ -34,6 +34,13 @@ let
       sha256 = "0ms5ydaj73nvavvfsm2p0cdxvj64qjlfqi21c45axrcsmixhyppq";
     };
 
+   tbdKessler =
+      fetchurl {
+      	name = "tbd_kessler.altx";
+      	url = "http://cdn.discordapp.com/attachments/145631855947939841/221339358723047424/tbd_kessler.altx";
+      	sha256 = "0aza9a2i550896dfx92b4vpr8spnfpyshrf6fxwsx80vd97nqbf2";
+      };
+
   mangoLobby = 
     fetchurl {
       name = "tbd_lobby.altx";
@@ -461,12 +468,13 @@ in
       	   	rcon = "rconpassword";
       	   	players = "30";
       	   	lobby = "lobby_sta";
-      	   	maps = ["|1dm|" "|ball|" "|tbd|" "ball_tron"];
+      	   	maps = ["|1dm|" "|ball|" "|tbd|" "ball_tron" "tbd_kessler"];
       	   	admins = ["f4d0b170-2877-4a92-90eb-eb950a57c636"
       	   	"c9e24c41-292d-4d40-b76c-230d8f30ef32"];
       	   };
       	extraMaps = [ {src = stalobby; name = "lobby_sta.altx";} 
       	              {src = balltron; name = "ball_tron.altx";}
+      	              {src = tbdKessler; name = "tbd_kessler.altx";}
       	];
       };
       
