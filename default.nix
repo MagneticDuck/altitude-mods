@@ -461,11 +461,13 @@ in
       	   	rcon = "rconpassword";
       	   	players = "30";
       	   	lobby = "lobby_sta";
-      	   	maps = ["|1dm|" "|ball|" "|tbd|"];
+      	   	maps = ["|1dm|" "|ball|" "|tbd|" "ball_tron"];
       	   	admins = ["f4d0b170-2877-4a92-90eb-eb950a57c636"
       	   	"c9e24c41-292d-4d40-b76c-230d8f30ef32"];
       	   };
-      	extraMaps = [ {src = stalobby; name = "lobby_sta.altx";} ];
+      	extraMaps = [ {src = stalobby; name = "lobby_sta.altx";} 
+      	              {src = balltron; name = "ball_tron.altx";}
+      	];
       };
       
   inherit haskellEngine mangoLobby;
