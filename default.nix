@@ -331,6 +331,7 @@ let
       "2ac67d3a-3103-4443-9fb4-1d72219ddb88" # nuffhuff
       "25c28e39-8c93-4adb-91c0-783cb9d75959" # nick
       "0d754ee7-0a53-4bbf-bb9f-1c7e88ca0ee9" # tolis
+      "6f07449d-f367-41e9-a5d4-59f32a574aa7" # tolis2
       "a549e9e0-da2a-44d7-8ad2-e06eeb092e07" # prey
       "325e5779-33e8-4889-9d54-bcda1585630c" # mandel
       "0aa6b54c-52b4-4fa7-b2b4-0dc0c8350dd0" # paiza
